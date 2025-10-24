@@ -8,6 +8,7 @@ root/project/
 root/builds/
 root/CMakeFiles/
 root/CMakeCache.txt
+*.vcxproj
 
 # User-specific files
 *.rsuser

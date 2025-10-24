@@ -1,8 +1,5 @@
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ALL_BUILD.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ZERO_CHECK.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/local/runtime/CMakeFiles/runtime.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/local/runtime/CMakeFiles/profiler.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/local/tests/CMakeFiles/tests.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/local/tests/CMakeFiles/consumer_producer.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/local/tests/CMakeFiles/product_except_self.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/app/CMakeFiles/CppSandbox.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/CMakeFiles/shared.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/consumer_producer.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/product_except_self.dir

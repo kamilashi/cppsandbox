@@ -1,6 +1,6 @@
 # CMake generation dependency list for this directory.
 C:/MINE/PROJECTS/cppsandbox/root/CMakeLists.txt
-C:/MINE/PROJECTS/cppsandbox/root/cmake/AddModule.cmake
+C:/MINE/PROJECTS/cppsandbox/root/cmake/AddApp.cmake
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/4.1.0-rc1/CMakeCXXCompiler.cmake
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/4.1.0-rc1/CMakeRCCompiler.cmake
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/4.1.0-rc1/CMakeSystem.cmake

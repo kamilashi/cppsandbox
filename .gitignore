@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Custom
+/project/
+/builds/
+/CMakeFiles/
+/CMakeCache.txt
+
 # User-specific files
 *.rsuser
 *.suo
@@ -17,20 +23,20 @@
 mono_crash.*
 
 # Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-[Rr]eleases/
-x64/
-x86/
-[Ww][Ii][Nn]32/
-[Aa][Rr][Mm]/
-[Aa][Rr][Mm]64/
-bld/
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Ll]ogs/
+root/[Dd]ebug/
+root/[Dd]ebugPublic/
+root/[Rr]elease/
+root/[Rr]eleases/
+root/x64/
+root/x86/
+root/[Ww][Ii][Nn]32/
+root/[Aa][Rr][Mm]/
+root/[Aa][Rr][Mm]64/
+root/bld/
+root/[Bb]in/
+root/[Oo]bj/
+root/[Ll]og/
+root/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -41,8 +47,8 @@ bld/
 Generated\ Files/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
-[Bb]uild[Ll]og.*
+root/[Tt]est[Rr]esult*/
+root/[Bb]uild[Ll]og.*
 
 # NUnit
 *.VisualState.xml
@@ -50,8 +56,8 @@ TestResult.xml
 nunit-*.xml
 
 # Build Results of an ATL Project
-[Dd]ebugPS/
-[Rr]eleasePS/
+root/[Dd]ebugPS/
+root/[Rr]eleasePS/
 dlldata.c
 
 # Benchmark Results
@@ -170,17 +176,17 @@ AutoTest.Net/
 [Ee]xpress/
 
 # DocProject is a documentation generator add-in
-DocProject/buildhelp/
-DocProject/Help/*.HxT
-DocProject/Help/*.HxC
-DocProject/Help/*.hhc
-DocProject/Help/*.hhk
-DocProject/Help/*.hhp
-DocProject/Help/Html2
-DocProject/Help/html
+root/DocProject/buildhelp/
+root/DocProject/Help/*.HxT
+root/DocProject/Help/*.HxC
+root/DocProject/Help/*.hhc
+root/DocProject/Help/*.hhk
+root/DocProject/Help/*.hhp
+root/DocProject/Help/Html2
+root/DocProject/Help/html
 
 # Click-Once directory
-publish/
+root/publish/
 
 # Publish Web Output
 *.[Pp]ublish.xml
@@ -218,10 +224,10 @@ ecf/
 rcf/
 
 # Windows Store app package directories and files
-AppPackages/
-BundleArtifacts/
-Package.StoreAssociation.xml
-_pkginfo.txt
+root/AppPackages/
+root/BundleArtifacts/
+root/Package.StoreAssociation.xml
+root/_pkginfo.txt
 *.appx
 *.appxbundle
 *.appxupload
@@ -233,7 +239,7 @@ _pkginfo.txt
 !?*.[Cc]ache/
 
 # Others
-ClientBin/
+root/ClientBin/
 ~$*
 *~
 *.dbmdl
@@ -399,3 +405,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+

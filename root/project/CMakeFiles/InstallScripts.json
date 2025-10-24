@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/MINE/PROJECTS/cppsandbox/root/project/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/local/runtime/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/local/tests/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/app/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\MINE\PROJECTS\cppsandbox\root\code\app\source\application.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\MINE\PROJECTS\cppsandbox\root\code\app\source\main.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\app\include\application.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\MINE\PROJECTS\cppsandbox\root\code\app\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{E39E5F74-8EA2-3582-89CE-B8916929C7CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="source">
+      <UniqueIdentifier>{0918B0DB-E755-3108-96C9-2E8797204B2D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -5,42 +5,44 @@
 #include <assert.h>
 #include "message_queue.h"
 
-
-/// A generic message handler that takes messages via send() and allows iteration over
-/// all committed (see commitAll()) messages.
-class MessageBus
+namespace ConsumerProducer
 {
-public:
-    typedef std::size_t size_type;
+    /// A generic message handler that takes messages via send() and allows iteration over
+    /// all committed (see commitAll()) messages.
+    class MessageBus
+    {
+    public:
+        typedef std::size_t size_type;
 
-    MessageBus();
-    ~MessageBus();
+        MessageBus();
+        ~MessageBus();
 
-    /// Send the given message.
-    ///
-    /// @note Note that it will only be activated when commitAll() is called.
-	template <typename MType>
-	void send(MType* message)
-	{
-		queue_.enqueue(message);
-	}
+        /// Send the given message.
+        ///
+        /// @note Note that it will only be activated when commitAll() is called.
+	    template <typename MType>
+	    void send(MType* message)
+	    {
+		    queue_.enqueue(message);
+	    }
 
-    /// Activates all previously sent messages.
-    void commitAll();
+        /// Activates all previously sent messages.
+        void commitAll();
 
-    /// Empties all message queues.
-    void clearAll();
+        /// Empties all message queues.
+        void clearAll();
     
-    void clearInactiveMessages();
+        void clearInactiveMessages();
     
-    Message* getNextMessage();
+        Message* getNextMessage();
 
-    size_type count() const;
+        size_type count() const;
 
-    bool empty() const;
+        bool empty() const;
     
-private:
-    MessageQueue queue_;
+    private:
+        MessageQueue queue_;
+    };
 };
 
 #endif

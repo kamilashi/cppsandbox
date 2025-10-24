@@ -1,43 +1,46 @@
 #include "message_bus.h"
 
-MessageType Message::typeCount_ = 0;
-
-
-MessageBus::MessageBus()
-{ }
-
-MessageBus::~MessageBus()
+namespace ConsumerProducer
 {
-    queue_.clear();
-}
+    MessageType Message::typeCount_ = 0;
 
-void MessageBus::commitAll()
-{
-    queue_.commit();
-}
+    MessageBus::MessageBus()
+    {
+    }
 
-void MessageBus::clearAll()
-{
-    queue_.clear();
-}
+    MessageBus::~MessageBus()
+    {
+        queue_.clear();
+    }
 
-void MessageBus::clearInactiveMessages()
-{
-    queue_.clearAllInactiveMessages();
-}
+    void MessageBus::commitAll()
+    {
+        queue_.commit();
+    }
 
-Message* MessageBus::getNextMessage()
-{
-    return queue_.getOldestActiveMessageAndDeactivate();
-}
+    void MessageBus::clearAll()
+    {
+        queue_.clear();
+    }
 
-std::size_t MessageBus::count() const
-{
-    return queue_.count();
-}
+    void MessageBus::clearInactiveMessages()
+    {
+        queue_.clearAllInactiveMessages();
+    }
 
-bool MessageBus::empty() const
-{
-    return queue_.count() == 0;
-}
+    Message* MessageBus::getNextMessage()
+    {
+        return queue_.getOldestActiveMessageAndDeactivate();
+    }
+
+    std::size_t MessageBus::count() const
+    {
+        return queue_.count();
+    }
+
+    bool MessageBus::empty() const
+    {
+        return queue_.count() == 0;
+    }
+};
 

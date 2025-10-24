@@ -130,7 +130,7 @@ namespace ConsumerProducer
 	}
 }
 
-int Message::instanceCount = 0;
+int ConsumerProducer::Message::instanceCount = 0;
 
 int main(int argc, char* argv[])
 {

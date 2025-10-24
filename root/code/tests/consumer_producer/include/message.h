@@ -4,88 +4,90 @@
 
 #include "types.h"
 
-
-/// Type of message type IDs.
-typedef int MessageType;
-
-/// Non-templated base class for messages.
-///
-/// @note Note that specific messages should derive from BaseMessage<T>.
-/// 
-/// @sa BaseMessage
-/// @sa MessageBus::send()
-class Message
+namespace ConsumerProducer
 {
-public:
-	Message() { ++instanceCount; type_ = -1;}
-	virtual ~Message() {}
-    MessageType getType() {return type_;}
+    /// Type of message type IDs.
+    typedef int MessageType;
 
-	static int instanceCount;
-protected:
-    static MessageType typeCount_;
-	MessageType type_;
-};
+    /// Non-templated base class for messages.
+    ///
+    /// @note Note that specific messages should derive from BaseMessage<T>.
+    /// 
+    /// @sa BaseMessage
+    /// @sa MessageBus::send()
+    class Message
+    {
+    public:
+	    Message() { ++instanceCount; type_ = -1;}
+	    virtual ~Message() {}
+        MessageType getType() {return type_;}
+
+	    static int instanceCount;
+    protected:
+        static MessageType typeCount_;
+	    MessageType type_;
+    };
     
-/// Base class for all messages.
-///
-/// @tparam T Type of the derived message. Use like this: class MyMessage : public BaseMessage<MyMessage> ...
-template <class T>
-class BaseMessage : public Message
-{
-public:
-	BaseMessage()
-	{
-		type_ = T::type();
-	}
-
-    static MessageType type()
+    /// Base class for all messages.
+    ///
+    /// @tparam T Type of the derived message. Use like this: class MyMessage : public BaseMessage<MyMessage> ...
+    template <class T>
+    class BaseMessage : public Message
     {
-        static MessageType id = typeCount_++;
-        return id;
-	}
-};
+    public:
+	    BaseMessage()
+	    {
+		    type_ = T::type();
+	    }
 
-class DamageMessage : public BaseMessage<DamageMessage>
-{
-    uint damageAmount_;
+        static MessageType type()
+        {
+            static MessageType id = typeCount_++;
+            return id;
+	    }
+    };
 
-public:
-	DamageMessage(uint amount)
-    { 
-        damageAmount_ = amount;
-    }
-
-    ~DamageMessage()
-    { 
-        --instanceCount; 
-    }
-
-    uint getDamageAmount() const
+    class DamageMessage : public BaseMessage<DamageMessage>
     {
-        return damageAmount_;
-    }
-};
+        uint damageAmount_;
 
-class HealMessage : public BaseMessage<HealMessage>
-{
-    uint healAmount_;
+    public:
+	    DamageMessage(uint amount)
+        { 
+            damageAmount_ = amount;
+        }
 
-public:
-    HealMessage(uint amount)
+        ~DamageMessage()
+        { 
+            --instanceCount; 
+        }
+
+        uint getDamageAmount() const
+        {
+            return damageAmount_;
+        }
+    };
+
+    class HealMessage : public BaseMessage<HealMessage>
     {
-        healAmount_ = amount;
-    }
+        uint healAmount_;
 
-	~HealMessage()
-    {
-        --instanceCount; 
-    }
+    public:
+        HealMessage(uint amount)
+        {
+            healAmount_ = amount;
+        }
 
-    uint getHealAmount() const
-	{
-		return healAmount_;
-	}
+	    ~HealMessage()
+        {
+            --instanceCount; 
+        }
+
+        uint getHealAmount() const
+	    {
+		    return healAmount_;
+	    }
+    };
 };
 
 #endif

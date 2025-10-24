@@ -1,6 +1,6 @@
 #include <vector>
 
-namespace ProductTest
+namespace ProductExceptSelf
 {
 	std::vector<int> getProducts(const std::vector<int>& input)
 	{
@@ -54,5 +54,5 @@ namespace ProductTest
 
 int main(int argc, char* argv[])
 {
-	ProductTest::runTest();
+	ProductExceptSelf::runTest();
 }

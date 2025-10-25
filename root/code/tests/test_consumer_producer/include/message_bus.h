@@ -1,6 +1,6 @@
 
-#ifndef MESSAGEBUS_H
-#define MESSAGEBUS_H
+#ifndef CONSUMERPRODUCERMESSAGEBUS_H
+#define CONSUMERPRODUCERMESSAGEBUS_H
 
 #include <assert.h>
 #include "message_queue.h"
@@ -45,4 +45,4 @@ namespace ConsumerProducer
     };
 };
 
-#endif
+#endif // CONSUMERPRODUCERMESSAGEBUS_H

@@ -1,6 +1,6 @@
 
-#ifndef MESSAGE_H
-#define MESSAGE_H
+#ifndef CONSUMERPRODUCERMESSAGE_H
+#define CONSUMERPRODUCERMESSAGE_H
 
 #include "types.h"
 
@@ -90,4 +90,4 @@ namespace ConsumerProducer
     };
 };
 
-#endif
+#endif // CONSUMERPRODUCERMESSAGE_H

@@ -174,17 +174,21 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\consumer_producer.vcxproj">
-      <Project>{C4525683-AD0C-31B7-8EF4-BEFAA5762EA0}</Project>
-      <Name>consumer_producer</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\product_except_self.vcxproj">
-      <Project>{B65097F4-0E41-3484-8F42-EB1133B0B5A5}</Project>
-      <Name>product_except_self</Name>
-    </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\shared\shared.vcxproj">
       <Project>{C5BA3D95-D7F8-35B9-A0F1-8831F3262DD3}</Project>
       <Name>shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_consumer_producer.vcxproj">
+      <Project>{94D408F4-C26B-3C55-B3FC-3DD16768129F}</Project>
+      <Name>test_consumer_producer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_observer_n_to_n.vcxproj">
+      <Project>{3B2CC831-31B7-3A4E-AFBC-B9315F476CC4}</Project>
+      <Name>test_observer_n_to_n</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_product_except_self.vcxproj">
+      <Project>{06481B25-9F53-38A5-8DE0-6DB02973A2EB}</Project>
+      <Name>test_product_except_self</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

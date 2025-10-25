@@ -1,6 +1,6 @@
 
-#ifndef MESSAGEQUEUE_H
-#define MESSAGEQUEUE_H
+#ifndef CONSUMERPRODUCERMESSAGEQUEUE_H
+#define CONSUMERPRODUCERMESSAGEQUEUE_H
 
 #include <vector>
 #include <memory>
@@ -140,4 +140,4 @@ namespace ConsumerProducer
     };
 };
 
-#endif
+#endif // CONSUMERPRODUCERMESSAGEQUEUE_H

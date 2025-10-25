@@ -43,11 +43,11 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/include/message.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/include/message_bus.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/include/message_queue.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/include/message.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/include/message_bus.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/include/message_queue.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -55,7 +55,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/include/*.hpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/include/*.hpp")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -64,7 +64,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/source/*.c")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/source/*.c")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -73,10 +73,10 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/source/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/source/*.cpp")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/source/main.cpp"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/consumer_producer/source/message_bus.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_consumer_producer/source/message_bus.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -84,7 +84,50 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/product_except_self/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/*.h")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/emitter.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message_bus.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/receiver.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/topic.h"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/source/message_bus.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_product_except_self/include/*.h")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -93,7 +136,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/product_except_self/include/*.hpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_product_except_self/include/*.hpp")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -102,7 +145,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/product_except_self/source/*.c")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_product_except_self/source/*.c")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -111,9 +154,9 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/product_except_self/source/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_product_except_self/source/*.cpp")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/product_except_self/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_product_except_self/source/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

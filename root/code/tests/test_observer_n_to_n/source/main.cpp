@@ -8,14 +8,16 @@ namespace NNObserver
 	void runTest()
 	{
 		Bus messageBus;
-		CameraEmitter camera;
+		CameraEmitter camera(1000.0f, "Camera");
 		camera.registerMessageBus(&messageBus);
 		Display display(&messageBus);
 
 		{
-			SensorEmitter sensor;
+			SensorEmitter sensor(1000.0f, "Sensor");
 
 			sensor.registerMessageBus(&messageBus);
+			sensor.startPulseThread();
+			camera.startPulseThread();
 
 			HealthTelemetry healthTracker(&messageBus);
 			CollisionTracker collisionTracker(&messageBus);
@@ -40,10 +42,6 @@ namespace NNObserver
 					break;
 				case 's':
 					sensor.createSensorData();
-					break;
-				case 'p':
-					camera.pulse();
-					sensor.pulse();
 					break;
 				default:
 					break;

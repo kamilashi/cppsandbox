@@ -2,11 +2,12 @@
 
 namespace NNObserver
 {
-
 	Bus::Bus() : m_linksCreatedCount(0), m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)) {};
 
 	int Bus::subscribe(TopicId topicId, OnMessageCallback callback)
 	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+
 		m_linksCreatedCount++;
 
 		const int linkId = m_linksCreatedCount;
@@ -21,6 +22,8 @@ namespace NNObserver
 
 	void Bus::unsubscribe(int linkId)
 	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+
 		if (m_allSubs.find(linkId) != m_allSubs.end())
 		{
 			const SubData& subData = m_allSubs.at(linkId);
@@ -31,6 +34,8 @@ namespace NNObserver
 
 	void Bus::publish(const Message& message) const
 	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+
 		if (m_subsByTopic.find(message.topicId) != m_subsByTopic.end())
 		{
 			auto& subsPerTopic = m_subsByTopic.at(message.topicId);
@@ -41,10 +46,13 @@ namespace NNObserver
 		}
 	};
 
-	void Bus::removeSubFromTopic(TopicId topicId, size_t index) // o(1) complexity, order does not matter
+	void Bus::removeSubFromTopic(TopicId topicId, size_t topicIndex) // o(1) complexity, order does not matter
 	{
-		auto& subsPerTopic = m_subsByTopic[topicId];
-		subsPerTopic[index] = subsPerTopic.back();
+		auto& subsPerTopic = m_subsByTopic.at(topicId);
+		subsPerTopic[topicIndex] = subsPerTopic.back();
 		subsPerTopic.pop_back();
+
+		auto& sub = m_allSubs.at(subsPerTopic[topicIndex]);
+		sub.indexByTopic = topicIndex;
 	};
 }

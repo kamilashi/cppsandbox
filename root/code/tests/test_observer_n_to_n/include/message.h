@@ -9,7 +9,7 @@ namespace NNObserver
 	struct Message
 	{
 		TopicId topicId;
-		std::string_view payload;
+		std::string payload;
 
 		Message(TopicId topicId, std::string_view payload) : topicId(topicId), payload(payload) {};
 		~Message() = default;

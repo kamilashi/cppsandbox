@@ -5,6 +5,7 @@
 #include "topic.h"
 #include <unordered_map>
 #include <functional>
+#include <mutex>
 
 namespace NNObserver
 {
@@ -37,6 +38,7 @@ namespace NNObserver
 
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
 		std::unordered_map<int, SubData> m_allSubs;
+		mutable std::mutex m_mutex;
 		int m_linksCreatedCount;
 
 		void removeSubFromTopic(TopicId topicId, size_t index);

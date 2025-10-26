@@ -13,6 +13,20 @@
 
 namespace Profiler
 {
+	struct FrameProfileData
+	{
+		static const size_t headerSize = 128;
+		static const size_t bodySize = 256;
+		char header[headerSize];
+		char body[bodySize];
+	};
+
+	class FrameDataVisualizer
+	{
+	public:
+		virtual void visualizeFrameData(const FrameProfileData& frameData) = 0;
+	};
+
 	class ScopeTimer
 	{
 	public:
@@ -242,12 +256,11 @@ namespace Profiler
 		};
 	};
 
-	void InitProfiler();
-	void OnStartFrame();
-	void OnEndFrame();
-	void EndProfiler();
+	void onStartFrame();
+	void onEndFrame(FrameDataVisualizer* pVisualizer);
+	void endProfiler();
 
-	void DrawImGui();
+	void getFrame(FrameProfileData* pFrameData);
 }
 
 #endif // PROFILER_H
@@ -257,10 +270,9 @@ namespace Profiler
 
 #if defined (PROFILE)							
 	#define PROFILE_SCOPE(nameLiteral)		Profiler::ScopeTimer timer(FILELINE_ID, nameLiteral)
-	#define PROFILER_INIT() 				Profiler::InitProfiler()				
-	#define PROFILER_START_FRAME() 			Profiler::OnStartFrame()
-	#define PROFILER_END_FRAME() 			Profiler::OnEndFrame()
-	#define PROFILER_END() 					Profiler::EndProfiler()							
+	#define PROFILER_START_FRAME() 			Profiler::onStartFrame()
+	#define PROFILER_END_FRAME(x) 			Profiler::onEndFrame(x)
+	#define PROFILER_END() 					Profiler::endProfiler()							
 #else
 	#define PROFILER_INIT()					do {} while (0)
 	#define PROFILE_SCOPE(nameLiteral)		do {} while (0)

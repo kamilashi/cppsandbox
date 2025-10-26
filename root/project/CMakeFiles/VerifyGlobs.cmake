@@ -5,6 +5,7 @@
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/*.h")
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/buildconfig.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/console_frame_printer.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/helpers.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/profiler.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/types.h"

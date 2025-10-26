@@ -2,9 +2,45 @@
 #include "emitter.h"
 #include "receiver.h"
 #include <cstdio>
+#include <thread>
+
+#define PROFILER
 
 namespace NNObserver
 {
+	static std::atomic<bool> sIsStopProgramRequested{ false };
+	static std::atomic<bool> sIsCameraTriggerRequested{ false };
+	static std::atomic<bool> sIsSensorTriggerRequested{ false };
+
+	void readInput()
+	{
+		int inputChar;
+		while (inputChar = getchar())
+		{
+			if (inputChar == '\r') 
+			{
+				continue;
+			};
+
+			if (inputChar == 'e')
+			{
+				sIsStopProgramRequested.store(true, std::memory_order_release);
+				return;
+			};
+
+			switch (inputChar) {
+			case 'c':
+				sIsCameraTriggerRequested.store(true, std::memory_order_release);
+				break;
+			case 's':
+				sIsSensorTriggerRequested.store(true, std::memory_order_release);
+				break;
+			default:
+				break;
+			}
+		};
+	}
+
 	void runTest()
 	{
 		Bus messageBus;
@@ -14,15 +50,13 @@ namespace NNObserver
 
 		{
 			SensorEmitter sensor(1000.0f, "Sensor");
-
 			sensor.registerMessageBus(&messageBus);
+
 			sensor.startPulseThread();
 			camera.startPulseThread();
 
 			HealthTelemetry healthTracker(&messageBus);
 			CollisionTracker collisionTracker(&messageBus);
-
-			int inputChar;
 
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"
@@ -31,20 +65,25 @@ namespace NNObserver
 				<< "Enter to submit \n\n"
 				<< "e to exit \n\n";
 
-			while (inputChar = getchar())
-			{
-				if (inputChar == '\r') continue;
-				if (inputChar == 'e') break;
 
-				switch (inputChar) {
-				case 'c':
+			std::jthread inputThread = std::jthread([](std::stop_token st)
+			{
+				while (!st.stop_requested())
+				{
+					readInput();
+				}
+			});
+
+			while (!sIsStopProgramRequested.load(std::memory_order_acquire))
+			{
+				if (sIsCameraTriggerRequested.exchange(false, std::memory_order_acq_rel))
+				{
 					camera.createFrameData();
-					break;
-				case 's':
+				}
+
+				if (sIsSensorTriggerRequested.exchange(false, std::memory_order_acq_rel))
+				{
 					sensor.createSensorData();
-					break;
-				default:
-					break;
 				}
 			};
 		}

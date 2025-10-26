@@ -43,11 +43,7 @@ namespace Profiler
 		profileTree.onNodeClose(m_name, start, elapsedTime);
 	};
 
-	void InitProfiler()
-	{
-	}
-
-	void OnStartFrame()
+	void onStartFrame()
 	{
 		if (!ScopeTimer::sIsPaused)
 		{
@@ -57,34 +53,50 @@ namespace Profiler
 		ScopeTimer::sFrameNumber++;
 	}
 
-	void OnEndFrame()
+/*
+	void onEndFrame()
 	{
-		DrawImGui();
+		FrameProfileData frame{};
+		getFrame(&frame);
+
+		printf("\r%s%s\x1b[K\r", frame.header, frame.body);
+		fflush(stdout);
+	}*/
+
+	void onEndFrame(FrameDataVisualizer* pVisualizer)
+	{
+		FrameProfileData frame{};
+		getFrame(&frame);
+
+		pVisualizer->visualizeFrameData(frame);
+		
+		//printf("\r%s%s\x1b[K\r", frame.header, frame.body);
+		//fflush(stdout);
 	}
 
-	void EndProfiler()
+	void endProfiler()
 	{
 		profileTree.reset();
 	}
 
-	std::string FormatProfileRowIndented(const ScopeProfileData& data, const ScopeStats& stats, int depth)
+	void formatProfileRowIndented(char* pBuffer, int bufferSize, const ScopeProfileData& data, const ScopeStats& stats, int depth)
 	{
-		char buffer[256];
 		char indent[64];
 		int labelStart = depth * 2;
 		int indentLen = labelStart + 3;
 
 		indentLen = indentLen < 60 ? indentLen : 60;
-		std::memset(indent, ' ', labelStart);
-		std::memset(indent + labelStart, '_', indentLen- labelStart);
+		memset(indent, ' ', labelStart);
+		memset(indent + labelStart, '_', indentLen- labelStart);
 		indent[labelStart] = '|';
 		indent[indentLen] = '\0';
 
 		double average = stats.getMovingAverage();
 
-		std::snprintf(
-			buffer, sizeof(buffer),
-			"               | %16.6f     | %10.6f | %10.6f |      %10.6f      | %s%-12s",
+		size_t len = strlen(pBuffer);
+		snprintf(
+			pBuffer + len, bufferSize - len,
+			"               | %16.6f     | %10.6f | %10.6f |      %10.6f      | %s%-12s \n",
 			data.elapsedTime,
 			stats.maxElapsedTime,
 			stats.minElapsedTime,
@@ -92,11 +104,9 @@ namespace Profiler
 			indent,
 			data.name 
 		);
-
-		return std::string(buffer);
 	}
 
-	void PrintNode(size_t idx, int depth)
+	void writeNode(char* pBuffer, int bufferSize, size_t idx, int depth)
 	{
 		if (idx == ~0u) return;
 
@@ -104,28 +114,24 @@ namespace Profiler
 
 		const ScopeStats& statsIt = profileTree.getOrCreateStats(node.id);
 
-		const std::string line = FormatProfileRowIndented(node.data, statsIt, depth);
-		// print line line
+		formatProfileRowIndented(pBuffer, bufferSize, node.data, statsIt, depth);
 
 		for (size_t child = node.firstChildIdx; child != ~0u; child = profileTree.getNode(child).nextSiblingIdx)
 		{
-			PrintNode(child, depth + 1);
+			writeNode(pBuffer, bufferSize, child, depth + 1);
 		}
 	}
 
-	void DrawImGui()
+	void getFrame(FrameProfileData* pFrameData)
 	{
-		//ImGui::Begin("Profiler");
-		//ImGui::Checkbox("Pause", &ScopeTimer::sIsPaused);
+		memset(pFrameData->header, 0, FrameProfileData::headerSize);
+		memset(pFrameData->body, 0, FrameProfileData::bodySize);
 
-		//ImGui::Text("Frame %08llu | Duration - real (ms) | - max (ms) | - min (ms) | - avg in %u fr (ms) | Scope ", static_cast<unsigned long long>(ScopeTimer::sFrameNumber), ScopeStats::movingAverageWindowSize);
-		//ImGui::Separator();
+		snprintf(pFrameData->header, FrameProfileData::headerSize, "Frame %08llu | Duration - real (ms) | - max (ms) | - min (ms) | - avg in %u fr (ms) | Scope \n", static_cast<unsigned long long>(ScopeTimer::sFrameNumber), ScopeStats::movingAverageWindowSize);
 
 		if (profileTree.getNodesCount() > 1)
 		{
-			PrintNode(profileTree.getRootIdx(), 0);
+			writeNode(pFrameData->body, FrameProfileData::bodySize, profileTree.getRootIdx(), 0);
 		}
-
-		//ImGui::End();
 	}
 }

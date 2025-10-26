@@ -52,7 +52,10 @@ namespace NNObserver
 		subsPerTopic[topicIndex] = subsPerTopic.back();
 		subsPerTopic.pop_back();
 
-		auto& sub = m_allSubs.at(subsPerTopic[topicIndex]);
-		sub.indexByTopic = topicIndex;
+		if (!subsPerTopic.empty())
+		{
+			auto& sub = m_allSubs.at(subsPerTopic[topicIndex]);
+			sub.indexByTopic = topicIndex;
+		}
 	};
 }

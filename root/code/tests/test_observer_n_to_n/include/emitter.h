@@ -10,24 +10,25 @@ namespace NNObserver
 	class MessageEmitter
 	{
 	public:
-		MessageEmitter() : m_pBus(nullptr), m_seq(0), m_pulseIntervalMs(-1), m_id("") {}
-		MessageEmitter(float pulseInterval, std::string_view id) : m_pBus(nullptr), m_seq(0), m_pulseIntervalMs(pulseInterval), m_id(id) {}
+		MessageEmitter() : m_wpBus(), m_seq(0), m_pulseIntervalMs(-1), m_id("") {}
+		MessageEmitter(float pulseInterval, std::string_view id) : m_wpBus(), m_seq(0), m_pulseIntervalMs(pulseInterval), m_id(id) {}
 		~MessageEmitter() = default;
 
-		void registerMessageBus(Bus* pBus)
+		void registerMessageBus(std::weak_ptr<Bus> wpBus)
 		{
-			m_pBus = pBus;
+			m_wpBus = std::move(wpBus);
 		}
 
 		void pulse()
 		{
-			if (!m_pBus)
+			auto sharedBus = m_wpBus.lock();
+			if (!sharedBus)
 			{
 				return;
 			}
 
 			Message message(TopicId::Topic_Hartbeat, std::format("emitter: {}, seq: {}", m_id, m_seq));
-			m_pBus->publish(message);
+			sharedBus->publish(message);
 			m_seq++;
 		}
 
@@ -48,7 +49,8 @@ namespace NNObserver
 		}
 
 	protected:
-		Bus* m_pBus;
+		//Bus* m_pBus;
+		std::weak_ptr<Bus> m_wpBus;
 		int m_seq;
 		float m_pulseIntervalMs;
 		std::jthread m_pulseThread;
@@ -64,13 +66,14 @@ namespace NNObserver
 
 		void createFrameData() 
 		{
-			if (!m_pBus)
+			auto sharedBus = m_wpBus.lock();
+			if (!sharedBus)
 			{
 				return;
 			}
 
 			Message message(TopicId::Topic_CameraFrame, "cameraFrame: frame");
-			m_pBus->publish(message);
+			sharedBus->publish(message);
 		}
 	};
 
@@ -82,13 +85,14 @@ namespace NNObserver
 
 		void createSensorData()
 		{
-			if (!m_pBus)
+			auto sharedBus = m_wpBus.lock();
+			if (!sharedBus)
 			{
 				return;
 			}
 
 			Message message(TopicId::Topic_SensorData, "sensorData: data");
-			m_pBus->publish(message);
+			sharedBus->publish(message);
 		}
 	};
 }

@@ -2,5 +2,7 @@ C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ALL_BUILD.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ZERO_CHECK.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/CMakeFiles/shared.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_consumer_producer.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_design_patterns.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_filics_2.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_observer_n_to_n.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_product_except_self.dir

@@ -3,6 +3,7 @@
 #include "receiver.h"
 #include <cstdio>
 #include <thread>
+#include <memory>
 
 #define PROFILER
 
@@ -43,20 +44,20 @@ namespace NNObserver
 
 	void runTest()
 	{
-		Bus messageBus;
 		CameraEmitter camera(1000.0f, "Camera");
-		camera.registerMessageBus(&messageBus);
-		Display display(&messageBus);
+		SensorEmitter sensor(1000.0f, "Sensor");
 
 		{
-			SensorEmitter sensor(1000.0f, "Sensor");
-			sensor.registerMessageBus(&messageBus);
+			auto spMessageBus = std::make_shared<Bus>();
+			sensor.registerMessageBus(spMessageBus);
+			camera.registerMessageBus(spMessageBus);
 
 			sensor.startPulseThread();
 			camera.startPulseThread();
 
-			HealthTelemetry healthTracker(&messageBus);
-			CollisionTracker collisionTracker(&messageBus);
+			HealthTelemetry healthTracker(spMessageBus);
+			CollisionTracker collisionTracker(spMessageBus);
+			Display display(spMessageBus);
 
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"

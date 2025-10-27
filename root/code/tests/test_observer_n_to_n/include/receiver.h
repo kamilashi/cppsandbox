@@ -5,6 +5,7 @@
 #include "message_bus.h"
 #include <functional>
 #include <iostream>
+#include <memory>
 
 #define MAKE_CALLBACK(x) [this](const NNObserver::Message& m) { x(m); }
 
@@ -13,13 +14,14 @@ namespace NNObserver
 	class MessageReceiver
 	{
 	public:
-		MessageReceiver() : m_linkId(-1), m_pBus(nullptr) {}
-		MessageReceiver(Bus* pBus) : m_linkId(-1), m_pBus(pBus) {}
+		MessageReceiver() : m_linkId(-1), m_wpBus{} {}
+		MessageReceiver(std::weak_ptr<Bus> wpBus) : m_linkId(-1), m_wpBus(std::move(wpBus)) {}
 		virtual ~MessageReceiver() 
 		{
-			if (m_linkId > -1 && m_pBus)
+			auto sharedBus = m_wpBus.lock();
+			if (m_linkId > -1 && sharedBus)
 			{
-				m_pBus->unsubscribe(m_linkId);
+				sharedBus->unsubscribe(m_linkId);
 
 				std::cout << "unsubbed! \n";
 			}
@@ -27,15 +29,19 @@ namespace NNObserver
 
 	protected:
 		int m_linkId;
-		Bus* m_pBus;
+		std::weak_ptr<Bus> m_wpBus;
 	};
 
 	class HealthTelemetry : public MessageReceiver
 	{
 	public:
-		HealthTelemetry(Bus* pBus) : MessageReceiver(pBus)
+		HealthTelemetry(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
 		{
-			m_linkId = pBus->subscribe(TopicId::Topic_Hartbeat, MAKE_CALLBACK(onPulseReceived) );
+			auto sharedBus = m_wpBus.lock();
+			if (sharedBus)
+			{
+				m_linkId = sharedBus->subscribe(TopicId::Topic_Hartbeat, MAKE_CALLBACK(onPulseReceived));
+			}
 		}
 		~HealthTelemetry()
 		{
@@ -54,9 +60,13 @@ namespace NNObserver
 	class Display : public MessageReceiver
 	{
 	public:
-		Display(Bus* pBus) : MessageReceiver(pBus)
+		Display(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
 		{
-			m_linkId = pBus->subscribe(TopicId::Topic_CameraFrame, MAKE_CALLBACK(onCameraFrameReceived) );
+			auto sharedBus = m_wpBus.lock();
+			if (sharedBus)
+			{
+				m_linkId = sharedBus->subscribe(TopicId::Topic_CameraFrame, MAKE_CALLBACK(onCameraFrameReceived));
+			}
 		}
 		~Display()
 		{
@@ -73,9 +83,13 @@ namespace NNObserver
 	class CollisionTracker : public MessageReceiver
 	{
 	public:
-		CollisionTracker(Bus* pBus) : MessageReceiver(pBus)
+		CollisionTracker(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
 		{
-			m_linkId = pBus->subscribe(TopicId::Topic_SensorData, MAKE_CALLBACK(onSensorDataReceived) );
+			auto sharedBus = m_wpBus.lock();
+			if (sharedBus)
+			{
+				m_linkId = sharedBus->subscribe(TopicId::Topic_SensorData, MAKE_CALLBACK(onSensorDataReceived) );
+			}
 		}
 		~CollisionTracker()
 		{

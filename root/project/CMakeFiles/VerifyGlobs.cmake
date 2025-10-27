@@ -126,6 +126,7 @@ endif()
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/include/*.h")
 set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/include/matrix.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

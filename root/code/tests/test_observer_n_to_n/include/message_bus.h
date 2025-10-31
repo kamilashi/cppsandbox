@@ -38,6 +38,8 @@ namespace NNObserver
 
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
 		std::unordered_map<int, SubData> m_allSubs;
+		std::vector<Message> m_messageBuffer;
+		std::vector<Message> m_dispatchedMessages;
 		mutable std::mutex m_mutex;
 		int m_linksCreatedCount;
 

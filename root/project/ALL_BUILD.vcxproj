@@ -182,13 +182,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{94D408F4-C26B-3C55-B3FC-3DD16768129F}</Project>
       <Name>test_consumer_producer</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_custom_matrix.vcxproj">
+      <Project>{8AD6BB7D-7BB0-3F12-B7C7-DE229E53DBDB}</Project>
+      <Name>test_custom_matrix</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_design_patterns.vcxproj">
       <Project>{FF57D17D-460B-3776-91DC-E8EBC3AF9755}</Project>
       <Name>test_design_patterns</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_filics_2.vcxproj">
-      <Project>{57992BA9-06FA-3C69-BBDC-2FF7536B3EFD}</Project>
-      <Name>test_filics_2</Name>
     </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_observer_n_to_n.vcxproj">
       <Project>{3B2CC831-31B7-3A4E-AFBC-B9315F476CC4}</Project>

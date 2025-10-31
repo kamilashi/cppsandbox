@@ -1,8 +1,8 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef CUSTOMMATRIX_H
+#define CUSTOMMATRIX_H
 
 #include<vector>
-#include <iostream>
+#include<iostream>
 
 namespace CustomMatrix
 {
@@ -41,7 +41,7 @@ namespace CustomMatrix
 		}
 
 		return os;
-	};
+	}
 
 	private:
 		std::vector<T> m_elements;
@@ -50,4 +50,4 @@ namespace CustomMatrix
 	};
 }
 
-#endif
+#endif // CUSTOMMATRIX_H

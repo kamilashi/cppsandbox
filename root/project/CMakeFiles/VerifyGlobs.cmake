@@ -85,6 +85,44 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/include/*.h")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/include/matrix.h"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_custom_matrix/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_design_patterns/include/*.h")
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_design_patterns/include/design_patterns.h"
@@ -117,44 +155,6 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/r
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_design_patterns/source/design_patterns.cpp"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_design_patterns/source/main.cpp"
-  )
-if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
-  message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
-endif()
-
-# APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/include/*.h")
-set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/include/matrix.h"
-  )
-if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
-  message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
-endif()
-
-# APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/include/*.hpp")
-set(OLD_GLOB
-  )
-if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
-  message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
-endif()
-
-# APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/source/*.c")
-set(OLD_GLOB
-  )
-if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
-  message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
-endif()
-
-# APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/source/*.cpp")
-set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_filics_2/source/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

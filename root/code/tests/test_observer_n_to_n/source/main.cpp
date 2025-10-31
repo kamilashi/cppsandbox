@@ -10,8 +10,8 @@
 namespace NNObserver
 {
 	static std::atomic<bool> sIsStopProgramRequested{ false };
-	static std::atomic<bool> sIsCameraTriggerRequested{ false };
-	static std::atomic<bool> sIsSensorTriggerRequested{ false };
+	static std::atomic<uint32_t> sCamTriggers{ 0 };
+	static std::atomic<uint32_t> sSensTriggers{ 0 };
 
 	void readInput()
 	{
@@ -31,10 +31,10 @@ namespace NNObserver
 
 			switch (inputChar) {
 			case 'c':
-				sIsCameraTriggerRequested.store(true, std::memory_order_release);
+				sCamTriggers.fetch_add(1, std::memory_order_relaxed);
 				break;
 			case 's':
-				sIsSensorTriggerRequested.store(true, std::memory_order_release);
+				sSensTriggers.fetch_add(1, std::memory_order_relaxed);
 				break;
 			default:
 				break;
@@ -77,12 +77,13 @@ namespace NNObserver
 
 			while (!sIsStopProgramRequested.load(std::memory_order_acquire))
 			{
-				if (sIsCameraTriggerRequested.exchange(false, std::memory_order_acq_rel))
+				// this will ruin the exact order of the messages received, but is okay for now.
+				for (uint32_t n = sCamTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
 				{
 					camera.createFrameData();
 				}
 
-				if (sIsSensorTriggerRequested.exchange(false, std::memory_order_acq_rel))
+				for (uint32_t n = sSensTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
 				{
 					sensor.createSensorData();
 				}
@@ -90,7 +91,6 @@ namespace NNObserver
 		}
 
 		camera.createFrameData();
-		__debugbreak();
 	}
 }
 

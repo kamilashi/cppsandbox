@@ -7,6 +7,7 @@ set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/buildconfig.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/console_frame_printer.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/helpers.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/movingaverage.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/profiler.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/types.h"
   )
@@ -167,8 +168,10 @@ set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/emitter.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message_bus.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/node.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/receiver.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/topic.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/topic_inspector.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

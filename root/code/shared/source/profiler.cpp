@@ -1,7 +1,17 @@
+#include <cfloat>
+#include <limits>
+#include <cstring>
+#include <cstdio>
+#include <algorithm>
+#include <vector>
+#include <unordered_map>
 #include "profiler.h"
+#include "movingaverage.h"
 
 namespace Profiler
 {
+	static const size_t InvalidNodeIdx = std::numeric_limits<size_t>::max();
+
 	struct ScopeProfileData
 	{
 	public:
@@ -35,18 +45,18 @@ namespace Profiler
 
 		ScopeProfileNode() :
 			id(-1),
-			parentIdx(~0u),
-			firstChildIdx(~0u),
-			lastChildIdx(~0u),
-			nextSiblingIdx(~0u)
+			parentIdx(InvalidNodeIdx),
+			firstChildIdx(InvalidNodeIdx),
+			lastChildIdx(InvalidNodeIdx),
+			nextSiblingIdx(InvalidNodeIdx)
 		{}
 
 		ScopeProfileNode(int id, size_t parent) :
 			id(id),
 			parentIdx(parent),
-			firstChildIdx(~0u),
-			lastChildIdx(~0u),
-			nextSiblingIdx(~0u)
+			firstChildIdx(InvalidNodeIdx),
+			lastChildIdx(InvalidNodeIdx),
+			nextSiblingIdx(InvalidNodeIdx)
 		{}
 
 		void setData(const char* n, double startT, double elapsedT)
@@ -67,42 +77,108 @@ namespace Profiler
 		ScopeStats() :
 			minElapsedTime(FLT_MAX),
 			maxElapsedTime(0.0f),
-			m_movingAveHeadIdx(0),
-			m_movingAveWindow{}
+			m_movingAve(movingAverageWindowSize)
 		{}
 
 		ScopeStats(double minTime, double maxTime) :
 			minElapsedTime(minTime),
 			maxElapsedTime(maxTime),
-			m_movingAveHeadIdx(0),
-			m_movingAveWindow{}
+			m_movingAve(movingAverageWindowSize)
 		{}
 
 		void pushElapsedTime(double time)
 		{
-			m_movingAveWindow[m_movingAveHeadIdx] = time;
-			m_movingAveHeadIdx = m_movingAveHeadIdx == movingAverageWindowSize - 1 ? 0 : m_movingAveHeadIdx + 1;
+			m_movingAve.pushItem(time);
 		}
 
 		double getMovingAverage() const
 		{
-			double ave = 0;
-			for (int i = 0; i < movingAverageWindowSize; i++)
-			{
-				ave += m_movingAveWindow[i];
-			}
-			ave /= movingAverageWindowSize;
-			return ave;
+			return m_movingAve.getMovingAverage();
 		}
 
 	private:
-		double m_movingAveWindow[movingAverageWindowSize];
-		size_t m_movingAveHeadIdx;
+		MovingAverage<double> m_movingAve;
 	};
 
-	struct ScopeProfileTree
+	class ScopeProfileTree
 	{
 	public:
+		class iterator
+		{
+		public:
+			iterator(ScopeProfileNode* pNode, ScopeProfileTree* pTree, int depth) : m_pNode(pNode), m_pTree(pTree), m_depth(depth) {}
+			iterator& operator++()
+			{
+				advance();
+				return *this;
+			}
+
+			iterator operator++(int)
+			{
+				iterator treeIterator = *this;
+				advance();
+				return treeIterator;
+			}
+
+			bool operator==(iterator other) const
+			{
+				return this->m_pNode == other.m_pNode;
+			}
+
+			bool operator!=(iterator other) const
+			{
+				return this->m_pNode != other.m_pNode;
+			}
+
+			ScopeProfileNode& operator*() const
+			{
+				return *m_pNode;
+			}
+
+			ScopeProfileNode* operator->() const
+			{
+				return m_pNode;
+			}
+
+			int depth() const
+			{
+				return m_depth;
+			}
+
+		private:
+			ScopeProfileNode* m_pNode;
+			ScopeProfileTree* m_pTree;
+			int m_depth;
+			void advance()
+			{
+				if (!m_pNode) return;
+
+				if (m_pNode->firstChildIdx != InvalidNodeIdx)
+				{
+					m_pNode = m_pTree->getNodePtr(m_pNode->firstChildIdx);
+					m_depth++;
+					return;
+				}
+
+				while (true)
+				{
+					if (m_pNode->nextSiblingIdx != InvalidNodeIdx)
+					{
+						m_pNode = m_pTree->getNodePtr(m_pNode->nextSiblingIdx);
+						return;
+					}
+					if (m_pNode->parentIdx == InvalidNodeIdx)
+					{
+						m_pNode = nullptr;
+						m_depth = -1;
+						return;
+					}
+					m_pNode = m_pTree->getNodePtr(m_pNode->parentIdx);
+					m_depth--;
+				}
+			}
+		};
+
 		ScopeProfileTree() :
 			m_nodes(0),
 			m_openNodes(0),
@@ -111,16 +187,31 @@ namespace Profiler
 			m_nodes.reserve(m_sMaxNodesCount);
 			m_openNodes.reserve(m_sMaxNodesCount);
 			m_stats.reserve(m_sMaxNodesCount);
+			reset();
 		}
 
 		~ScopeProfileTree() {}
+
+		iterator begin()
+		{
+			if (m_nodes.size() <= m_sStartIdx)
+			{
+				return end(); // skip empty root
+			}
+			return iterator{ &m_nodes[getRootIdx()], this, 0 };
+		}
+
+		iterator end()
+		{
+			return iterator{ nullptr, this, -1 };
+		}
 
 		void reset()
 		{
 			m_nodes.clear();
 			m_openNodes.clear();
 
-			pushNode(~0u, ~0u); // root
+			pushNode(InvalidNodeIdx, -1); // root
 			m_openNodes.emplace_back(0);
 		}
 
@@ -132,18 +223,20 @@ namespace Profiler
 #ifdef _DEBUG
 			if (thisIdx == m_sMaxNodesCount)
 			{
-				printf("Increase the default capacity of the profiler's node storage!\n");
+				fprintf(stderr, "Increase the default capacity of the profiler's node storage!\n");
 			}
 #endif // DEBUG
 
 			pushNode(parentIdx, id);
 
 			ScopeProfileNode& parentNode = m_nodes[parentIdx];
-			if (parentNode.firstChildIdx == ~0u) {
+			if (parentNode.firstChildIdx == InvalidNodeIdx)
+			{
 				parentNode.firstChildIdx = thisIdx;
 				parentNode.lastChildIdx = thisIdx;
 			}
-			else {
+			else
+			{
 				m_nodes[parentNode.lastChildIdx].nextSiblingIdx = thisIdx;
 				parentNode.lastChildIdx = thisIdx;
 			}
@@ -153,7 +246,10 @@ namespace Profiler
 
 		void onNodeClose(const char* n, double startT, double elapsedT)
 		{
-			if (m_openNodes.size() <= 1) return;
+			if (m_openNodes.size() <= 1)
+			{
+				return;
+			}
 			const size_t lastOpenIdx = m_openNodes.back();
 			m_nodes[lastOpenIdx].setData(n, startT, elapsedT);
 			m_openNodes.pop_back();
@@ -161,7 +257,7 @@ namespace Profiler
 			storeStats(&m_nodes[lastOpenIdx].data, m_nodes[lastOpenIdx].id);
 		}
 
-		const ScopeProfileNode& getNode(int idx)
+		const ScopeProfileNode& getNode(size_t idx) const
 		{
 			return m_nodes.at(idx);
 		}
@@ -192,6 +288,7 @@ namespace Profiler
 		std::vector<ScopeProfileNode> m_nodes;
 		std::vector<size_t> m_openNodes;
 		std::unordered_map<int, ScopeStats> m_stats;
+		friend class iterator;
 
 		void pushNode(size_t parent, int id)
 		{
@@ -214,6 +311,16 @@ namespace Profiler
 				m_stats.emplace(id, ScopeStats{ pData->elapsedTime, pData->elapsedTime });
 			}
 		}
+
+		ScopeProfileNode* getNodePtr(size_t idx)
+		{
+			return &m_nodes.at(idx);
+		}
+
+		ScopeProfileNode& getNodeRef(size_t idx)
+		{
+			return m_nodes.at(idx);
+		}
 	};
 
 	static ScopeProfileTree profileTree;
@@ -227,7 +334,7 @@ namespace Profiler
 		{
 			return;
 		}
-		
+
 		m_startTimePoint = std::chrono::steady_clock::now();
 
 		profileTree.onNodeOpen(m_id);
@@ -275,9 +382,9 @@ namespace Profiler
 		size_t len = strlen(pBuffer);
 
 #ifdef _DEBUG
-		if (len >= bufferSize)
+		if (len + 1 >= bufferSize)
 		{
-			printf("Increase the default buffer capacity of the frame profile data! Result is truncated \n");
+			fprintf(stderr, "Increase the default buffer capacity of the frame profile data! Result is truncated \n");
 			return;
 		}
 #endif //_DEBUG
@@ -293,22 +400,6 @@ namespace Profiler
 		);
 	}
 
-	void writeNode(char* pBuffer, int bufferSize, size_t idx, int depth)
-	{
-		if (idx == ~0u) return;
-
-		const ScopeProfileNode& node = profileTree.getNode(idx);
-
-		const ScopeStats& stats = profileTree.getOrCreateStats(node.id);
-
-		formatProfileRowIndented(pBuffer, bufferSize, node.data, stats, depth);
-
-		for (size_t child = node.firstChildIdx; child != ~0u; child = profileTree.getNode(child).nextSiblingIdx)
-		{
-			writeNode(pBuffer, bufferSize, child, depth + 1);
-		}
-	}
-
 	void getFrame(FrameProfileData* pFrameData)
 	{
 		memset(pFrameData->header, 0, FrameProfileData::headerSize);
@@ -316,9 +407,12 @@ namespace Profiler
 
 		snprintf(pFrameData->header, FrameProfileData::headerSize, "Frame %08llu | Duration - real (ms) | - max (ms) | - min (ms) | - avg in %zu fr (ms) | Scope \n", static_cast<unsigned long long>(ScopeTimer::sFrameNumber), ScopeStats::movingAverageWindowSize);
 
-		if (profileTree.getNodesCount() > 1)
+		for (auto it = profileTree.begin(); it != profileTree.end(); it++)
 		{
-			writeNode(pFrameData->body, FrameProfileData::bodySize, profileTree.getRootIdx(), 0);
+			const ScopeProfileNode& node = *it;
+			const ScopeStats& stats = profileTree.getOrCreateStats(node.id);
+
+			formatProfileRowIndented(pFrameData->body, FrameProfileData::bodySize, node.data, stats, it.depth());
 		}
 	}
 
@@ -337,7 +431,7 @@ namespace Profiler
 		FrameProfileData frame{};
 		getFrame(&frame);
 
-		pVisualizer->visualizeFrameData(frame);
+		pVisualizer->visualizeTable(frame);
 	}
 
 	void endProfiler()

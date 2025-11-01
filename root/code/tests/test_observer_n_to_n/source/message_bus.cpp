@@ -20,6 +20,21 @@ namespace NNObserver
 		return linkId;
 	};
 
+	std::unordered_map<TopicId, int> Bus::subscribeAll(OnMessageCallback callback)
+	{
+		std::unordered_map<TopicId, int> map;
+		map.reserve(Topic::getTopicCount());
+
+		for (auto it = Topic::begin(); it < Topic::end(); it++)
+		{
+			TopicId topic = *it;
+			int id = subscribe(topic, callback);
+			map.emplace(topic, id);
+		}
+
+		return map;
+	}
+
 	void Bus::unsubscribe(int linkId)
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);

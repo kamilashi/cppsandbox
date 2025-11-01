@@ -15,6 +15,9 @@
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\movingaverage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\profiler.h">
       <Filter>Header Files</Filter>
     </ClInclude>

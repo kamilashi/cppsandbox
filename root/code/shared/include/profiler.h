@@ -1,8 +1,6 @@
 #ifndef PROFILER_H
 #define PROFILER_H
 
-#include <vector>
-#include <unordered_map>
 #include <chrono>
 
 #include "buildconfig.h"
@@ -13,7 +11,7 @@ namespace Profiler
 	struct FrameProfileData
 	{
 		static const size_t headerSize = 128;
-		static const size_t bodySize = 256;
+		static const size_t bodySize = 1024;
 		char header[headerSize];
 		char body[bodySize];
 	};
@@ -21,7 +19,7 @@ namespace Profiler
 	class FrameDataVisualizer
 	{
 	public:
-		virtual void visualizeFrameData(const FrameProfileData& frameData) = 0;
+		virtual void visualizeTable(const FrameProfileData& frameData) = 0;
 	};
 
 	class ScopeTimer
@@ -51,15 +49,15 @@ namespace Profiler
 #define PROFILER_MACROS_DEFINED
 
 #if defined (PROFILE)							
-	#define PROFILE_SCOPE(nameLiteral)			Profiler::ScopeTimer timer(FILELINE_ID, nameLiteral)
-	#define PROFILER_START_FRAME() 				Profiler::onStartFrame()
-	#define PROFILER_END_FRAME(visualizer) 		Profiler::onEndFrame(visualizer)
-	#define PROFILER_END() 						Profiler::endProfiler()							
+#define PROFILE_SCOPE(nameLiteral)			Profiler::ScopeTimer timer(FILELINE_ID, nameLiteral)
+#define PROFILER_START_FRAME() 				Profiler::onStartFrame()
+#define PROFILER_END_FRAME(visualizer) 		Profiler::onEndFrame(visualizer)
+#define PROFILER_END() 						Profiler::endProfiler()							
 #else
-	#define PROFILER_INIT()						do {} while (0)
-	#define PROFILE_SCOPE(nameLiteral)			do {} while (0)
-	#define PROFILER_END_FRAME(visualizer)		do {} while (0)
-	#define PROFILER_END()						do {} while (0)	
+#define PROFILER_INIT()						do {} while (0)
+#define PROFILE_SCOPE(nameLiteral)			do {} while (0)
+#define PROFILER_END_FRAME(visualizer)		do {} while (0)
+#define PROFILER_END()						do {} while (0)	
 #endif // PROFILE
 
 #endif // PROFILER_MACROS_DEFINED

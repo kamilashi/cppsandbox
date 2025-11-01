@@ -1,41 +1,13 @@
 #ifndef NNOBSERVERRECEIVER_H
 #define NNOBSERVERRECEIVER_H
-
-#include "message.h"
-#include "message_bus.h"
-#include <functional>
-#include <iostream>
-#include <memory>
-
-#define MAKE_CALLBACK(x) [this](const NNObserver::Message& m) { x(m); }
+#include "node.h"
 
 namespace NNObserver
 {
-	class MessageReceiver
+	class HealthMonitor : public Node
 	{
 	public:
-		MessageReceiver() : m_linkId(-1), m_wpBus{} {}
-		MessageReceiver(std::weak_ptr<Bus> wpBus) : m_linkId(-1), m_wpBus(std::move(wpBus)) {}
-		virtual ~MessageReceiver() 
-		{
-			auto sharedBus = m_wpBus.lock();
-			if (m_linkId > -1 && sharedBus)
-			{
-				sharedBus->unsubscribe(m_linkId);
-
-				std::cout << "unsubbed! \n";
-			}
-		}
-
-	protected:
-		int m_linkId;
-		std::weak_ptr<Bus> m_wpBus;
-	};
-
-	class HealthTelemetry : public MessageReceiver
-	{
-	public:
-		HealthTelemetry(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
+		HealthMonitor(std::weak_ptr<Bus> wpBus) : Node(wpBus)
 		{
 			auto sharedBus = m_wpBus.lock();
 			if (sharedBus)
@@ -43,7 +15,7 @@ namespace NNObserver
 				m_linkId = sharedBus->subscribe(TopicId::Topic_Hartbeat, MAKE_CALLBACK(onPulseReceived));
 			}
 		}
-		~HealthTelemetry()
+		~HealthMonitor()
 		{
 			std::cout << "destroying health telemetry: ";
 		}
@@ -52,15 +24,15 @@ namespace NNObserver
 		void onPulseReceived(const Message& message)
 		{
 			std::cout << "Pulse log: "
-				<< Topic::getString(message.topicId) << " : "
+				<< Topic::getStringView(message.topicId) << " : "
 				<< message.payload << '\n';
 		}
 	};
 
-	class Display : public MessageReceiver
+	class Display : public Node
 	{
 	public:
-		Display(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
+		Display(std::weak_ptr<Bus> wpBus) : Node(wpBus)
 		{
 			auto sharedBus = m_wpBus.lock();
 			if (sharedBus)
@@ -80,10 +52,10 @@ namespace NNObserver
 		}
 	};
 
-	class CollisionTracker : public MessageReceiver
+	class CollisionTracker : public Node
 	{
 	public:
-		CollisionTracker(std::weak_ptr<Bus> wpBus) : MessageReceiver(wpBus)
+		CollisionTracker(std::weak_ptr<Bus> wpBus) : Node(wpBus)
 		{
 			auto sharedBus = m_wpBus.lock();
 			if (sharedBus)

@@ -1,19 +1,18 @@
 #include <cstdio>
 #include <cstring>
-
 #include "profiler.h"
 
 // this code was NOT written by me. It's just a quick implementation for the visualizer interface
 
-class MultiLineConsoleVisualizer : public Profiler::FrameDataVisualizer
+class MultiLineConsoleVisualizer 
 {
 public:
-	MultiLineConsoleVisualizer() : m_prevLines(0) { /*enableAnsiOnce();*/ }
+	MultiLineConsoleVisualizer() : m_prevLines(0) {/*enableAnsiOnce();*/ }
 
-	void visualizeFrameData(const Profiler::FrameProfileData& frameData) override
+	void visualizeTable(const char* pHeaderBuffer, const char* pBodyBuffer)
 	{
 		char buf[1024];
-		int n = std::snprintf(buf, sizeof(buf), "%s%s", frameData.header, frameData.body);
+		int n = std::snprintf(buf, sizeof(buf), "%s%s", pHeaderBuffer, pBodyBuffer);
 		if (n < 0) return;
 		buf[sizeof(buf) - 1] = '\0';
 
@@ -76,4 +75,12 @@ private:
 		done = true;
 #endif
 	}*/
+};
+
+class ProfilerConsoleVisualizer : private MultiLineConsoleVisualizer, public Profiler::FrameDataVisualizer
+{
+	void visualizeTable(const Profiler::FrameProfileData& data) override
+	{
+		MultiLineConsoleVisualizer::visualizeTable(data.header, data.body);
+	}
 };

@@ -16,9 +16,10 @@ namespace NNObserver
 
 		Bus();
 		~Bus() = default;
-		int subscribe(TopicId topicId, OnMessageCallback callback);
-		void unsubscribe(int linkId);
-		void publish(const Message&) const;
+		int								 subscribe(TopicId topicId, OnMessageCallback callback);
+		std::unordered_map<TopicId, int> subscribeAll(OnMessageCallback callback);
+		void							 unsubscribe(int linkId);
+		void							 publish(const Message&) const;
 
 	private:
 		struct SubData
@@ -38,8 +39,6 @@ namespace NNObserver
 
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
 		std::unordered_map<int, SubData> m_allSubs;
-		std::vector<Message> m_messageBuffer;
-		std::vector<Message> m_dispatchedMessages;
 		mutable std::mutex m_mutex;
 		int m_linksCreatedCount;
 

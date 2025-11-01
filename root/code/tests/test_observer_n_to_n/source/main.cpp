@@ -1,6 +1,8 @@
 #include "message_bus.h"
 #include "emitter.h"
 #include "receiver.h"
+#include "topic_inspector.h"
+#include "console_frame_printer.h"
 #include <cstdio>
 #include <thread>
 #include <memory>
@@ -10,6 +12,7 @@
 namespace NNObserver
 {
 	static std::atomic<bool> sIsStopProgramRequested{ false };
+	static std::atomic<bool> sInspectorPaused{ false };
 	static std::atomic<uint32_t> sCamTriggers{ 0 };
 	static std::atomic<uint32_t> sSensTriggers{ 0 };
 
@@ -42,10 +45,21 @@ namespace NNObserver
 		};
 	}
 
+	void printTopicStats(MultiLineConsoleVisualizer* pVisualizer, TopicInspector* pInspector)
+	{
+		if (sIsStopProgramRequested.load(std::memory_order_acquire))
+		{
+			return;
+		}
+
+		pVisualizer->visualizeTable(pInspector->getHeader(), pInspector->getBody());
+	}
+
 	void runTest()
 	{
 		CameraEmitter camera(1000.0f, "Camera");
 		SensorEmitter sensor(1000.0f, "Sensor");
+		MultiLineConsoleVisualizer visualizer;
 
 		{
 			auto spMessageBus = std::make_shared<Bus>();
@@ -55,9 +69,11 @@ namespace NNObserver
 			sensor.startPulseThread();
 			camera.startPulseThread();
 
-			HealthTelemetry healthTracker(spMessageBus);
-			CollisionTracker collisionTracker(spMessageBus);
-			Display display(spMessageBus);
+			TopicInspector topicInspector(spMessageBus, 1000.0f);
+
+			//HealthMonitor healthTracker(spMessageBus);
+			//CollisionTracker collisionTracker(spMessageBus);
+			//Display display(spMessageBus);
 
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"
@@ -72,6 +88,15 @@ namespace NNObserver
 				while (!st.stop_requested())
 				{
 					readInput();
+				}
+			});
+			
+			std::jthread inspectorThread = std::jthread([&](std::stop_token st)
+			{
+				while (!st.stop_requested())
+				{
+					printTopicStats(&visualizer, &topicInspector);
+					std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); // otherwise the inspector tick thread is starving
 				}
 			});
 

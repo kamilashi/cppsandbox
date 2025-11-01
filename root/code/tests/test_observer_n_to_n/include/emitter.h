@@ -12,11 +12,29 @@ namespace NNObserver
 	public:
 		MessageEmitter() : m_wpBus(), m_seq(0), m_pulseIntervalMs(-1), m_id("") {}
 		MessageEmitter(float pulseInterval, std::string_view id) : m_wpBus(), m_seq(0), m_pulseIntervalMs(pulseInterval), m_id(id) {}
-		~MessageEmitter() = default;
+		~MessageEmitter() 
+		{ 
+			unregisterMessageBus(); 
+		}
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus)
 		{
 			m_wpBus = std::move(wpBus);
+
+			auto sharedBus = m_wpBus.lock();
+			if (!sharedBus)
+			{
+				sharedBus->registerPublisher(); // wip
+			}
+		}
+
+		void unregisterMessageBus()
+		{
+			auto sharedBus = m_wpBus.lock();
+			if (!sharedBus)
+			{
+				sharedBus->unregisterPublisher(); // wip
+			}
 		}
 
 		void pulse()
@@ -27,7 +45,7 @@ namespace NNObserver
 				return;
 			}
 
-			Message message(TopicId::Topic_Hartbeat, std::format("emitter: {}, seq: {}", m_id, m_seq));
+			Message message(TopicId::Topic_Hartbeat, m_id, std::format("emitter: {}, seq: {}", m_id, m_seq));
 			sharedBus->publish(message);
 			m_seq++;
 		}
@@ -72,7 +90,7 @@ namespace NNObserver
 				return;
 			}
 
-			Message message(TopicId::Topic_CameraFrame, "cameraFrame: frame");
+			Message message(TopicId::Topic_CameraFrame, m_id, "cameraFrame: frame");
 			sharedBus->publish(message);
 		}
 	};
@@ -91,7 +109,7 @@ namespace NNObserver
 				return;
 			}
 
-			Message message(TopicId::Topic_SensorData, "sensorData: data");
+			Message message(TopicId::Topic_SensorData, m_id, "sensorData: data");
 			sharedBus->publish(message);
 		}
 	};

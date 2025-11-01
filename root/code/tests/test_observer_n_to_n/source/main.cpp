@@ -78,7 +78,6 @@ namespace NNObserver
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"
 				<< "s to publish a sensor message \n"
-				<< "p to pulse both \n"
 				<< "Enter to submit \n\n"
 				<< "e to exit \n\n";
 

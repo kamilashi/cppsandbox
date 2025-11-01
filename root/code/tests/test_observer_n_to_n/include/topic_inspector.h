@@ -132,12 +132,20 @@ namespace NNObserver
 					char m_cellBuffers[6 * cellMaxWidth];
 					memset(m_cellBuffers, 0, sizeof(m_cellBuffers));
 
+					size_t subsCount = 0;
+
+					auto sharedBus = m_wpBus.lock();
+					if (sharedBus)
+					{
+						subsCount = sharedBus->getSubscriberCount(kv.first);
+					}
+
 					m_headerCells[0].updateWidth(strlen(topicName)),
 					m_headerCells[1].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth,		cellMaxWidth, "%.3f", stats.hz)),
 					m_headerCells[2].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 2, cellMaxWidth, "%.3f", stats.bps)),
 					m_headerCells[3].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 3, cellMaxWidth, "%.3f", stats.lastSeenAgeMs));
-					m_headerCells[4].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 4, cellMaxWidth, "%.3f", -1.0)),
-					m_headerCells[5].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 5, cellMaxWidth, "%.3f", -1.0));
+					m_headerCells[4].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 4, cellMaxWidth, "%d", subsCount)),
+					m_headerCells[5].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 5, cellMaxWidth, "%d", -1 ));
 
 					char row[m_headerSize];
 					snprintf(row, m_headerSize, " %-*s | %-*s | %-*s | %-*s | %-*s | %-*s \n",
@@ -181,6 +189,7 @@ namespace NNObserver
 
 			auto sharedBus = m_wpBus.lock();
 			auto connections = sharedBus->subscribeAll(MAKE_CALLBACK(onMessagePublished));
+
 			m_stats.reserve(connections.size());
 			m_rowLengths.resize(connections.size());
 			m_mutexes = std::vector<std::mutex>(connections.size()); // note great, but only happens once on creation.
@@ -287,7 +296,7 @@ namespace NNObserver
 		std::vector<std::mutex> m_mutexes;
 		std::vector<size_t> m_rowLengths;
 		//size_t m_cellWidths[6] = {0, 0, 0, 0, 0 , 0 };
-		TableCell m_headerCells[6] = {{"Topic"}, {"hz"}, {"bps"}, {"last age (ms)"}, {"pubs"}, {"subs"}};
+		TableCell m_headerCells[6] = {{"Topic"}, {"hz"}, {"bps"}, {"last age (ms)"}, {"subs"}, {"pubs"}};
 		std::jthread m_tickThread;
 
 		static const size_t m_headerSize = 128;

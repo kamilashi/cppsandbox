@@ -9,9 +9,10 @@ namespace NNObserver
 	struct Message
 	{
 		TopicId topicId;
+		std::string source;
 		std::string payload;
 
-		Message(TopicId topicId, std::string_view payload) : topicId(topicId), payload(payload) {};
+		Message(TopicId topicId, std::string_view source, std::string_view payload) : topicId(topicId), source(source), payload(payload) {};
 		~Message() = default;
 	};
 }

@@ -2,7 +2,7 @@
 
 namespace NNObserver
 {
-	Bus::Bus() : m_linksCreatedCount(0), m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)) {};
+	Bus::Bus() : m_linksCreatedCount(0), m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)) {}
 
 	int Bus::subscribe(TopicId topicId, OnMessageCallback callback)
 	{
@@ -18,7 +18,7 @@ namespace NNObserver
 
 		m_allSubs.emplace(linkId, SubData{ topicId, idByTopic, callback });
 		return linkId;
-	};
+	}
 
 	std::unordered_map<TopicId, int> Bus::subscribeAll(OnMessageCallback callback)
 	{
@@ -45,7 +45,7 @@ namespace NNObserver
 			removeSubFromTopic(subData.topicId, subData.indexByTopic);
 			m_allSubs.erase(linkId);
 		}
-	};
+	}
 
 	void Bus::publish(const Message& message) const
 	{
@@ -59,7 +59,42 @@ namespace NNObserver
 				m_allSubs.at(subsPerTopic[i]).callback(message);
 			}
 		}
-	};
+	}
+
+	size_t Bus::getAllPublisherCount() const // wip
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		return m_publishersCount;
+	}
+
+	size_t Bus::getAllSubscriberCount() const 
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		return m_allSubs.size();
+	}
+
+	size_t Bus::getSubscriberCount(TopicId topicId) const
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		if (m_subsByTopic.find(topicId) != m_subsByTopic.end())
+		{
+			return m_subsByTopic.at(topicId).size();
+		}
+		
+		return 0;
+	}
+
+	void Bus::registerPublisher() // wip
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_publishersCount++;
+	}
+
+	void Bus::unregisterPublisher() // wip
+	{
+		std::lock_guard<std::mutex> lock(m_mutex);
+		m_publishersCount--;
+	}
 
 	void Bus::removeSubFromTopic(TopicId topicId, size_t topicIndex) // o(1) complexity, order does not matter
 	{
@@ -72,5 +107,5 @@ namespace NNObserver
 			auto& sub = m_allSubs.at(subsPerTopic[topicIndex]);
 			sub.indexByTopic = topicIndex;
 		}
-	};
+	}
 }

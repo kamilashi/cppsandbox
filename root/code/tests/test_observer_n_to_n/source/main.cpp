@@ -1,6 +1,6 @@
 #include "message_bus.h"
-#include "emitter.h"
-#include "receiver.h"
+#include "emitter_nodes.h"
+#include "receiver_nodes.h"
 #include "topic_inspector.h"
 #include "console_frame_printer.h"
 #include <cstdio>
@@ -57,30 +57,33 @@ namespace NNObserver
 
 	void runTest()
 	{
-		CameraEmitter camera(1000.0f, "Camera");
-		SensorEmitter sensor(1000.0f, "Sensor");
+		PerceptionNode perceptionNode("Perception");
 		MultiLineConsoleVisualizer visualizer;
 
 		{
 			auto spMessageBus = std::make_shared<Bus>();
-			sensor.registerMessageBus(spMessageBus);
-			camera.registerMessageBus(spMessageBus);
 
-			sensor.startPulseThread();
-			camera.startPulseThread();
+			perceptionNode.registerMessageBus(spMessageBus);
 
 			TopicInspector topicInspector(spMessageBus, 1000.0f);
 
-			//HealthMonitor healthTracker(spMessageBus);
-			//CollisionTracker collisionTracker(spMessageBus);
-			//Display display(spMessageBus);
+			HealthMonitor healthTracker("Health Monitor");
+			CollisionTracker collisionTracker("Collision Tracker");
+			Display display("Display");
+
+			// commented healthTracker in order for it not to compete with the inspector's output.
+/*
+			healthTracker.registerMessageBus(spMessageBus);
+*/
+			collisionTracker.registerMessageBus(spMessageBus);
+			display.registerMessageBus(spMessageBus);
+
 
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"
 				<< "s to publish a sensor message \n"
 				<< "Enter to submit \n\n"
 				<< "e to exit \n\n";
-
 
 			std::jthread inputThread = std::jthread([](std::stop_token st)
 			{
@@ -104,17 +107,17 @@ namespace NNObserver
 				// this will ruin the exact order of the messages received, but is okay for now.
 				for (uint32_t n = sCamTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
 				{
-					camera.createFrameData();
+					perceptionNode.createFrameData();
 				}
 
 				for (uint32_t n = sSensTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
 				{
-					sensor.createSensorData();
+					perceptionNode.createSensorData();
 				}
 			};
 		}
 
-		camera.createFrameData();
+		perceptionNode.createFrameData();
 	}
 }
 

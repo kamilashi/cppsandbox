@@ -8,6 +8,8 @@
 #include <functional>
 #include <mutex>
 
+#define MAKE_CALLBACK(x) [this](const NNObserver::Message& m) { x(m); }
+
 namespace NNObserver
 {
 	class Bus
@@ -25,8 +27,8 @@ namespace NNObserver
 		size_t							 getAllSubscriberCount() const;
 		size_t							 getSubscriberCount(TopicId topicId) const;
 
-		void							 registerPublisher();
-		void							 unregisterPublisher();
+		void							 registerPublisher(TopicId topic);
+		void							 unregisterPublisher(TopicId topic);
 
 	private:
 		struct SubData
@@ -44,7 +46,7 @@ namespace NNObserver
 			~SubData() = default;
 		};
 
-		struct PubData // wip
+		struct PubData // #wip
 		{
 			size_t indexByTopic;
 			std::string_view name;
@@ -58,10 +60,10 @@ namespace NNObserver
 		};
 
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
-		std::unordered_map<TopicId, std::vector<int>> m_pubsByTopic; // wip
+		std::unordered_map<TopicId, std::vector<int>> m_pubsByTopic; // #wip
 
 		std::unordered_map<int, SubData> m_allSubs;
-		std::unordered_map<int, PubData> m_allPubs; // wip
+		std::unordered_map<int, PubData> m_allPubs; // #wip
 
 
 		mutable std::mutex m_mutex;

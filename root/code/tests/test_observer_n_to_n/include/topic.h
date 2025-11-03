@@ -8,7 +8,7 @@ namespace NNObserver
 {
 	enum class TopicId
 	{
-		Topic_Hartbeat,
+		Topic_Heartbeat,
 		Topic_SensorData,
 		Topic_CameraFrame,
 

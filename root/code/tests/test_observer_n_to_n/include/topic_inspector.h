@@ -100,8 +100,9 @@ namespace NNObserver
 	class TopicInspector : public Node
 	{
 	public:
-		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Node(wpBus) 
+		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Node("Topic Inspector")
 		{ 
+			Node::registerMessageBus(wpBus);
 			start(tickIntervalMs); 
 		};
 

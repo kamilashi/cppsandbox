@@ -2,7 +2,11 @@
 
 namespace NNObserver
 {
-	Bus::Bus() : m_linksCreatedCount(0), m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)) {}
+	Bus::Bus() : 
+		m_linksCreatedCount(0), 
+		m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)),
+		m_publishersCount(0)
+	{}
 
 	int Bus::subscribe(TopicId topicId, OnMessageCallback callback)
 	{
@@ -61,7 +65,7 @@ namespace NNObserver
 		}
 	}
 
-	size_t Bus::getAllPublisherCount() const // wip
+	size_t Bus::getAllPublisherCount() const // #wip
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 		return m_publishersCount;
@@ -84,13 +88,13 @@ namespace NNObserver
 		return 0;
 	}
 
-	void Bus::registerPublisher() // wip
+	void Bus::registerPublisher(TopicId topic) // #wip
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 		m_publishersCount++;
 	}
 
-	void Bus::unregisterPublisher() // wip
+	void Bus::unregisterPublisher(TopicId topic) // #wip
 	{
 		std::lock_guard<std::mutex> lock(m_mutex);
 		m_publishersCount--;

@@ -54,7 +54,6 @@ namespace NNObserver
 	void Bus::publish(const Message& message) const
 	{
 		std::vector<OnMessageCallback> callbacks;
-		callbacks.reserve(m_allSubs.size());
 
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
@@ -62,6 +61,8 @@ namespace NNObserver
 			if (m_subsByTopic.find(message.topicId) != m_subsByTopic.end())
 			{
 				auto& subsPerTopic = m_subsByTopic.at(message.topicId);
+				callbacks.reserve(subsPerTopic.size());
+
 				for (size_t subIndx : subsPerTopic)
 				{
 					callbacks.emplace_back(m_allSubs.at(subIndx).callback);

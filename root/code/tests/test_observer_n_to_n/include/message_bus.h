@@ -3,10 +3,15 @@
 
 #include "message.h"
 #include "topic.h"
+#include "types.h"
+
 #include <unordered_map>
 #include <unordered_set>
 #include <functional>
+#include <memory>
 #include <mutex>
+#include <atomic>
+#include <array>
 
 #define MAKE_CALLBACK(x) [this](const NNObserver::Message& m) { x(m); }
 
@@ -22,10 +27,11 @@ namespace NNObserver
 		int								 subscribe(TopicId topicId, OnMessageCallback callback);
 		std::unordered_map<TopicId, int> subscribeAll(OnMessageCallback callback);
 		void							 unsubscribe(int linkId);
-		void							 publish(const Message&) const;
+		void							 publish(const Message&);
 		size_t							 getAllPublisherCount() const;
 		size_t							 getAllSubscriberCount() const;
 		size_t							 getSubscriberCount(TopicId topicId) const;
+		size_t							 getPublisherCount(TopicId topicId) const;
 
 		void							 registerPublisher(TopicId topic);
 		void							 unregisterPublisher(TopicId topic);
@@ -60,15 +66,14 @@ namespace NNObserver
 		};
 
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
-		std::unordered_map<TopicId, std::vector<int>> m_pubsByTopic; // #wip
-
 		std::unordered_map<int, SubData> m_allSubs;
-		std::unordered_map<int, PubData> m_allPubs; // #wip
 
+		// bookkeeping for telemetry
+		std::array<std::atomic<uint32_t>, Topic::getTopicCount()> m_pubCountByTopic{};     // number of Publisher handles
+		std::atomic<size_t> m_publishersCount;
 
 		mutable std::mutex m_mutex;
 		int m_linksCreatedCount;
-		size_t m_publishersCount;
 
 		void removeSubFromTopic(TopicId topicId, size_t index);
 	};

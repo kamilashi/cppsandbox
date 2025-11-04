@@ -11,6 +11,10 @@ namespace NNObserver
 	public:
 		Subscriber() : m_linkId(-1), m_topic(TopicId::Topic_Count) {}
 		Subscriber(TopicId topic) : m_linkId(-1), m_topic(topic) {}
+		Subscriber& operator=(const Subscriber&) = delete;
+		Subscriber(Subscriber&&) = default;
+		Subscriber& operator=(Subscriber&&) = default;
+
 		virtual ~Subscriber()
 		{
 			unsubscribe();
@@ -34,6 +38,12 @@ namespace NNObserver
 			{
 				sharedBus->unsubscribe(m_linkId);
 			}
+			m_linkId = -1;
+		}
+
+		bool isRegistered() const
+		{
+			return m_linkId >= 0;
 		}
 
 	protected:

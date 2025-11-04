@@ -6,7 +6,7 @@
 	
 namespace NNObserver
 {
-	enum class TopicId
+	enum class TopicId : size_t
 	{
 		Topic_Heartbeat,
 		Topic_SensorData,
@@ -39,7 +39,7 @@ namespace NNObserver
 			return "Unknown";
 		}
 
-		inline static size_t getTopicCount()
+		inline static constexpr size_t getTopicCount()
 		{
 			return static_cast<size_t>(TopicId::Topic_Count);
 		}

@@ -5,8 +5,15 @@ namespace NNObserver
 	Bus::Bus() : 
 		m_linksCreatedCount(0), 
 		m_subsByTopic(static_cast<size_t>(TopicId::Topic_Count)),
-		m_publishersCount(0)
-	{}
+		m_publishersCount(0),
+		m_pubCountByTopic(0)
+	{
+		const auto topicCount = Topic::getTopicCount();
+		for (size_t i = 0; i < topicCount; ++i) 
+		{
+			m_pubCountByTopic[i].store(0, std::memory_order_relaxed);
+		}
+	}
 
 	int Bus::subscribe(TopicId topicId, OnMessageCallback callback)
 	{
@@ -51,7 +58,7 @@ namespace NNObserver
 		}
 	}
 
-	void Bus::publish(const Message& message) const
+	void Bus::publish(const Message& message)
 	{
 		std::vector<OnMessageCallback> callbacks;
 
@@ -77,10 +84,9 @@ namespace NNObserver
 		}
 	}
 
-	size_t Bus::getAllPublisherCount() const // #wip
+	size_t Bus::getAllPublisherCount() const 
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		return m_publishersCount;
+		return m_publishersCount.load(std::memory_order_acquire);
 	}
 
 	size_t Bus::getAllSubscriberCount() const 
@@ -100,16 +106,31 @@ namespace NNObserver
 		return 0;
 	}
 
-	void Bus::registerPublisher(TopicId topic) // #wip
+	size_t Bus::getPublisherCount(TopicId topicId) const
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		m_publishersCount++;
+		return m_pubCountByTopic[(size_t) topicId].load(std::memory_order_acquire);
 	}
 
-	void Bus::unregisterPublisher(TopicId topic) // #wip
+	void Bus::registerPublisher(TopicId topic)
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
-		m_publishersCount--;
+		m_pubCountByTopic[(size_t)topic].fetch_add(1u, std::memory_order_relaxed);
+		m_publishersCount.fetch_add(1u, std::memory_order_relaxed);
+	}
+
+	void Bus::unregisterPublisher(TopicId topic) 
+	{
+		auto prev = m_publishersCount.fetch_sub(1, std::memory_order_relaxed);
+		auto prevAll = m_pubCountByTopic[(size_t)topic].fetch_sub(1, std::memory_order_relaxed);
+
+		if (prevAll == 0)
+		{
+			m_publishersCount.store(0, std::memory_order_relaxed);
+		}
+
+		if (prev == 0) 
+		{
+			m_pubCountByTopic[(size_t)topic].store(0, std::memory_order_relaxed);
+		}
 	}
 
 	void Bus::removeSubFromTopic(TopicId topicId, size_t topicIndex) // o(1) complexity, order does not matter

@@ -134,11 +134,15 @@ namespace NNObserver
 					memset(m_cellBuffers, 0, sizeof(m_cellBuffers));
 
 					size_t subsCount = 0;
+					size_t pubsCount = 0;
 
-					auto sharedBus = m_wpBus.lock();
-					if (sharedBus)
 					{
-						subsCount = sharedBus->getSubscriberCount(kv.first);
+						auto sharedBus = m_wpBus.lock();
+						if (sharedBus)
+						{
+							subsCount = sharedBus->getSubscriberCount(kv.first);
+							pubsCount = sharedBus->getPublisherCount(kv.first);
+						}
 					}
 
 					m_headerCells[0].updateWidth(strlen(topicName)),
@@ -146,7 +150,7 @@ namespace NNObserver
 					m_headerCells[2].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 2, cellMaxWidth, "%.3f", stats.bps)),
 					m_headerCells[3].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 3, cellMaxWidth, "%.3f", stats.lastSeenAgeMs));
 					m_headerCells[4].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 4, cellMaxWidth, "%zu", subsCount)),
-					m_headerCells[5].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 5, cellMaxWidth, "%d", -1 ));
+					m_headerCells[5].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 5, cellMaxWidth, "%zu", pubsCount));
 
 					char row[m_headerSize];
 					snprintf(row, m_headerSize, " %-*s | %-*s | %-*s | %-*s | %-*s | %-*s \n",

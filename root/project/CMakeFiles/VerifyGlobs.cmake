@@ -165,12 +165,12 @@ endif()
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/emitter.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/emitter_nodes.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message_bus.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/node.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/publisher.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/receiver.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/receiver_nodes.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/subscriber.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/topic.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/topic_inspector.h"

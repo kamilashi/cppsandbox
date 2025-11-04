@@ -145,7 +145,7 @@ namespace NNObserver
 					m_headerCells[1].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth,		cellMaxWidth, "%.3f", stats.hz)),
 					m_headerCells[2].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 2, cellMaxWidth, "%.3f", stats.bps)),
 					m_headerCells[3].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 3, cellMaxWidth, "%.3f", stats.lastSeenAgeMs));
-					m_headerCells[4].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 4, cellMaxWidth, "%d", subsCount)),
+					m_headerCells[4].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 4, cellMaxWidth, "%zu", subsCount)),
 					m_headerCells[5].updateWidth((size_t)snprintf(m_cellBuffers + cellMaxWidth * 5, cellMaxWidth, "%d", -1 ));
 
 					char row[m_headerSize];
@@ -158,7 +158,7 @@ namespace NNObserver
 						m_headerCells[5].width, &m_cellBuffers[cellMaxWidth * 5]);
 
 					size_t len = strlen(row);
-					row[len] = ' ';
+					row[len] = ' ';				// remove null termination
 
 					memcpy(m_body + offset, row, len);
 
@@ -189,7 +189,7 @@ namespace NNObserver
 			m_tickIntervalMs = tickIntervalMs;
 
 			auto sharedBus = m_wpBus.lock();
-			auto connections = sharedBus->subscribeAll(MAKE_CALLBACK(onMessagePublished));
+			auto connections = std::move(sharedBus->subscribeAll(MAKE_CALLBACK(onMessagePublished)));
 
 			m_stats.reserve(connections.size());
 			m_rowLengths.resize(connections.size());
@@ -296,7 +296,6 @@ namespace NNObserver
 		std::unordered_map<TopicId, TopicStats> m_stats;
 		std::vector<std::mutex> m_mutexes;
 		std::vector<size_t> m_rowLengths;
-		//size_t m_cellWidths[6] = {0, 0, 0, 0, 0 , 0 };
 		TableCell m_headerCells[6] = {{"Topic"}, {"hz"}, {"bps"}, {"last age (ms)"}, {"subs"}, {"pubs"}};
 		std::jthread m_tickThread;
 

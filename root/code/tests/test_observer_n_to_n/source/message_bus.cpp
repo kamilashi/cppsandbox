@@ -53,15 +53,26 @@ namespace NNObserver
 
 	void Bus::publish(const Message& message) const
 	{
-		std::lock_guard<std::mutex> lock(m_mutex);
+		std::vector<OnMessageCallback> callbacks;
+		callbacks.reserve(m_allSubs.size());
 
-		if (m_subsByTopic.find(message.topicId) != m_subsByTopic.end())
 		{
-			auto& subsPerTopic = m_subsByTopic.at(message.topicId);
-			for (size_t i = 0; i < subsPerTopic.size(); i++)
+			std::lock_guard<std::mutex> lock(m_mutex);
+
+			if (m_subsByTopic.find(message.topicId) != m_subsByTopic.end())
 			{
-				m_allSubs.at(subsPerTopic[i]).callback(message);
+				auto& subsPerTopic = m_subsByTopic.at(message.topicId);
+				for (size_t subIndx : subsPerTopic)
+				{
+					callbacks.emplace_back(m_allSubs.at(subIndx).callback);
+				}
 			}
+		}
+
+		// call client code after releasing the mutex
+		for (const OnMessageCallback& callback : callbacks)
+		{
+			callback(message);
 		}
 	}
 

@@ -89,7 +89,7 @@ namespace DesignPatterns
 		class SensorSim : public ILidar
 		{
 		public:
-			SensorSim(size_t scanRangeSize, size_t scanRangeValue) :
+			SensorSim(size_t scanRangeSize, float scanRangeValue) :
 				m_sensorSimCounter(0),
 				m_scanRangeSize(scanRangeSize),
 				m_scanRangeValue(scanRangeValue),
@@ -122,13 +122,14 @@ namespace DesignPatterns
 				std::cout << "simulated scan no. " << m_sensorSimCounter << "\n\n";
 
 				m_temp = Scan();
+				m_temp.ranges.assign(m_scanRangeSize, m_scanRangeValue);
 				return std::move(m_temp); // ensure only creating once by moving ownership on return, m_temp is valid but unspecified
 			}
 
 		private:
 			size_t m_sensorSimCounter;
 			size_t m_scanRangeSize;
-			size_t m_scanRangeValue;
+			float m_scanRangeValue;
 			Scan m_temp;
 		};
 

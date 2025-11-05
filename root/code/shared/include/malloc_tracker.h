@@ -53,7 +53,7 @@ namespace MallocTracker
 	void printMemoryAllocationMetrics()
 	{
 		static size_t sampleCount = 1;
-#ifdef TRACKMALLOC
+#if defined TRACKMALLOC
 		auto& metrics = MallocTracker::getMetrics();
 		std::cout << "\n\n"
 			<< "Memory allocation sample " << sampleCount << ": \n"

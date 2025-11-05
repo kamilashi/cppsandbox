@@ -19,8 +19,7 @@ namespace DesignPatterns
 				width(w),
 				height(h),
 				pixels(w* h, 0)
-			{
-			}
+			{ }
 
 			Frame(Frame&&) noexcept = default;
 			Frame& operator=(Frame&&) noexcept = default; // will ensure the object is movable explicitly, but it already is without the c-tors specified
@@ -30,7 +29,7 @@ namespace DesignPatterns
 
 		struct Scan
 		{
-			std::vector<float> ranges; // is movable, so Scan can be NRVO'd by moving during return
+			std::vector<float> ranges; // is movable, so returning Scan by value is cheap: NRVO if applicable, otherwise vector moves
 		};
 
 		class ICamera
@@ -58,8 +57,7 @@ namespace DesignPatterns
 				m_frameSimCounter(0),
 				m_frameWidth(frameW),
 				m_frameHeight(frameH)
-			{
-			}
+			{ }
 
 			void start() override
 			{
@@ -96,8 +94,7 @@ namespace DesignPatterns
 				m_scanRangeSize(scanRangeSize),
 				m_scanRangeValue(scanRangeValue),
 				m_temp()
-			{
-			}
+			{ }
 
 			void start() override
 			{
@@ -235,7 +232,8 @@ namespace DesignPatterns
 			//MockFactory factory;
 
 			auto cam = factory.createCamera();						// auto
-			std::unique_ptr<ILidar> lidar = factory.createLidar();  // or fully qualify, unique ptr is returned by move as is not copyable - copy elision
+			std::unique_ptr<ILidar> lidar = factory.createLidar();  // or fully qualify 
+			// direct initialization from prvalue. In C++17+ there is guaranteed elision, so no extra move
 
 			cam->start();
 			lidar->start();

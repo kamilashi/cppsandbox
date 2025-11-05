@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
 
 namespace DesignPatterns
 {
@@ -35,6 +36,7 @@ namespace DesignPatterns
 		class ICamera
 		{
 		public:
+			virtual ~ICamera() = default;
 			virtual void start() = 0;
 			virtual void stop() = 0;
 			virtual Frame getFrame() = 0;
@@ -43,6 +45,7 @@ namespace DesignPatterns
 		class ILidar
 		{
 		public:
+			virtual ~ILidar() = default;
 			virtual void start() = 0;
 			virtual void stop() = 0;
 			virtual Scan getScan() = 0;
@@ -175,9 +178,9 @@ namespace DesignPatterns
 
 				std::cout << "mocked scan ranges: " << "\n"
 					<< "{";
-				for (size_t i = 0; i < scan.ranges.size(); i++)
+				for (auto range : scan.ranges)
 				{
-					std::cout << scan.ranges[i];
+					std::cout << range;
 				}
 				std::cout
 					<< "}"
@@ -201,14 +204,13 @@ namespace DesignPatterns
 			SimFactory() = default;
 			std::unique_ptr<ICamera> createCamera() override
 			{
-				auto camPtr = std::make_unique<CameraSim>(512, 512);
-				return camPtr;
+				return std::make_unique<CameraSim>(512, 512);
 			}
 
 			std::unique_ptr<ILidar> createLidar() override
 			{
-				auto lidarPtr = std::make_unique<SensorSim>(5, 3); 
-				return lidarPtr; // uses the converting move constructor.
+				return std::make_unique<SensorSim>(5, 3);
+				// uses the converting move constructor.
 			}
 		};
 
@@ -218,14 +220,12 @@ namespace DesignPatterns
 			MockFactory() = default;
 			std::unique_ptr<ICamera> createCamera() override
 			{
-				auto camPtr = std::make_unique<CameraMock>();
-				return camPtr;
+				return std::make_unique<CameraMock>();
 			}
 
 			std::unique_ptr<ILidar> createLidar() override
 			{
-				auto lidarPtr = std::make_unique<SensorMock>();
-				return lidarPtr;
+				return std::make_unique<SensorMock>();
 			}
 		};
 

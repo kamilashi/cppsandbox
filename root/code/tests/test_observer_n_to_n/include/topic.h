@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <array>
 	
 namespace NNObserver
 {
@@ -17,17 +18,13 @@ namespace NNObserver
 
 	namespace Topic
 	{
-		static const std::vector<const char*> sTopicMap = {"heartbeat", "sensor/data", "camera/frame"};
-
-		inline static std::string_view getStringView(TopicId id)
+		//static const std::vector<const char*> sTopicMap = {"heartbeat", "sensor/data", "camera/frame"};
+		inline constexpr std::array<const char*, static_cast<size_t>(TopicId::Topic_Count)> sTopicMap
 		{
-			if (id < TopicId::Topic_Count)
-			{
-				return std::string_view(sTopicMap[static_cast<size_t>(id)]);
-			}
-
-			return std::string_view("Unknown");
-		}
+			"heartbeat", 
+			"sensor/data", 
+			"camera/frame"
+		};
 
 		inline static const char* getString(TopicId id)
 		{
@@ -37,6 +34,11 @@ namespace NNObserver
 			}
 
 			return "Unknown";
+		}
+
+		inline static std::string_view getStringView(TopicId id)
+		{
+			return getString(id);
 		}
 
 		inline static constexpr size_t getTopicCount()

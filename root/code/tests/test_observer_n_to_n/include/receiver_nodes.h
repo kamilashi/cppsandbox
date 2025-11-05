@@ -69,9 +69,7 @@ namespace NNObserver
 		{}
 
 		~CollisionTracker()
-		{
-			std::cout << "destroying collision tracker: ";
-		}
+		{}
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus) override
 		{

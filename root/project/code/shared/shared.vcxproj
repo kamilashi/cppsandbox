@@ -356,6 +356,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\buildconfig.h" />
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\console_frame_printer.h" />
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\helpers.h" />
+    <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\malloc_tracker.h" />
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\movingaverage.h" />
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\profiler.h" />
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\types.h" />

@@ -136,10 +136,16 @@ namespace NNObserver
 	void Bus::removeSubFromTopic(TopicId topicId, size_t topicIndex) // o(1) complexity, order does not matter
 	{
 		auto& subsPerTopic = m_subsByTopic.at(topicId);
-		subsPerTopic[topicIndex] = subsPerTopic.back();
+
+		const bool isLast = topicIndex == subsPerTopic.size() - 1;
+		if (!isLast)
+		{
+			subsPerTopic[topicIndex] = subsPerTopic.back();
+		}
+
 		subsPerTopic.pop_back();
 
-		if (!subsPerTopic.empty())
+		if (!isLast && !subsPerTopic.empty())
 		{
 			auto& sub = m_allSubs.at(subsPerTopic[topicIndex]);
 			sub.indexByTopic = topicIndex;

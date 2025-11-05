@@ -18,7 +18,6 @@ namespace NNObserver
 		virtual void registerMessageBus(std::weak_ptr<Bus> wpBus)
 		{
 			m_wpBus = std::move(wpBus); 
-			// is it a good idea to store the bus pointer both in the node and in the contained subs and pubs?
 		}
 
 	protected:

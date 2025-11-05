@@ -1,10 +1,10 @@
 #ifndef MALLOCTRACKER_H
 #define MALLOCTRACKER_H
 
-#include "buildconfig.h"
 #include <memory>
 #include <cstdlib> 
 #include <new> 
+#include <iostream> 
 
 namespace MallocTracker
 {
@@ -20,7 +20,7 @@ namespace MallocTracker
 	};
 }
 
-#ifdef TRACKMALLOC
+#if defined TRACKMALLOC
 	
 extern MallocTracker::MallocMetrics mallocMetrics;
 MallocTracker::MallocMetrics mallocMetrics;
@@ -41,13 +41,35 @@ void operator delete(void* address, size_t bytes)
 
 namespace MallocTracker
 {
-	static MallocMetrics& getMetrics()
+	inline static MallocMetrics& getMetrics()
 	{
 		return mallocMetrics;
 	}
 }
-	
 #endif // TRACKMALLOC
+
+namespace MallocTracker
+{
+	void printMemoryAllocationMetrics()
+	{
+		static size_t sampleCount = 1;
+#ifdef TRACKMALLOC
+		auto& metrics = MallocTracker::getMetrics();
+		std::cout << "\n\n"
+			<< "Memory allocation sample " << sampleCount << ": \n"
+			<< "allocated:\n"
+			<< metrics.bytesAllocated << "\n\n"
+			<< "freed: \n"
+			<< metrics.bytesFreed << "\n\n"
+			<< "leaked: \n"
+			<< metrics.bytesAllocated - metrics.bytesFreed << "\n\n";
+
+		sampleCount++;
+#else
+		std::cout << "\n" << "memory allocation tracking is off.\n\n";
+#endif // 
+	}
+}
 
 
 #endif // MALLOCTRACKER_H

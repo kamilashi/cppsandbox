@@ -4,7 +4,6 @@
 # MOD_HEADERS at code/shared/CMakeLists.txt:7 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/buildconfig.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/console_frame_printer.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/helpers.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/shared/include/malloc_tracker.h"
@@ -167,6 +166,7 @@ endif()
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/*.h")
 set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/build_config.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/emitter_nodes.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_observer_n_to_n/include/message_bus.h"

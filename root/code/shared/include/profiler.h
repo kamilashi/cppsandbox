@@ -3,7 +3,6 @@
 
 #include <chrono>
 
-#include "buildconfig.h"
 #include "helpers.h"
 
 namespace Profiler

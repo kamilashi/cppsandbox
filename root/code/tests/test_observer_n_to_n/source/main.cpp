@@ -1,16 +1,14 @@
+#include "build_config.h"
 #include "message_bus.h"
 #include "emitter_nodes.h"
 #include "receiver_nodes.h"
 #include "topic_inspector.h"
 #include "malloc_tracker.h"
 #include "console_frame_printer.h"
-#include "buildconfig.h"
 
 #include <cstdio>
 #include <thread>
 #include <memory>
-
-#define PROFILER
 
 namespace NNObserver
 {
@@ -75,9 +73,8 @@ namespace NNObserver
 			Display display("Display");
 
 			// commented healthTracker in order for it not to compete with the inspector's output.
-/*
-			healthTracker.registerMessageBus(spMessageBus);
-*/
+
+			//healthTracker.registerMessageBus(spMessageBus);
 			collisionTracker.registerMessageBus(spMessageBus);
 			display.registerMessageBus(spMessageBus);
 
@@ -122,33 +119,12 @@ namespace NNObserver
 
 		perceptionNode.createFrameData();
 	}
-
-	void printMemoryAllocationMetrics()
-	{
-		static size_t sampleCount = 1;
-#ifdef TRACKMALLOC
-		auto& metrics = MallocTracker::getMetrics();
-		std::cout << "\n\n"
-			<< "Memory allocation sample " << sampleCount << ": \n"
-			<< "allocated:\n"
-			<< metrics.bytesAllocated << "\n\n"
-			<< "freed: \n"
-			<< metrics.bytesFreed << "\n\n"
-			<< "leaked: \n"
-			<< metrics.bytesAllocated - metrics.bytesFreed << "\n\n";
-
-		sampleCount++;
-#else
-		std::cout << "\n" << "memory allocation tracking is off.\n\n";
-#endif // 
-	}
 }
 
 
 int main(int argc, char* argv[])
 {
-	NNObserver::printMemoryAllocationMetrics();
+	MallocTracker::printMemoryAllocationMetrics();
 	NNObserver::runTest();
-	NNObserver::printMemoryAllocationMetrics();
-	__debugbreak();
+	MallocTracker::printMemoryAllocationMetrics();
 }

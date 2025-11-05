@@ -6,9 +6,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\buildconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="C:\MINE\PROJECTS\cppsandbox\root\code\shared\include\console_frame_printer.h">
       <Filter>Header Files</Filter>
     </ClInclude>

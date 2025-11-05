@@ -1,8 +1,8 @@
-#ifndef BUILDCONFIG_H
+#ifndef NNOBSERVERBUILDCONFIG_H
 
 #ifdef _DEBUG
 	#define PROFILE
 	#define TRACKMALLOC
 #endif // _DEBUG
 
-#endif //BUILDCONFIG_H
+#endif //NNOBSERVERBUILDCONFIG_H

@@ -196,8 +196,6 @@ namespace NNObserver
 			auto connections = std::move(sharedBus->subscribeAll(MAKE_CALLBACK(onMessagePublished)));
 
 			m_stats.reserve(connections.size());
-			m_rowLengths.resize(connections.size());
-			m_mutexes = std::vector<std::mutex>(connections.size()); // note great, but only happens once on creation.
 
 			for (auto& kv : connections)
 			{
@@ -296,17 +294,17 @@ namespace NNObserver
 			}
 		}
 
-		float m_tickIntervalMs;
-		std::unordered_map<TopicId, TopicStats> m_stats;
-		std::vector<std::mutex> m_mutexes;
-		std::vector<size_t> m_rowLengths;
-		TableCell m_headerCells[6] = {{"Topic"}, {"hz"}, {"bps"}, {"last age (ms)"}, {"subs"}, {"pubs"}};
-		std::jthread m_tickThread;
+		float										m_tickIntervalMs;
+		std::mutex									m_mutexes[Topic::getTopicCount()];
+		std::jthread								m_tickThread;
 
-		static const size_t m_headerSize = 128;
-		static const size_t m_bodySize = 1024;
-		char m_header[m_headerSize];
-		char m_body[m_bodySize];
+		std::unordered_map<TopicId, TopicStats>		m_stats;
+		size_t										m_rowLengths[Topic::getTopicCount()];
+		TableCell									m_headerCells[6] = { {"Topic"}, {"hz"}, {"bps"}, {"last age (ms)"}, {"subs"}, {"pubs"} };
+		static const size_t							m_headerSize = 128;
+		static const size_t							m_bodySize = 1024;
+		char										m_header[m_headerSize];
+		char										m_body[m_bodySize];
 	};
 }
 

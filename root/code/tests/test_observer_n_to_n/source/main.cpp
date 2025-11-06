@@ -56,7 +56,7 @@ namespace NNObserver
 		pVisualizer->visualizeTable(pInspector->getHeader(), pInspector->getBody());
 	}
 
-	void runTest()
+	void testComponents()
 	{
 		PerceptionNode perceptionNode("Perception");
 		MultiLineConsoleVisualizer visualizer;
@@ -86,31 +86,31 @@ namespace NNObserver
 				<< "e to exit \n\n";
 
 			std::jthread inputThread = std::jthread([](std::stop_token st)
-			{
-				while (!st.stop_requested())
 				{
-					readInput();
-				}
-			});
-			
+					while (!st.stop_requested())
+					{
+						readInput();
+					}
+				});
+
 			std::jthread inspectorThread = std::jthread([&](std::stop_token st)
-			{
-				while (!st.stop_requested())
 				{
-					printTopicStats(&visualizer, &topicInspector);
-					std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); // otherwise the inspector tick thread is starving
-				}
-			});
+					while (!st.stop_requested())
+					{
+						printTopicStats(&visualizer, &topicInspector);
+						std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); // otherwise the inspector tick thread is starving
+					}
+				});
 
 			while (!sIsStopProgramRequested.load(std::memory_order_acquire))
 			{
 				// this will ruin the exact order of the messages received, but is okay for now.
-				for (uint32_t n = sCamTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
+				for (uint32_t n = sCamTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n)
 				{
 					perceptionNode.createFrameData();
 				}
 
-				for (uint32_t n = sSensTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n) 
+				for (uint32_t n = sSensTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n)
 				{
 					perceptionNode.createSensorData();
 				}
@@ -118,6 +118,11 @@ namespace NNObserver
 		}
 
 		perceptionNode.createFrameData();
+	}
+
+	void runTest()
+	{
+		testComponents();
 	}
 }
 

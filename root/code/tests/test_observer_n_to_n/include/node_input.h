@@ -5,14 +5,15 @@
 #include "subscriber.h"
 #include "message.h"
 #include <deque>
+#include <mutex>
 
 namespace NNObserver
 {
 	class BackpressureHandler 
 	{
 	public :
-		BackpressureHandler () : m_messageQueue{} 
-		{}
+		BackpressureHandler (){}
+
 		void push(const Message& message)
 		{
 			m_messageQueue.emplace_back(message);
@@ -20,7 +21,7 @@ namespace NNObserver
 
 		Message pop()
 		{
-			Message message = m_messageQueue.front();
+			Message message = std::move(m_messageQueue.front());
 			m_messageQueue.pop_front();
 			return message;
 		}
@@ -40,11 +41,29 @@ namespace NNObserver
 	public:
 		Input(TopicId topic, size_t consumeCount = 1) :
 			m_sub(topic),
-			m_isReady(false),
-			m_consumeCount(consumeCount),
-			m_queue{}
+			m_consumeCount(consumeCount)
+		{}
+
+		Input(Input&& other) noexcept
+			: m_sub(std::move(other.m_sub)),
+			m_consumeCount(other.m_consumeCount)
 		{
+			std::lock_guard<std::mutex> lock(other.m_mtx);
+			m_queue = std::move(other.m_queue);
 		}
+
+		Input& operator=(Input&& other) noexcept 
+		{
+			if (this != &other) {
+				std::scoped_lock lock(m_mtx, other.m_mtx);
+				m_sub = std::move(other.m_sub);
+				m_queue = std::move(other.m_queue);
+			}
+			return *this;
+		}
+
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
 
 		void initialize(std::weak_ptr<Bus> wpBus)
 		{
@@ -56,14 +75,19 @@ namespace NNObserver
 
 		void onInputReceived(const Message& message)
 		{
+			std::lock_guard<std::mutex> lock(m_mtx);
 			m_queue.push(message);
 		}
 
-		const Message consume()
+		Message consume()
 		{
-			if (m_queue.getSize() > 0)
 			{
-				return m_queue.pop();
+				std::lock_guard<std::mutex> lock(m_mtx);
+
+				if (m_queue.getSize() > 0)
+				{
+					return m_queue.pop();
+				}
 			}
 
 			// #todo: add error handling
@@ -72,15 +96,16 @@ namespace NNObserver
 
 		bool isReady() const
 		{
+			std::lock_guard<std::mutex> lock(m_mtx);
 			return m_queue.getSize() >= m_consumeCount;
 		}
 
 	private:
 		Subscriber m_sub;
-		bool m_isReady;
 
 		size_t m_consumeCount;
 		BackpressureHandler m_queue;
+		mutable std::mutex m_mtx;
 	};
 }
 #endif // NNOBSERVERNODEINPUT_H

@@ -73,7 +73,7 @@ namespace NNObserver
 	{
 	public:
 		SubNode(std::weak_ptr<Bus> wpBus) :
-			Node(1000)
+			Node(500)
 		{
 			m_inputs.reserve(1);
 			m_inputs.emplace_back(TopicId::Topic_NumberGen, 2);
@@ -124,6 +124,38 @@ namespace NNObserver
 				TopicId::Topic_MultSums,
 				"multiply sums",
 				std::format("( {} ) * ( {} )", op1.payload, op2.payload ));
+
+			sum.userData = op1.userData * op2.userData;
+
+			m_outputs[0].produce(sum);
+		}
+	};
+
+	class MultSumDiffNode : public Node
+	{
+	public:
+		MultSumDiffNode(std::weak_ptr<Bus> wpBus) :
+			Node(500)
+		{
+			m_inputs.reserve(2);
+			m_inputs.emplace_back(TopicId::Topic_Sum);
+			m_inputs.emplace_back(TopicId::Topic_Dif);
+
+			m_outputs.reserve(1);
+			m_outputs.emplace_back(TopicId::Topic_MultSumDif);
+
+			Node::connectAndStart(wpBus);
+		}
+	private:
+		void fire() override
+		{
+			Message op1 = m_inputs[0].consume();
+			Message op2 = m_inputs[1].consume();
+
+			Message sum = Message(
+				TopicId::Topic_MultSumDif,
+				"multiply sums",
+				std::format("( {} ) * ( {} )", op1.payload, op2.payload));
 
 			sum.userData = op1.userData * op2.userData;
 

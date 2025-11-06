@@ -27,7 +27,7 @@ namespace NNObserver
 		int								 subscribe(TopicId topicId, OnMessageCallback callback);
 		std::unordered_map<TopicId, int> subscribeAll(OnMessageCallback callback);
 		void							 unsubscribe(int linkId);
-		void							 publish(const Message);
+		void							 publish(const Message&);
 		size_t							 getAllPublisherCount() const;
 		size_t							 getAllSubscriberCount() const;
 		size_t							 getSubscriberCount(TopicId topicId) const;

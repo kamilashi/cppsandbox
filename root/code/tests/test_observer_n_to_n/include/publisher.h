@@ -67,7 +67,7 @@ namespace NNObserver
 			auto sharedBus = m_wpBus.lock();
 			if (sharedBus)
 			{
-				sharedBus->publish(message); // copy
+				sharedBus->publish(message);
 			}
 
 			// #todo: add error handling

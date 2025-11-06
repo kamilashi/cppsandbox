@@ -58,7 +58,7 @@ namespace NNObserver
 		}
 	}
 
-	void Bus::publish(const Message message) // by value
+	void Bus::publish(const Message& message) 
 	{
 		std::vector<OnMessageCallback> callbacks;
 

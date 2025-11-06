@@ -131,8 +131,9 @@ namespace NNObserver
 		auto spMessageBus = std::make_shared<Bus>();
 		NumberGenNode numGen(spMessageBus);
 		AddNode add(spMessageBus);
-		//SubNode add(spMessageBus);
+		//SubNode sub(spMessageBus);
 		MultSumsNode multSums(spMessageBus);
+		//MultSumDiffNode multSumDiff(spMessageBus);
 		ResultNode result(spMessageBus);
 
 		Subscriber numGenPrinter(TopicId::Topic_NumberGen);

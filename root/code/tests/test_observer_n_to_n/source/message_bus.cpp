@@ -8,7 +8,7 @@ namespace NNObserver
 		m_publishersCount(0),
 		m_pubCountByTopic(0)
 	{
-		const auto topicCount = Topic::getTopicCount();
+		constexpr auto topicCount = Topic::getTopicCount();
 		for (size_t i = 0; i < topicCount; ++i) 
 		{
 			m_pubCountByTopic[i].store(0, std::memory_order_relaxed);

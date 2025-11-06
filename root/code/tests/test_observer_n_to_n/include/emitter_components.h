@@ -5,15 +5,15 @@
 #include <thread>
 
 #include "publisher.h"
-#include "node.h"
+#include "component.h"
 
 namespace NNObserver
 {
-	class PerceptionNode : public Node
+	class PerceptionNode : public Component
 	{
 	public:
 		PerceptionNode(std::string_view id) : 
-			Node(id),
+			Component(id),
 			m_cameraPub( TopicId::Topic_CameraFrame),
 			m_sensorPub( TopicId::Topic_SensorData),
 			m_heartbeatPub( TopicId::Topic_Heartbeat ),
@@ -30,7 +30,7 @@ namespace NNObserver
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus) override
 		{
-			Node::registerMessageBus(wpBus);
+			Component::registerMessageBus(wpBus);
 			m_cameraPub.registerPublisher(wpBus);
 			m_sensorPub.registerPublisher(wpBus);
 			m_heartbeatPub.registerPublisher(wpBus);
@@ -38,12 +38,12 @@ namespace NNObserver
 
 		void createFrameData() 
 		{
-			m_cameraPub.tryPublish(m_nodeName, "Dummy frame data");
+			m_cameraPub.tryPublish(m_componentName, "Dummy frame data");
 		}
 
 		void createSensorData()
 		{
-			m_sensorPub.tryPublish(m_nodeName, "Dummy collision data");
+			m_sensorPub.tryPublish(m_componentName, "Dummy collision data");
 		}
 
 	private:
@@ -59,7 +59,7 @@ namespace NNObserver
 
 		void pulse()
 		{
-			m_heartbeatPub.tryPublish(m_nodeName, std::format("seq: {}", m_hbSeq));
+			m_heartbeatPub.tryPublish(m_componentName, std::format("seq: {}", m_hbSeq));
 			m_hbSeq++;
 		}
 

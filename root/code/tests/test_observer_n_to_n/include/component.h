@@ -9,19 +9,19 @@
 
 namespace NNObserver
 {
-	class Node
+	class Component
 	{
 	public:
-		Node(std::string_view name) : m_nodeName(name) {}
-		Node(std::string_view name, std::weak_ptr<Bus> wpBus) : m_nodeName(name), m_wpBus(std::move(wpBus)) {}
-		virtual ~Node()  {}
+		Component(std::string_view name) : m_componentName(name) {}
+		Component(std::string_view name, std::weak_ptr<Bus> wpBus) : m_componentName(name), m_wpBus(std::move(wpBus)) {}
+		virtual ~Component()  {}
 		virtual void registerMessageBus(std::weak_ptr<Bus> wpBus)
 		{
 			m_wpBus = std::move(wpBus); 
 		}
 
 	protected:
-		std::string m_nodeName;
+		std::string m_componentName;
 		std::weak_ptr<Bus> m_wpBus;
 	};
 }

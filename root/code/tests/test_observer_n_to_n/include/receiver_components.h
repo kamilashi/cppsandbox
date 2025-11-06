@@ -2,15 +2,15 @@
 #define NNOBSERVERRECEIVER_H
 
 #include "subscriber.h"
-#include "node.h"
+#include "component.h"
 
 namespace NNObserver
 {
-	class HealthMonitor : public Node
+	class HealthMonitor : public Component
 	{
 	public:
 		HealthMonitor(std::string_view id) : 
-			Node(id),
+			Component(id),
 			m_heartbeatSub(TopicId::Topic_Heartbeat)
 		{}
 
@@ -19,7 +19,7 @@ namespace NNObserver
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus) override
 		{
-			Node::registerMessageBus(wpBus);
+			Component::registerMessageBus(wpBus);
 			m_heartbeatSub.subscribe(wpBus, MAKE_CALLBACK(onPulseReceived));
 		}
 
@@ -34,11 +34,11 @@ namespace NNObserver
 		}
 	};
 
-	class Display : public Node
+	class Display : public Component
 	{
 	public:
 		Display(std::string_view id) :
-			Node(id),
+			Component(id),
 			m_cameraSub(TopicId::Topic_CameraFrame)
 		{}
 
@@ -47,7 +47,7 @@ namespace NNObserver
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus) override
 		{
-			Node::registerMessageBus(wpBus);
+			Component::registerMessageBus(wpBus);
 			m_cameraSub.subscribe(wpBus, MAKE_CALLBACK(onCameraFrameReceived));
 		}
 
@@ -60,11 +60,11 @@ namespace NNObserver
 		}
 	};
 
-	class CollisionTracker : public Node
+	class CollisionTracker : public Component
 	{
 	public:
 		CollisionTracker(std::string_view id) :
-			Node(id),
+			Component(id),
 			m_sensorSub(TopicId::Topic_SensorData)
 		{}
 
@@ -73,7 +73,7 @@ namespace NNObserver
 
 		void registerMessageBus(std::weak_ptr<Bus> wpBus) override
 		{
-			Node::registerMessageBus(wpBus);
+			Component::registerMessageBus(wpBus);
 			m_sensorSub.subscribe(wpBus, MAKE_CALLBACK(onSensorDataReceived));
 		}
 

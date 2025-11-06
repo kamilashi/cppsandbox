@@ -1,7 +1,7 @@
 #ifndef NNOBSERTOPICINSPECTOR_H
 #define NNOBSERTOPICINSPECTOR_H
 
-#include "node.h"
+#include "component.h"
 #include "topic.h"
 #include "movingaverage.h"
 
@@ -97,12 +97,12 @@ namespace NNObserver
 		}
 	};
 
-	class TopicInspector : public Node
+	class TopicInspector : public Component
 	{
 	public:
-		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Node("Topic Inspector")
+		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Component("Topic Inspector")
 		{ 
-			Node::registerMessageBus(wpBus);
+			Component::registerMessageBus(wpBus);
 			start(tickIntervalMs); 
 		};
 

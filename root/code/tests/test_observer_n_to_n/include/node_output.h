@@ -19,7 +19,7 @@ namespace NNObserver
 			}
 		}
 
-		void produce(const Message&& message) 
+		void produce(const Message& message) 
 		{
 			m_pub.tryPublish(message);
 		}

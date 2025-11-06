@@ -6,6 +6,7 @@
 #include "message.h"
 #include <deque>
 #include <mutex>
+#include <chrono>
 
 namespace NNObserver
 {
@@ -58,6 +59,7 @@ namespace NNObserver
 				std::scoped_lock lock(m_mtx, other.m_mtx);
 				m_sub = std::move(other.m_sub);
 				m_queue = std::move(other.m_queue);
+				m_consumeCount = other.m_consumeCount;
 			}
 			return *this;
 		}

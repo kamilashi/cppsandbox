@@ -11,9 +11,14 @@ namespace NNObserver
 		TopicId topicId;
 		std::string source;
 		std::string payload;
+		float userData;
 
-		Message(TopicId topicId, std::string_view source, std::string_view payload) : topicId(topicId), source(source), payload(payload) {};
-		~Message() = default;
+		Message(TopicId topicId, std::string_view source, std::string_view payload) : 
+			topicId(topicId), 
+			source(source), 
+			payload(payload), 
+			userData(0) 
+		{};
 	};
 }
 

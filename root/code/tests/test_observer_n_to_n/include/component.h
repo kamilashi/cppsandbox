@@ -1,5 +1,5 @@
-#ifndef NNOBSERVERNODE_H
-#define NNOBSERVERNODE_H
+#ifndef NNOBSERVERCOMPONENT_H
+#define NNOBSERVERCOMPONENT_H
 
 #include "message.h"
 #include "message_bus.h"
@@ -26,4 +26,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERNODE_H
+#endif // NNOBSERVERCOMPONENT_H

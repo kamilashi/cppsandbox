@@ -5,6 +5,7 @@
 #include "topic_inspector.h"
 #include "malloc_tracker.h"
 #include "console_frame_printer.h"
+#include "node_examples.h"
 
 #include <cstdio>
 #include <thread>
@@ -120,9 +121,38 @@ namespace NNObserver
 		perceptionNode.createFrameData();
 	}
 
+	void printNodeOperationResult(const Message& resultMessage)
+	{
+		std::cout << resultMessage.source << " : " << resultMessage.payload << "\n\n";
+	}
+
+	void testNodes()
+	{
+		auto spMessageBus = std::make_shared<Bus>();
+		NumberGenNode numGen(spMessageBus);
+		AddNode add(spMessageBus);
+		//SubNode add(spMessageBus);
+		MultSumsNode multSums(spMessageBus);
+		ResultNode result(spMessageBus);
+
+		Subscriber numGenPrinter(TopicId::Topic_NumberGen);
+		Subscriber sumPrinter(TopicId::Topic_Sum);
+		Subscriber multPrinter(TopicId::Topic_MultSums);
+		Subscriber resultPrinter(TopicId::Topic_FinalRes);
+
+		//numGenPrinter.subscribe(spMessageBus, printNodeOperationResult);
+		//sumPrinter.subscribe(spMessageBus, printNodeOperationResult);
+		//multPrinter.subscribe(spMessageBus, printNodeOperationResult);
+		resultPrinter.subscribe(spMessageBus, printNodeOperationResult);
+
+		while ( getchar() != '\n')
+		{};
+	}
+
 	void runTest()
 	{
-		testComponents();
+		//testComponents();
+		testNodes();
 	}
 }
 

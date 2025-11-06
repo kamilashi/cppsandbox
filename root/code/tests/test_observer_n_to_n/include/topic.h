@@ -13,6 +13,13 @@ namespace NNObserver
 		Topic_SensorData,
 		Topic_CameraFrame,
 
+		Topic_NumberGen,
+		Topic_Sum,
+		Topic_Dif,
+		Topic_MultSums,
+		Topic_MultSumDif,
+		Topic_FinalRes,
+
 		Topic_Count
 	};
 

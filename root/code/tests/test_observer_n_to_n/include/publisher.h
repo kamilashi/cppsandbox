@@ -62,6 +62,17 @@ namespace NNObserver
 			// #todo: add error handling
 		}
 
+		void tryPublish(const Message& message) const
+		{
+			auto sharedBus = m_wpBus.lock();
+			if (sharedBus)
+			{
+				sharedBus->publish(message); // copy
+			}
+
+			// #todo: add error handling
+		}
+
 		bool isRegistered() const
 		{
 			return m_isRegistered;

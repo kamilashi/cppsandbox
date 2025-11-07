@@ -52,19 +52,6 @@ namespace NNObserver
 			~SubData() = default;
 		};
 
-		struct PubData // #wip
-		{
-			size_t indexByTopic;
-			std::string_view name;
-
-			PubData(size_t indexByTopic, std::string_view name) :
-				indexByTopic(indexByTopic),
-				name(name)
-			{ };
-
-			~PubData() = default;
-		};
-
 		std::unordered_map<TopicId, std::vector<int>> m_subsByTopic;
 		std::unordered_map<int, SubData> m_allSubs;
 

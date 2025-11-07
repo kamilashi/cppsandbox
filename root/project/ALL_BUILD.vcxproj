@@ -198,6 +198,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{06481B25-9F53-38A5-8DE0-6DB02973A2EB}</Project>
       <Name>test_product_except_self</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_system_design.vcxproj">
+      <Project>{AF1B3030-77A7-31B6-A659-662076CE2C6D}</Project>
+      <Name>test_system_design</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

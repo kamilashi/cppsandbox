@@ -7,7 +7,7 @@
 	
 namespace NNObserver
 {
-	enum class TopicId : size_t
+	enum class TopicId 
 	{
 		Topic_Heartbeat,
 		Topic_SensorData,
@@ -25,12 +25,18 @@ namespace NNObserver
 
 	namespace Topic
 	{
-		//static const std::vector<const char*> sTopicMap = {"heartbeat", "sensor/data", "camera/frame"};
 		inline constexpr std::array<const char*, static_cast<size_t>(TopicId::Topic_Count)> sTopicMap
 		{
 			"heartbeat", 
 			"sensor/data", 
-			"camera/frame"
+			"camera/frame",
+
+			"numGen",
+			"sum",
+			"diff",
+			"multOfSums",
+			"multOfSumAndDiff",
+			"finalResult"
 		};
 
 		inline static const char* getString(TopicId id)

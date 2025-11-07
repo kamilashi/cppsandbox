@@ -251,3 +251,41 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
   file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
 endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/*.h")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/system_design.h"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()

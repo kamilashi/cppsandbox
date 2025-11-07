@@ -99,7 +99,7 @@ namespace NNObserver
 					while (!st.stop_requested())
 					{
 						printTopicStats(&visualizer, &topicInspector);
-						std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); // otherwise the inspector tick thread is starving
+						std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); 
 					}
 				});
 

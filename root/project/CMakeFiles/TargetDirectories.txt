@@ -6,4 +6,5 @@ C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_custom_matri
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_design_patterns.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_observer_n_to_n.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_product_except_self.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_system_design.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_wsa_client.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_wsa_server.dir

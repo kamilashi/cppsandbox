@@ -1,0 +1,24 @@
+#include "wsa_server.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+
+int main(int argc, char* argv[])
+{
+	WsaNetworking::WsaServer server;
+	server.start();
+
+	std::jthread broadcastThread= std::jthread([&](std::stop_token st)
+	{
+		while (!st.stop_requested())
+		{
+			server.broadcastDummyMessage();
+			std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(1000));
+		}
+	});
+
+	while (getchar() != '\n')
+	{};
+
+	return 0;
+}

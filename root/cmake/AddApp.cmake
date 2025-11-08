@@ -19,6 +19,7 @@ function(add_app TEST_NAME)
     target_include_directories(${TEST_NAME} PRIVATE ${TEST_DIR}/include)
 
     target_link_libraries(${TEST_NAME} PRIVATE shared)
+    target_link_libraries(${TEST_NAME} PRIVATE Ws2_32 Mswsock)
 
     set_target_properties(${TEST_NAME}
         PROPERTIES

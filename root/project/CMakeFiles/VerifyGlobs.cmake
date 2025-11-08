@@ -253,9 +253,10 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/system_design.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/stdafx.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/wsa_client.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -263,7 +264,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/include/*.hpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/*.hpp")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -272,7 +273,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/*.c")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/source/*.c")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -281,9 +282,50 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/source/*.cpp")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_system_design/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/*.h")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/stdafx.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/wsa_networking.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/wsa_server.h"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/wsa_server.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

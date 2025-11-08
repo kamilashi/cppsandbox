@@ -206,6 +206,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{62195C66-0157-3393-B29B-283D73E12006}</Project>
       <Name>test_wsa_server</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\wsanet\wsanet.vcxproj">
+      <Project>{7C9D1023-536A-3D26-A615-CF6B5537527F}</Project>
+      <Name>wsanet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ALL_BUILD.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/ZERO_CHECK.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/wsanet/CMakeFiles/wsanet.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/CMakeFiles/shared.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_consumer_producer.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_custom_matrix.dir

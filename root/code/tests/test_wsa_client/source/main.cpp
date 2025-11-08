@@ -1,4 +1,4 @@
-#include "wsa_client.h"
+#include "wsanet/wsa_client.h"
 
 int main(int argc, char* argv[])
 {

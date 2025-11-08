@@ -255,8 +255,6 @@ endif()
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/stdafx.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_client/include/wsa_client.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -294,9 +292,6 @@ endif()
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/stdafx.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/wsa_networking.h"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/include/wsa_server.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -325,7 +320,48 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/*.cpp")
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/main.cpp"
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_wsa_server/source/wsa_server.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# MOD_HEADERS at code/wsanet/CMakeLists.txt:7 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/*.h")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/stdafx.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_client.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_helpers.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_server.h"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# MOD_HEADERS at code/wsanet/CMakeLists.txt:7 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# MOD_SOURCES at code/wsanet/CMakeLists.txt:8 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# MOD_SOURCES at code/wsanet/CMakeLists.txt:8 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/wsa_client.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/wsa_server.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

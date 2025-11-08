@@ -1,7 +1,6 @@
 #ifndef WSANETWORKINGSERVER_H
 #define WSANETWORKINGSERVER_H
 
-
 #include <winsock2.h>   
 #include <ws2tcpip.h>   
 #include <windows.h>  
@@ -11,17 +10,10 @@
 #include <mutex>
 
 #include "stdafx.h"
-
+#include "wsanet/wsa_helpers.h"
 
 namespace WsaNetworking
 {
-	enum class ConnectionState
-	{
-		WSACS_OK,
-		WSACS_CLRECVFAIL,
-		WSACS_CLSENDFAIL
-	};
-
 	class WsaServer
 	{
 	public:

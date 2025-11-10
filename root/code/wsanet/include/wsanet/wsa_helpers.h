@@ -6,9 +6,22 @@ namespace WsaNetworking
 	enum class ConnectionState
 	{
 		WSACS_OK,
-		WSACS_CLRECVFAIL,
-		WSACS_CLSENDFAIL
+		WSACS_RECVFAIL,
+		WSACS_SENDFAIL
 	};
+
+	FORCEINLINE bool shouldStopClient()
+	{
+		int sError = WSAGetLastError();
+		if (sError == WSAEWOULDBLOCK ||
+			sError == WSAEINTR ||
+			sError == WSAENOBUFS)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
 
 

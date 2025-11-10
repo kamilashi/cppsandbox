@@ -2,19 +2,6 @@
 
 namespace WsaNetworking
 {
-	FORCEINLINE bool shouldStopClient()
-	{
-		int sError = WSAGetLastError();
-		if (sError == WSAEWOULDBLOCK ||
-			sError == WSAEINTR ||
-			sError == WSAENOBUFS)
-		{
-			return false;
-		}
-
-		return true;
-	}
-
 	int WsaServer::startServer()
 	{
 		WSADATA wsadata;
@@ -97,15 +84,12 @@ namespace WsaNetworking
 				std::lock_guard<std::mutex> lock(m_clientConnectionMutexes[clientConnection]);
 
 				SOCKET& clientSocket = m_clientSockets[clientConnection];
-				if (clientSocket != INVALID_SOCKET) // should not happen ; in case iterators are invalidated
-				{
-					justSentByteCount = send(clientSocket, message + sentByteCount, messageLength - sentByteCount, 0);
-				}
+				justSentByteCount = send(clientSocket, message + sentByteCount, messageLength - sentByteCount, 0);
 			}
 
 			if (justSentByteCount <= 0)
 			{
-				return ConnectionState::WSACS_CLSENDFAIL;
+				return ConnectionState::WSACS_SENDFAIL;
 			}
 
 			sentByteCount += justSentByteCount;
@@ -126,7 +110,7 @@ namespace WsaNetworking
 			int justRecvdByteCount = recv(clientSocket, message + recvdByteCount, messageLength - recvdByteCount, 0);
 			if (justRecvdByteCount <= 0)
 			{
-				return ConnectionState::WSACS_CLRECVFAIL;
+				return ConnectionState::WSACS_RECVFAIL;
 			}
 
 			recvdByteCount += justRecvdByteCount;
@@ -137,7 +121,7 @@ namespace WsaNetworking
 		return ConnectionState::WSACS_OK;
 	}
 
-	void WsaServer::openClientThread(size_t clientConnectionIdx)
+	void WsaServer::openClientRecvThread(size_t clientConnectionIdx)
 	{
 		m_clientConnectionThreads[clientConnectionIdx] = std::jthread([this, clientConnectionIdx] (std::stop_token st) 
 		{
@@ -157,7 +141,7 @@ namespace WsaNetworking
 		});
 	}
 
-	void WsaServer::closeClientThread(size_t clientConnectionIdx)
+	void WsaServer::closeClientRecvThread(size_t clientConnectionIdx)
 	{
 		m_clientConnectionThreads[clientConnectionIdx].request_stop();
 	}
@@ -176,7 +160,7 @@ namespace WsaNetworking
 
 		std::cout << "client No. " << clientIdx << " accepted!" << std::endl;
 
-		openClientThread(clientIdx);
+		openClientRecvThread(clientIdx);
 
 		return 0;
 	}
@@ -188,7 +172,7 @@ namespace WsaNetworking
 		SOCKET& clientSocket = m_clientSockets[connectionIdx];
 		if (clientSocket != INVALID_SOCKET)
 		{
-			closeClientThread(connectionIdx);
+			closeClientRecvThread(connectionIdx);
 
 			closesocket(clientSocket);
 
@@ -211,8 +195,8 @@ namespace WsaNetworking
 
 		for (size_t clientIdx = 0; clientIdx < m_maxClientCount; clientIdx++)
 		{
-			stopClient(clientIdx);
-		}
+			stopClient(clientIdx); // should all client connections be stopped if the server is down?
+		} 
 
 		if (m_serverSocket != INVALID_SOCKET)
 		{

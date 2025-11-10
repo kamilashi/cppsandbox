@@ -41,8 +41,8 @@ namespace WsaNetworking
 		int createSocket();
 		int acceptNewClient();
 
-		void openClientThread(size_t);
-		void closeClientThread(size_t);
+		void openClientRecvThread(size_t);
+		void closeClientRecvThread(size_t);
 		ConnectionState waitForClientMessage(char*, size_t, size_t);
 		ConnectionState sendClientMessage(const char*, size_t, size_t);
 		void onMessageReceived(const char*);

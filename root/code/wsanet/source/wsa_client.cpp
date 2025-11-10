@@ -4,8 +4,21 @@ namespace WsaNetworking
 {
 	void WsaClient::start()
 	{
-		startClient();
-		connectToServer();
+		int ok = startClient();
+
+		if (ok != 0)
+		{
+			return;
+		}
+
+		ok = connectToServer();
+
+		if (ok != 0)
+		{
+			return;
+		}
+
+		openServerRecvThread();
 	}
 
 	int WsaClient::startClient()
@@ -33,7 +46,7 @@ namespace WsaNetworking
 		if (m_clientSocket == INVALID_SOCKET)
 		{
 			std::cout << "Error at socket():" << WSAGetLastError() << std::endl;
-			WSACleanup();
+			stopClient();
 			return -1;
 		}
 
@@ -49,44 +62,129 @@ namespace WsaNetworking
 					sizeof(clientService)) == SOCKET_ERROR)
 		{
 			std::cout << "client connect() failed:" << WSAGetLastError() << std::endl;
-			WSACleanup();
+			stopClient();
 			return -1;
 		}
 
 		std::cout << "client connect(): is OK" << std::endl;
 		std::cout << "Client can start sending and receiving data..." << std::endl;
 
-		//step 4 send user data to server
-		char buffer[200];
-		std::cout << "Enter the message to send to server: ";
-		cin.getline(buffer, 200);
-		int byteCount = send(m_clientSocket, buffer, 200, 0);
-		if (byteCount > 0) 
-		{
-			std::cout << "Message Sent: " << buffer << std::endl;
-		}
-		else 
-		{
-			std::cout << "Error sending message" << std::endl;
-			WSACleanup();
-			return -1;
-		}
+		return 0;
+	}
 
-		//step 5 accept confirmation close the socket and clean resources
-		byteCount = recv(m_clientSocket, buffer, 200, 0);
-		if (byteCount > 0) 
+	void WsaClient::onMessageReceived(const char* message)
+	{
+		std::cout << "Message received from server: " << message << std::endl;
+	}
+
+	void WsaClient::onMessageSent(const char* message)
+	{
+		std::cout << "message queued to server: " << message << std::endl;
+	}
+
+	ConnectionState WsaClient::sendServerMessage(const char* message, size_t messageLength)
+	{
+		int justSentByteCount = 0;
+		int sentByteCount = 0;
+
+		do
 		{
-			std::cout << "Message from server: " << buffer << std::endl;
-		}
-		else 
+			{
+				std::lock_guard<std::mutex> lock(m_mutex);
+
+				SOCKET& clientSocket = m_clientSocket;
+				justSentByteCount = send(clientSocket, message + sentByteCount, messageLength - sentByteCount, 0);
+			}
+
+			if (justSentByteCount <= 0)
+			{
+				return ConnectionState::WSACS_SENDFAIL;
+			}
+
+			sentByteCount += justSentByteCount;
+		} while (sentByteCount < messageLength);
+
+		onMessageSent(message);
+
+		return ConnectionState::WSACS_OK;
+	}
+
+	ConnectionState WsaClient::waitForServerMessage(char* message, size_t messageLength)
+	{
+		SOCKET& clientSocket = m_clientSocket;
+
+		int recvdByteCount = 0;
+		do
 		{
-			std::cout << "Error receiving message" << std::endl;
-			WSACleanup();
-			return -1;
+			int justRecvdByteCount = recv(clientSocket, message + recvdByteCount, messageLength - recvdByteCount, 0);
+			if (justRecvdByteCount <= 0)
+			{
+				return ConnectionState::WSACS_RECVFAIL;
+			}
+
+			recvdByteCount += justRecvdByteCount;
+		} while (recvdByteCount < messageLength);
+
+		onMessageReceived(message);
+
+		return ConnectionState::WSACS_OK;
+	}
+
+	void WsaClient::openServerRecvThread()
+	{
+		m_serverConnectionThread = std::jthread([this](std::stop_token st)
+			{
+				char messageBuffer[200];
+
+				while (!st.stop_requested())
+				{
+					ConnectionState state = waitForServerMessage(messageBuffer, 200);
+
+					if (state != ConnectionState::WSACS_OK && shouldStopClient())
+					{
+						//stopClient();
+						break;
+					}
+				}
+			});
+	}
+
+	void WsaClient::closeServerRecvThread()
+	{
+		m_serverConnectionThread.request_stop();
+	}
+
+	void WsaClient::stopClient()
+	{
+		closeServerRecvThread();
+
+		if (m_clientSocket != INVALID_SOCKET)
+		{
+			closesocket(m_clientSocket);
+			m_clientSocket = INVALID_SOCKET;
 		}
 
 		WSACleanup();
-		std::cout << "Closed Socket" << std::endl;
-		return 0;
+	}
+
+	void WsaClient::requestStop()
+	{
+		stopClient();
+	}
+
+	void WsaClient::sendDummyMessage()
+	{
+		const char buffer[200] = "Client sent this message!";
+		ConnectionState state = sendServerMessage(buffer, 200);
+
+		if (state != ConnectionState::WSACS_OK && shouldStopClient())
+		{
+			//stopClient();
+		}
+	}
+
+	WsaClient::~WsaClient()
+	{
+		stopClient();
 	}
 }

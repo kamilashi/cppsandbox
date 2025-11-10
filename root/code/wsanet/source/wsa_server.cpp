@@ -2,65 +2,31 @@
 
 namespace WsaNetworking
 {
-	int WsaServer::startServer()
+	ConnectionState WsaServer::initializeServer()
 	{
-		WSADATA wsadata;
-		int wsaerr;
-		WORD wVersionRequested = MAKEWORD(2, 2);
-		wsaerr = WSAStartup(wVersionRequested, &wsadata);
-		if (wsaerr != 0)
-		{
-			std::cout << "The winsock dll not found" << std::endl;
-			stopServer();
-			return -1;
-		}
-
-		std::cout << "The winsock dll found" << endl;
-		std::cout << "Status: " << wsadata.szSystemStatus << std::endl;
-
-		return 0;
-	}
-
-	int WsaServer::createSocket()
-	{
-		//create socket
-		m_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-		if (m_serverSocket == INVALID_SOCKET)
-		{
-			std::cout << "Error at socket():" << WSAGetLastError() << std::endl;
-			stopServer();
-			return -1;
-		}
-
-		std::cout << "socket is OK" << std::endl;
-
-		//bind socket
-
 		sockaddr_in service;
 		service.sin_family = AF_INET;
-		InetPton(AF_INET, _T(m_serverIP), &service.sin_addr.s_addr);
 		service.sin_port = htons(m_serverPort);
+
+		InetPtonA(AF_INET, m_serverIP, &service.sin_addr);
 		if (bind(m_serverSocket, (SOCKADDR*)&service, sizeof(service)) == SOCKET_ERROR)
 		{
-			std::cout << "bind() failed:" << WSAGetLastError() << std::endl;
-			stopServer();
-			return -1;
+			std::cout << "Bind() failed:" << WSAGetLastError() << std::endl;
+			return ConnectionState::WSACS_INITFAIL;
 		}
 
-		std::cout << "bind() is OK" << std::endl;
+		std::cout << "Bind() is OK" << std::endl;
 
 		int clientQueueSize = m_maxClientCount;
 		if (listen(m_serverSocket, clientQueueSize) == SOCKET_ERROR)
 		{
-			std::cout << "listen() : error listening on socket" << WSAGetLastError() << std::endl;
-			stopServer();
-			return -1;
+			std::cout << "Listen() : error listening on socket" << WSAGetLastError() << std::endl;
+			return ConnectionState::WSACS_INITFAIL;
 		}
 
 		std::cout << "Listen() is OK" << std::endl;
 
-		return 0;
+		return ConnectionState::WSACS_OK;
 	}
 
 	void WsaServer::onMessageReceived(const char* message)
@@ -189,47 +155,32 @@ namespace WsaNetworking
 		}
 	}
 
-	void WsaServer::stopServer()
-	{
-		m_acceptClientThread.request_stop();
-
-		for (size_t clientIdx = 0; clientIdx < m_maxClientCount; clientIdx++)
-		{
-			stopClient(clientIdx); // should all client connections be stopped if the server is down?
-		} 
-
-		if (m_serverSocket != INVALID_SOCKET)
-		{
-			closesocket(m_serverSocket);
-			m_serverSocket = INVALID_SOCKET;
-		}
-
-		WSACleanup();
-	}
-
 	bool WsaServer::isClientLimitReached()
 	{
 		return m_connectedClientCount.load(std::memory_order_acquire) >= m_maxClientCount;
 	}
 
-	void WsaServer::requestStop()
-	{
-		stopServer();
-	}
-
 	void WsaServer::start()
 	{
-		int ok = startServer();
+		ConnectionState state = initializeWSA();
 
-		if (ok < 0)
+		if (state != ConnectionState::WSACS_OK)
+		{
+			return;
+		}
+		
+		state = createSocket(&m_serverSocket);
+
+		if (state != ConnectionState::WSACS_OK)
 		{
 			return;
 		}
 		  
-		ok = createSocket();
+		state = initializeServer();
 
-		if (ok < 0)
+		if (state != ConnectionState::WSACS_OK)
 		{
+			stopServer();
 			return;
 		}
 
@@ -240,6 +191,29 @@ namespace WsaNetworking
 				acceptNewClient();
 			}
 		});
+	}
+
+	void WsaServer::stopServer()
+	{
+		m_acceptClientThread.request_stop();
+
+		for (size_t clientIdx = 0; clientIdx < m_maxClientCount; clientIdx++)
+		{
+			stopClient(clientIdx); // should all client connections be stopped if the server is down?
+		}
+
+		if (m_serverSocket != INVALID_SOCKET)
+		{
+			closesocket(m_serverSocket);
+			m_serverSocket = INVALID_SOCKET;
+		}
+
+		WSACleanup();
+	}
+
+	void WsaServer::requestStop()
+	{
+		stopServer();
 	}
 
 	void WsaServer::sendDummyMessage(size_t connectionIdx)

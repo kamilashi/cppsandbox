@@ -6,6 +6,7 @@ namespace WsaNetworking
 	enum class ConnectionState
 	{
 		WSACS_OK,
+		WSACS_INITFAIL,
 		WSACS_RECVFAIL,
 		WSACS_SENDFAIL
 	};

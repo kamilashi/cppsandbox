@@ -331,6 +331,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/r
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/stdafx.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_client.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_endpoint.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_helpers.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_server.h"
   )
@@ -361,6 +362,7 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/*.cpp")
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/wsa_client.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/wsa_endpoint.cpp"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/source/wsa_server.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

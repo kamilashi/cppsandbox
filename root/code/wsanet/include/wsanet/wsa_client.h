@@ -1,24 +1,16 @@
 #ifndef WSANETWORKINGCLIENT_H
 #define WSANETWORKINGCLIENT_H
 
-#include <winsock2.h>   
-#include <ws2tcpip.h>   
-#include <windows.h>  
-#include <iostream>
-#include <thread>
-#include <mutex>
-
-#include "stdafx.h"
-#include "wsa_helpers.h"
+#include "wsanet/wsa_endpoint.h"
 
 namespace WsaNetworking
 {
-	class WsaClient
+	class WsaClient : private WsaEndpoint
 	{
 	public:
-		WsaClient() : 
-			m_serverPort(55555),
-			m_serverIP("127.0.0.1"),
+		WsaClient(uint16_t port = 55555, const char* ipAddress = "127.0.0.1") :
+			m_serverPort(port),
+			m_serverIP(ipAddress),
 			m_clientSocket(INVALID_SOCKET)
 		{}
 
@@ -29,9 +21,7 @@ namespace WsaNetworking
 		void requestStop();
 
 	private:
-		int startClient();
-		int connectToServer();
-		void stopClient();
+		ConnectionState connectToServer();
 
 		void onMessageReceived(const char*);
 		void onMessageSent(const char*);
@@ -39,6 +29,8 @@ namespace WsaNetworking
 		ConnectionState sendServerMessage(const char*, size_t);
 		void openServerRecvThread();
 		void closeServerRecvThread();
+
+		void stopClient();
 
 		int m_serverPort;
 		const char* m_serverIP;

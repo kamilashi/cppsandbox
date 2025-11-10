@@ -2,56 +2,8 @@
 
 namespace WsaNetworking
 {
-	void WsaClient::start()
+	ConnectionState WsaClient::connectToServer()
 	{
-		int ok = startClient();
-
-		if (ok != 0)
-		{
-			return;
-		}
-
-		ok = connectToServer();
-
-		if (ok != 0)
-		{
-			return;
-		}
-
-		openServerRecvThread();
-	}
-
-	int WsaClient::startClient()
-	{
-		WSADATA wsadata;
-		int wsaerr;
-		WORD wVersionRequested = MAKEWORD(2, 2);
-		wsaerr = WSAStartup(wVersionRequested, &wsadata);
-		if (wsaerr != 0)
-		{
-			std::cout << "The winsock dll not found" << std::endl;
-			return -1;
-		}
-
-		std::cout << "The winsock dll found" << std::endl;
-		std::cout << "Status: " << wsadata.szSystemStatus << std::endl;
-
-		return 0;
-	}
-
-	int WsaClient::connectToServer()
-	{
-		m_clientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-		if (m_clientSocket == INVALID_SOCKET)
-		{
-			std::cout << "Error at socket():" << WSAGetLastError() << std::endl;
-			stopClient();
-			return -1;
-		}
-
-		std::cout << "socket is OK" << std::endl;
-
 		sockaddr_in clientService;
 		clientService.sin_family = AF_INET;
 		clientService.sin_port = htons(m_serverPort);
@@ -61,15 +13,14 @@ namespace WsaNetworking
 					reinterpret_cast<const sockaddr*>(&clientService), 
 					sizeof(clientService)) == SOCKET_ERROR)
 		{
-			std::cout << "client connect() failed:" << WSAGetLastError() << std::endl;
-			stopClient();
-			return -1;
+			std::cout << "Client connect() failed:" << WSAGetLastError() << std::endl;
+			return ConnectionState::WSACS_INITFAIL;
 		}
 
-		std::cout << "client connect(): is OK" << std::endl;
+		std::cout << "Client connect(): is OK" << std::endl;
 		std::cout << "Client can start sending and receiving data..." << std::endl;
 
-		return 0;
+		return ConnectionState::WSACS_OK;
 	}
 
 	void WsaClient::onMessageReceived(const char* message)
@@ -152,6 +103,33 @@ namespace WsaNetworking
 	void WsaClient::closeServerRecvThread()
 	{
 		m_serverConnectionThread.request_stop();
+	}
+
+	void WsaClient::start()
+	{
+		ConnectionState state = initializeWSA();
+
+		if (state != ConnectionState::WSACS_OK)
+		{
+			return;
+		}
+
+		state = createSocket(&m_clientSocket);
+
+		if (state != ConnectionState::WSACS_OK)
+		{
+			return;
+		}
+
+		state = connectToServer();
+
+		if (state != ConnectionState::WSACS_OK)
+		{
+			stopClient();
+			return;
+		}
+
+		openServerRecvThread();
 	}
 
 	void WsaClient::stopClient()

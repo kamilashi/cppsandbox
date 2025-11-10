@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 			while (!st.stop_requested())
 			{
 				client.sendDummyMessage();
-				std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(1000));
+				std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(2000));
 			}
 		});
 

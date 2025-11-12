@@ -213,6 +213,14 @@ namespace WsaNetworking
 		}
 	}
 
+	WsaServer::WsaServer(uint16_t, const char*)
+	{
+		for (auto& socket : m_clientSockets) 
+		{
+			socket = INVALID_SOCKET;
+		}
+	}
+
 	WsaServer::~WsaServer()
 	{
 		stopServer();

@@ -12,7 +12,6 @@ namespace WsaNetworking
 			m_serverPort(port),
 			m_serverIP(ipAddress),
 			m_serverSocket(INVALID_SOCKET),
-			m_clientSockets{ INVALID_SOCKET },
 			m_connectedClientCount(0),
 			m_isStopRequested(false)
 		{}

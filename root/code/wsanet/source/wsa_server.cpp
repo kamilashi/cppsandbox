@@ -39,71 +39,46 @@ namespace WsaNetworking
 		std::cout << "message queued to client: " << message << std::endl;
 	}
 
-	ConnectionState WsaServer::sendClientMessage(const char* message, size_t messageLength, size_t clientConnection)
+	void WsaServer::sendClientMessage(const char* message, size_t clientConnection)
 	{
-		int justSentByteCount = 0;
-		int sentByteCount = 0;
-
-		do
+		if (sendMessageFrame(&m_clientSockets[clientConnection],
+			&m_clientConnectionMutexes[clientConnection],
+			message) == ConnectionState::WSACS_OK)
 		{
-			{
-				std::lock_guard<std::mutex> lock(m_clientConnectionMutexes[clientConnection]);
-
-				SOCKET& clientSocket = m_clientSockets[clientConnection];
-				justSentByteCount = send(clientSocket, message + sentByteCount, messageLength - sentByteCount, 0);
-			}
-
-			if (justSentByteCount <= 0)
-			{
-				return ConnectionState::WSACS_SENDFAIL;
-			}
-
-			sentByteCount += justSentByteCount;
-		} while (sentByteCount < messageLength);
-
-		onMessageSent(message);
-		
-		return ConnectionState::WSACS_OK;
+			onMessageSent(message);
+		}
+		else if (isFatalError())
+		{
+			stopClient(clientConnection);
+		}
 	}
 
-	ConnectionState WsaServer::waitForClientMessage(char* message, size_t messageLength, size_t clientConnection)
+	ConnectionState WsaServer::waitForClientMessage(size_t clientConnection)
 	{
-		SOCKET& clientSocket = m_clientSockets[clientConnection];
+		WsaMessageFrame frame = getMessageFrame(&m_clientSockets[clientConnection]);
 
-		int recvdByteCount = 0;
-		do
+		if (frame.state == ConnectionState::WSACS_OK)
 		{
-			int justRecvdByteCount = recv(clientSocket, message + recvdByteCount, messageLength - recvdByteCount, 0);
-			if (justRecvdByteCount <= 0)
-			{
-				return ConnectionState::WSACS_RECVFAIL;
-			}
+			onMessageReceived(frame.buffer);
+		}
 
-			recvdByteCount += justRecvdByteCount;
-		} while (recvdByteCount < messageLength);
-
-		onMessageReceived(message);
-
-		return ConnectionState::WSACS_OK;
+		return frame.state;
 	}
 
 	void WsaServer::openClientRecvThread(size_t clientConnectionIdx)
 	{
 		m_clientConnectionThreads[clientConnectionIdx] = std::jthread([this, clientConnectionIdx] (std::stop_token st) 
 		{
-			char messageBuffer[200];
-
 			while (!st.stop_requested())
 			{
-				ConnectionState state = waitForClientMessage(messageBuffer, 200, clientConnectionIdx);
+				ConnectionState state = waitForClientMessage(clientConnectionIdx);
 				
-				if (state != ConnectionState::WSACS_OK && shouldStopClient())
+				if (state != ConnectionState::WSACS_OK && isFatalError())
 				{
 					stopClient(clientConnectionIdx);
 					break;
 				}
 			}
-
 		});
 	}
 
@@ -219,12 +194,7 @@ namespace WsaNetworking
 	void WsaServer::sendDummyMessage(size_t connectionIdx)
 	{
 		const char buffer[200] = "broadcasting this!";
-		ConnectionState state = sendClientMessage(buffer, 200, connectionIdx);
-
-		if (state != ConnectionState::WSACS_OK && shouldStopClient())
-		{
-			stopClient(connectionIdx);
-		}
+		sendClientMessage(buffer, connectionIdx);
 	}
 
 	void WsaServer::broadcastDummyMessage() // #wip

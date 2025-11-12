@@ -23,7 +23,8 @@ namespace WsaNetworking
 		void requestStop();
 		bool isClientLimitReached();
 
-		// #wip: exact API will differ
+		void sendClientMessage(const char*, size_t);
+
 		void sendDummyMessage(size_t); 
 		void broadcastDummyMessage(); 
 		
@@ -33,8 +34,8 @@ namespace WsaNetworking
 
 		void onMessageReceived(const char*);
 		void onMessageSent(const char*);
-		ConnectionState waitForClientMessage(char*, size_t, size_t);
-		ConnectionState sendClientMessage(const char*, size_t, size_t);
+
+		ConnectionState waitForClientMessage(size_t);
 		void openClientRecvThread(size_t);
 		void closeClientRecvThread(size_t);
 

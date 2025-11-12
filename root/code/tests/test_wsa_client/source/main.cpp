@@ -1,5 +1,8 @@
 #include "wsanet/wsa_client.h"
 
+//#define TRACKMALLOC
+//#include "malloc_tracker.h"
+
 int main(int argc, char* argv[])
 {
 	WsaNetworking::WsaClient client;
@@ -19,6 +22,8 @@ int main(int argc, char* argv[])
 	};
 
 	client.requestStop();
+
+	//MallocTracker::printMemoryAllocationMetrics();
 
 	return 0;
 }

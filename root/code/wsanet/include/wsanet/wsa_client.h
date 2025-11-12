@@ -17,16 +17,18 @@ namespace WsaNetworking
 		~WsaClient();
 
 		void start();
-		void sendDummyMessage();
 		void requestStop();
 
+		void sendServerMessage(const char*);
+
+		void sendDummyMessage();
 	private:
 		ConnectionState connectToServer();
 
 		void onMessageReceived(const char*);
 		void onMessageSent(const char*);
-		ConnectionState waitForServerMessage(char*, size_t);
-		ConnectionState sendServerMessage(const char*, size_t);
+
+		ConnectionState waitForServerMessage();
 		void openServerRecvThread();
 		void closeServerRecvThread();
 

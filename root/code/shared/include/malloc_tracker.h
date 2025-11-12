@@ -32,7 +32,21 @@ void* operator new(size_t bytes)
 	return malloc(bytes);
 }
 
+void* operator new[](size_t bytes)
+{
+	mallocMetrics.bytesAllocated += bytes;
+
+	return malloc(bytes);
+}
+
 void operator delete(void* address, size_t bytes)
+{
+	mallocMetrics.bytesFreed += bytes;
+
+	free(address);
+}
+
+void operator delete[](void* address, size_t bytes)
 {
 	mallocMetrics.bytesFreed += bytes;
 

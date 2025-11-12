@@ -96,8 +96,14 @@ namespace WsaNetworking
 			return -1;
 		}
 
-		const size_t clientIdx = m_connectedClientCount.fetch_add(1, std::memory_order_release);
+		const size_t maxClientIdx = m_maxClientIdx.load(std::memory_order_acquire);
+		const size_t clientIdx = m_nextClientIdx.load(std::memory_order_acquire);
 		m_clientSockets[clientIdx] = acceptedSocket;
+
+		const size_t newMaxIdx = max(maxClientIdx, clientIdx);
+		m_connectedClientCount.fetch_add(1, std::memory_order_acq_rel);
+		m_maxClientIdx.store(newMaxIdx, std::memory_order_release);
+		m_nextClientIdx.store(newMaxIdx + 1, std::memory_order_release);
 
 		std::cout << "client No. " << clientIdx << " accepted!" << std::endl;
 
@@ -119,12 +125,8 @@ namespace WsaNetworking
 
 			clientSocket = INVALID_SOCKET;
 
-			const size_t lastClientIdx = m_connectedClientCount.fetch_sub(1, std::memory_order_relaxed) - 1;
-			if (connectionIdx != lastClientIdx)
-			{
-				m_clientSockets[connectionIdx] = m_clientSockets[lastClientIdx]; // fill up the newly freed space
-				m_clientSockets[lastClientIdx] = INVALID_SOCKET;
-			}
+			m_connectedClientCount.fetch_sub(1, std::memory_order_acq_rel);
+			m_nextClientIdx.store(connectionIdx, std::memory_order_release); 
 
 			std::cout << "stopped client " << connectionIdx << std::endl;
 		}
@@ -158,6 +160,10 @@ namespace WsaNetworking
 			stopServer();
 			return;
 		}
+
+		m_connectedClientCount.store(0, std::memory_order_release);
+		m_nextClientIdx.store(0, std::memory_order_release);
+		m_maxClientIdx.store(0, std::memory_order_release);
 
 		m_acceptClientThread = std::jthread([this](std::stop_token st)
 		{
@@ -193,15 +199,15 @@ namespace WsaNetworking
 
 	void WsaServer::sendDummyMessage(size_t connectionIdx)
 	{
-		const char buffer[200] = "broadcasting this!";
+		const char buffer[50] = "broadcasting this!";
 		sendClientMessage(buffer, connectionIdx);
 	}
 
 	void WsaServer::broadcastDummyMessage() // #wip
 	{
-		const size_t activeClients = m_connectedClientCount.load(std::memory_order_acquire);
+		const size_t activeClients = m_maxClientIdx.load(std::memory_order_acquire);
 
-		for (size_t i = 0; i < activeClients; i++)
+		for (size_t i = 0; i <= activeClients; i++)
 		{
 			sendDummyMessage(i);
 		}

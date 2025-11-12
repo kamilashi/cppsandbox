@@ -47,9 +47,11 @@ namespace WsaNetworking
 		SOCKET m_serverSocket;
 		std::jthread m_acceptClientThread;
 
-		static constexpr size_t m_maxClientCount = 10; // #todo: make configurable; either use std::vector or allocate on the heap
+		static constexpr size_t m_maxClientCount = 2; // #todo: make configurable; either use std::vector or allocate on the heap
 		SOCKET m_clientSockets[m_maxClientCount];
 		std::atomic<size_t > m_connectedClientCount;
+		std::atomic<size_t > m_maxClientIdx;
+		std::atomic<size_t > m_nextClientIdx;
 		bool m_isStopRequested;
 
 		std::jthread m_clientConnectionThreads[m_maxClientCount];

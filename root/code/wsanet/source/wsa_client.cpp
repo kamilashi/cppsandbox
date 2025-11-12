@@ -128,7 +128,7 @@ namespace WsaNetworking
 
 	void WsaClient::sendDummyMessage()
 	{
-		const char buffer[200] = "Client sent this message!";
+		const char buffer[50] = "Client sent this message!";
 		sendServerMessage(buffer);
 	}
 

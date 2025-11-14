@@ -5,7 +5,10 @@
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/wsanet/cmake_install.cmake",
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/cmake_install.cmake",
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/dataflow/cmake_install.cmake",
-		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/cmake_install.cmake"
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_observer_n_to_n/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_wsa_client/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_wsa_server/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

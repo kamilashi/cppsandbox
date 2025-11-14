@@ -33,7 +33,8 @@ namespace WsaNetworking
 	FORCEINLINE bool isFatalError()
 	{
 		int sError = WSAGetLastError();
-		if (sError == WSAEWOULDBLOCK ||
+		if (sError == 0 ||
+			sError == WSAEWOULDBLOCK ||
 			sError == WSAEINTR ||
 			sError == WSAENOBUFS)
 		{
@@ -56,7 +57,7 @@ namespace WsaNetworking
 		return ntohl(value_net); 
 	}
 
-	FORCEINLINE ConnectionState sendMessage(SOCKET* pSocket, std::mutex* pMutex, const char* message, size_t messageLength)
+	inline ConnectionState sendMessage(SOCKET* pSocket, std::mutex* pMutex, const char* message, size_t messageLength)
 	{
 		int justSentByteCount = 0;
 		int sentByteCount = 0;

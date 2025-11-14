@@ -20,6 +20,7 @@ function(add_app TEST_NAME)
 
     target_link_libraries(${TEST_NAME} PRIVATE wsanet)
     target_link_libraries(${TEST_NAME} PRIVATE shared)
+    target_link_libraries(${TEST_NAME} PRIVATE dataflow)
 
     set_target_properties(${TEST_NAME}
         PROPERTIES

@@ -1,13 +1,13 @@
-#ifndef NNOBSERVEREMITTER_H
-#define NNOBSERVEREMITTER_H
+#ifndef DATAFLOWEMITTER_H
+#define DATAFLOWEMITTER_H
 
 #include <format>
 #include <thread>
 
-#include "publisher.h"
-#include "component.h"
+#include "dataflow/publisher.h"
+#include "dataflow/component.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	class PerceptionNode : public Component
 	{

@@ -1,10 +1,10 @@
-#ifndef NNOBSERVERMESSAGE_H
-#define NNOBSERVERMESSAGE_H
+#ifndef DATAFLOWMESSAGE_H
+#define DATAFLOWMESSAGE_H
 
-#include "topic.h"
+#include "dataflow/topic.h"
 #include <string>
 	
-namespace NNObserver
+namespace Dataflow
 {
 	struct Message
 	{
@@ -22,4 +22,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERMESSAGE_H
+#endif // DATAFLOWMESSAGE_H

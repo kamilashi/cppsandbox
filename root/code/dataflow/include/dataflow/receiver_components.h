@@ -1,10 +1,10 @@
-#ifndef NNOBSERVERRECEIVER_H
-#define NNOBSERVERRECEIVER_H
+#ifndef DATAFLOWRECEIVER_H
+#define DATAFLOWRECEIVER_H
 
-#include "subscriber.h"
-#include "component.h"
+#include "dataflow/subscriber.h"
+#include "dataflow/component.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	class HealthMonitor : public Component
 	{
@@ -87,4 +87,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERRECEIVER_H
+#endif // DATAFLOWRECEIVER_H

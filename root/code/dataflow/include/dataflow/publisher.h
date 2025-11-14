@@ -1,14 +1,14 @@
-#ifndef NNOBSERVERPUBLISHER_H
-#define NNOBSERVERPUBLISHER_H
+#ifndef DATAFLOWPUBLISHER_H
+#define DATAFLOWPUBLISHER_H
 
 #include <string>
 #include <memory>
 #include <format>
 
-#include "message_bus.h"
-#include "message.h"
+#include "dataflow/message_bus.h"
+#include "dataflow/message.h"
 	
-namespace NNObserver
+namespace Dataflow
 {
 	class Publisher
 	{
@@ -85,4 +85,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERPUBLISHER_H
+#endif // DATAFLOWPUBLISHER_H

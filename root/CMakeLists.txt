@@ -13,6 +13,7 @@ cmake_minimum_required(VERSION 3.21)
 
 add_subdirectory(code/wsanet)
 add_subdirectory(code/shared)
+add_subdirectory(code/dataflow)
 add_subdirectory(code/tests)   
 
  

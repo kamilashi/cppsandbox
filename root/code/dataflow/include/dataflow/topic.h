@@ -1,11 +1,11 @@
-#ifndef NNOBSERVERTOPIC_H
-#define NNOBSERVERTOPIC_H
+#ifndef DATAFLOWTOPIC_H
+#define DATAFLOWTOPIC_H
 
 #include <string>
 #include <vector>
 #include <array>
 	
-namespace NNObserver
+namespace Dataflow
 {
 	enum class TopicId 
 	{
@@ -132,4 +132,4 @@ namespace NNObserver
 	}
 }
 
-#endif // NNOBSERVERTOPIC_H
+#endif // DATAFLOWTOPIC_H

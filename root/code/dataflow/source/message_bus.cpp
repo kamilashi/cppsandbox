@@ -1,6 +1,6 @@
-#include "message_bus.h"
+#include "dataflow/message_bus.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	Bus::Bus() : 
 		m_linksCreatedCount(0), 

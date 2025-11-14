@@ -1,14 +1,14 @@
-#ifndef NNOBSERVERNODE_H
-#define NNOBSERVERNODE_H
+#ifndef DATAFLOWNODE_H
+#define DATAFLOWNODE_H
 
 #include <vector>
 #include <thread>
 #include <memory>
 
-#include "node_input.h"
-#include "node_output.h"
+#include "dataflow/node_input.h"
+#include "dataflow/node_output.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	class Node
 	{
@@ -95,4 +95,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERNODE_H
+#endif // DATAFLOWNODE_H

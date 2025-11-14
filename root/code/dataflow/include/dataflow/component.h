@@ -1,13 +1,13 @@
-#ifndef NNOBSERVERCOMPONENT_H
-#define NNOBSERVERCOMPONENT_H
+#ifndef DATAFLOWCOMPONENT_H
+#define DATAFLOWCOMPONENT_H
 
-#include "message.h"
-#include "message_bus.h"
+#include "dataflow/message.h"
+#include "dataflow/message_bus.h"
 #include <functional>
 #include <iostream>
 #include <memory>
 
-namespace NNObserver
+namespace Dataflow
 {
 	class Component
 	{
@@ -26,4 +26,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERCOMPONENT_H
+#endif // DATAFLOWCOMPONENT_H

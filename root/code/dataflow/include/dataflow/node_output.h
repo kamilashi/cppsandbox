@@ -1,9 +1,9 @@
-#ifndef NNOBSERVERNODEOUTPUT_H
-#define NNOBSERVERNODEOUTPUT_H
+#ifndef DATAFLOWNODEOUTPUT_H
+#define DATAFLOWNODEOUTPUT_H
 
-#include "publisher.h"
+#include "dataflow/publisher.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	class Output
 	{
@@ -29,4 +29,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERNODEOUTPUT_H
+#endif // DATAFLOWNODEOUTPUT_H

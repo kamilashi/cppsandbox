@@ -1,10 +1,10 @@
-#ifndef NNOBSERVERSUBSCRIBER_H
-#define NNOBSERVERSUBSCRIBER_H
+#ifndef DATAFLOWSUBSCRIBER_H
+#define DATAFLOWSUBSCRIBER_H
 
 #include <memory>
-#include "message_bus.h"
+#include "dataflow/message_bus.h"
 	
-namespace NNObserver
+namespace Dataflow
 {
 	class Subscriber
 	{
@@ -53,4 +53,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERSUBSCRIBER_H
+#endif // DATAFLOWSUBSCRIBER_H

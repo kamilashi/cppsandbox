@@ -1,14 +1,14 @@
-#ifndef NNOBSERVERNODEINPUT_H
-#define NNOBSERVERNODEINPUT_H
+#ifndef DATAFLOWNODEINPUT_H
+#define DATAFLOWNODEINPUT_H
 
-#include "topic.h"
-#include "subscriber.h"
-#include "message.h"
+#include "dataflow/topic.h"
+#include "dataflow/subscriber.h"
+#include "dataflow/message.h"
 #include <deque>
 #include <mutex>
 #include <chrono>
 
-namespace NNObserver
+namespace Dataflow
 {
 	class BackpressureHandler 
 	{
@@ -110,4 +110,4 @@ namespace NNObserver
 		mutable std::mutex m_mtx;
 	};
 }
-#endif // NNOBSERVERNODEINPUT_H
+#endif // DATAFLOWNODEINPUT_H

@@ -1,9 +1,9 @@
-#ifndef NNOBSERVERMESSAGEBUS_H
-#define NNOBSERVERMESSAGEBUS_H
+#ifndef DATAFLOWMESSAGEBUS_H
+#define DATAFLOWMESSAGEBUS_H
 
-#include "message.h"
-#include "topic.h"
-#include "types.h"
+#include "dataflow/message.h"
+#include "dataflow/topic.h"
+#include "dataflow/types.h"
 
 #include <unordered_map>
 #include <unordered_set>
@@ -13,9 +13,9 @@
 #include <atomic>
 #include <array>
 
-#define MAKE_CALLBACK(x) [this](const NNObserver::Message& m) { x(m); }
+#define MAKE_CALLBACK(x) [this](const Dataflow::Message& m) { x(m); }
 
-namespace NNObserver
+namespace Dataflow
 {
 	class Bus
 	{
@@ -66,4 +66,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERMESSAGEBUS_H
+#endif // DATAFLOWMESSAGEBUS_H

@@ -1,17 +1,18 @@
 #include "build_config.h"
-#include "message_bus.h"
-#include "emitter_components.h"
-#include "receiver_components.h"
-#include "topic_inspector.h"
+#include "dataflow/message_bus.h"
+#include "dataflow/emitter_components.h"
+#include "dataflow/receiver_components.h"
+#include "dataflow/topic_inspector.h"
+#include "dataflow/node_examples.h"
+
 #include "malloc_tracker.h"
 #include "console_frame_printer.h"
-#include "node_examples.h"
 
 #include <cstdio>
 #include <thread>
 #include <memory>
 
-namespace NNObserver
+namespace Dataflow
 {
 	static std::atomic<bool> sIsStopProgramRequested{ false };
 	static std::atomic<bool> sInspectorPaused{ false };
@@ -161,6 +162,6 @@ namespace NNObserver
 int main(int argc, char* argv[])
 {
 	MallocTracker::printMemoryAllocationMetrics();
-	NNObserver::runTest();
+	Dataflow::runTest();
 	MallocTracker::printMemoryAllocationMetrics();
 }

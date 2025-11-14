@@ -4,6 +4,7 @@
 		"C:/MINE/PROJECTS/cppsandbox/root/project/cmake_install.cmake",
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/wsanet/cmake_install.cmake",
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/cmake_install.cmake",
+		"C:/MINE/PROJECTS/cppsandbox/root/project/code/dataflow/cmake_install.cmake",
 		"C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/cmake_install.cmake"
 	],
 	"Parallel" : false

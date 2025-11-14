@@ -1,9 +1,9 @@
-#ifndef NNOBSERTOPICINSPECTOR_H
-#define NNOBSERTOPICINSPECTOR_H
+#ifndef DATAFLOWTOPICINSPECTOR_H
+#define DATAFLOWTOPICINSPECTOR_H
 
-#include "component.h"
-#include "topic.h"
-#include "movingaverage.h"
+#include "dataflow/component.h"
+#include "dataflow/topic.h"
+#include "dataflow/movingaverage.h"
 
 #include <unordered_map>
 #include <chrono>
@@ -11,7 +11,7 @@
 #include <atomic>
 #include <memory>
 
-namespace NNObserver
+namespace Dataflow
 {
 	class IntervalLoad
 	{
@@ -308,4 +308,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERTOPICINSPECTOR_H
+#endif // DATAFLOWTOPICINSPECTOR_H

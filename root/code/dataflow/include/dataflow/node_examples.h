@@ -1,14 +1,14 @@
-#ifndef NNOBSERVERNODEEXAMPLES_H
-#define NNOBSERVERNODEEXAMPLES_H
+#ifndef DATAFLOWEXAMPLES_H
+#define DATAFLOWEXAMPLES_H
 
 #include <vector>
 #include <thread>
 #include <memory>
 #include <format>
 
-#include "node.h"
+#include "dataflow/node.h"
 
-namespace NNObserver
+namespace Dataflow
 {
 	class NumberGenNode : public Node
 	{
@@ -197,4 +197,4 @@ namespace NNObserver
 	};
 }
 
-#endif // NNOBSERVERNODEEXAMPLES_H
+#endif // DATAFLOWEXAMPLES_H

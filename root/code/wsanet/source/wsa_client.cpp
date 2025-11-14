@@ -41,9 +41,9 @@ namespace WsaNetworking
 		{
 			onMessageSent(message);
 		}
-		else if(isFatalError())
+		else
 		{
-			//stopClient();
+			stopClient();
 		}
 	}
 
@@ -67,9 +67,9 @@ namespace WsaNetworking
 			{
 				ConnectionState state = waitForServerMessage();
 
-				if (state != ConnectionState::WSACS_OK && isFatalError())
+				if (state != ConnectionState::WSACS_OK)
 				{
-					//stopClient();
+					stopClient();
 					break;
 				}
 			}

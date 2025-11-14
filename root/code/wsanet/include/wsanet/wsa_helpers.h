@@ -17,6 +17,7 @@ namespace WsaNetworking
 		static constexpr size_t sPrependLength = sizeof(uint32_t);
 		char* buffer = nullptr;
 		ConnectionState state = ConnectionState::WSACS_UNKNOWN;
+		int error =	 WSABASEERR;
 
 		WsaMessageFrame() = default;
 
@@ -69,7 +70,7 @@ namespace WsaNetworking
 				justSentByteCount = send(clientSocket, message + sentByteCount, messageLength - sentByteCount, 0);
 			}
 
-			if (justSentByteCount <= 0)
+			if (justSentByteCount <= 0 && isFatalError())
 			{
 				return ConnectionState::WSACS_SENDFAIL;
 			}
@@ -108,7 +109,7 @@ namespace WsaNetworking
 		do
 		{
 			int justRecvdByteCount = recv(clientSocket, message + recvdByteCount, messageLength - recvdByteCount, 0);
-			if (justRecvdByteCount <= 0)
+			if (justRecvdByteCount <= 0 && isFatalError())
 			{
 				return ConnectionState::WSACS_RECVFAIL;
 			}

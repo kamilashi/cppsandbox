@@ -8,13 +8,7 @@ namespace WsaNetworking
 	class WsaServer : private WsaEndpoint
 	{
 	public:
-		WsaServer(uint16_t port = 55555, const char* ipAddress = "127.0.0.1") :
-			m_serverPort(port),
-			m_serverIP(ipAddress),
-			m_serverSocket(INVALID_SOCKET),
-			m_connectedClientCount(0),
-			m_isStopRequested(false)
-		{}
+		WsaServer(uint16_t port = 55555, const char* ipAddress = "127.0.0.1");
 
 		~WsaServer();
 

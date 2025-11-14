@@ -47,7 +47,7 @@ namespace WsaNetworking
 		{
 			onMessageSent(message);
 		}
-		else if (isFatalError())
+		else
 		{
 			stopClient(clientConnection);
 		}
@@ -73,7 +73,7 @@ namespace WsaNetworking
 			{
 				ConnectionState state = waitForClientMessage(clientConnectionIdx);
 				
-				if (state != ConnectionState::WSACS_OK && isFatalError())
+				if (state != ConnectionState::WSACS_OK)
 				{
 					stopClient(clientConnectionIdx);
 					break;
@@ -209,11 +209,19 @@ namespace WsaNetworking
 
 		for (size_t i = 0; i <= activeClients; i++)
 		{
-			sendDummyMessage(i);
+			if (m_clientSockets[i] != INVALID_SOCKET)
+			{
+				sendDummyMessage(i);
+			}
 		}
 	}
 
-	WsaServer::WsaServer(uint16_t, const char*)
+	WsaServer::WsaServer(uint16_t port, const char* ipAddress) :
+		m_serverPort(port),
+		m_serverIP(ipAddress),
+		m_serverSocket(INVALID_SOCKET),
+		m_connectedClientCount(0),
+		m_isStopRequested(false)
 	{
 		for (auto& socket : m_clientSockets) 
 		{

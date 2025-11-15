@@ -34,7 +34,12 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_observer_n_to_n/cmake_install.cmake")
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_observer/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

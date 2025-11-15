@@ -1,9 +1,10 @@
 #ifndef DATAFLOWTOPICINSPECTOR_H
 #define DATAFLOWTOPICINSPECTOR_H
 
+#include "datastructs/movingaverage.h"
+
 #include "dataflow/component.h"
 #include "dataflow/topic.h"
-#include "dataflow/movingaverage.h"
 
 #include <unordered_map>
 #include <chrono>
@@ -79,7 +80,7 @@ namespace Dataflow
 		double bps;
 		double lastSeenAgeMs;
 		std::chrono::time_point<std::chrono::steady_clock> lastSeenTimePoint;
-		MovingAverage<IntervalLoad> movingAveSec;
+		Datastructs::MovingAverage<IntervalLoad> movingAveSec;
 		int connectionId;
 
 		TopicStats(int id) : 

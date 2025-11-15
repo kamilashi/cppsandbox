@@ -6,7 +6,8 @@
 #include <vector>
 #include <unordered_map>
 #include "profiler.h"
-#include "movingaverage.h"
+
+#include "datastructs/movingaverage.h"
 
 namespace Profiler
 {
@@ -97,7 +98,7 @@ namespace Profiler
 		}
 
 	private:
-		MovingAverage<double> m_movingAve;
+		Datastructs::MovingAverage<double> m_movingAve;
 	};
 
 	class ScopeProfileTree

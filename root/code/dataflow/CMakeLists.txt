@@ -17,8 +17,8 @@ target_include_directories(${MOD_NAME}
     $<BUILD_INTERFACE:${INC_DIR}>
     $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(${MOD_NAME}
-  PUBLIC $<$<PLATFORM_ID:Windows>:ws2_32;mswsock>)
+target_link_libraries(${MOD_NAME} PUBLIC datastructs)
+target_link_libraries(${MOD_NAME} PUBLIC wsanet)
 
 target_compile_features(${MOD_NAME} PUBLIC cxx_std_20)
 

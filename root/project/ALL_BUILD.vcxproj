@@ -190,13 +190,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{8AD6BB7D-7BB0-3F12-B7C7-DE229E53DBDB}</Project>
       <Name>test_custom_matrix</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_ipc.vcxproj">
+      <Project>{01023AD1-FAE6-3BC9-8D27-3046D3FF8632}</Project>
+      <Name>test_dataflow_ipc</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_observer.vcxproj">
+      <Project>{0661D42E-5794-3027-9943-69B399EDB820}</Project>
+      <Name>test_dataflow_observer</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_design_patterns.vcxproj">
       <Project>{FF57D17D-460B-3776-91DC-E8EBC3AF9755}</Project>
       <Name>test_design_patterns</Name>
-    </ProjectReference>
-    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_observer_n_to_n.vcxproj">
-      <Project>{3B2CC831-31B7-3A4E-AFBC-B9315F476CC4}</Project>
-      <Name>test_observer_n_to_n</Name>
     </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_product_except_self.vcxproj">
       <Project>{06481B25-9F53-38A5-8DE0-6DB02973A2EB}</Project>

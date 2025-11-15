@@ -1,8 +1,23 @@
 ﻿#ifndef WSANETWORKINGHELPERS_H
 #define WSANETWORKINGHELPERS_H
 
+#include <winsock2.h>   
+#include <ws2tcpip.h>   
+#include <windows.h>  
+
+#include <mutex>  
+
 namespace WsaNetworking
 {
+	class Handler
+	{
+	public:
+		virtual ~Handler();
+
+		virtual void onMessageQueued();
+		virtual void onMessageReceived();
+	};
+
 	enum class ConnectionState
 	{
 		WSACS_OK,
@@ -14,10 +29,9 @@ namespace WsaNetworking
 
 	struct WsaMessageFrame
 	{
-		static constexpr size_t sPrependLength = sizeof(uint32_t);
+		static constexpr uint32_t sPrependLength = sizeof(uint32_t);
 		char* buffer = nullptr;
 		ConnectionState state = ConnectionState::WSACS_UNKNOWN;
-		int error =	 WSABASEERR;
 
 		WsaMessageFrame() = default;
 
@@ -50,6 +64,14 @@ namespace WsaNetworking
 		memcpy(out32, &hostOrderValue, WsaMessageFrame::sPrependLength);
 	}
 
+	FORCEINLINE void storeHostf32(char* out32, float in32)
+	{
+		static_assert(sizeof(float) == WsaMessageFrame::sPrependLength, "float must be 32 bit");
+		uint32_t bits = 0;
+		memcpy(&bits, &in32, WsaMessageFrame::sPrependLength);
+		storeHostu32(out32, bits);
+	}
+
 	FORCEINLINE uint32_t readHostu32(const char* in32)
 	{
 		uint32_t value_net;
@@ -57,7 +79,16 @@ namespace WsaNetworking
 		return ntohl(value_net); 
 	}
 
-	inline ConnectionState sendMessage(SOCKET* pSocket, std::mutex* pMutex, const char* message, size_t messageLength)
+	FORCEINLINE float readHostf32(const char* in32)
+	{
+		uint32_t bits = readHostu32(in32);
+
+		float out32;
+		std::memcpy(&out32, &bits, WsaMessageFrame::sPrependLength);
+		return out32;
+	}
+
+	FORCEINLINE ConnectionState sendMessage(SOCKET* pSocket, std::mutex* pMutex, const char* message, size_t messageLength)
 	{
 		int justSentByteCount = 0;
 		int sentByteCount = 0;
@@ -84,12 +115,12 @@ namespace WsaNetworking
 
 	FORCEINLINE ConnectionState sendMessageFrame(SOCKET* pSocket, std::mutex* pMutex, const char* payload)
 	{
-		const size_t payloadLength = strlen(payload) + 1;
-		const size_t fullLength = payloadLength + WsaMessageFrame::sPrependLength;
+		const uint32_t payloadLength = strlen(payload) + 1;
+		const uint32_t fullLength = payloadLength + WsaMessageFrame::sPrependLength;
 
 		char prepend[WsaMessageFrame::sPrependLength];
 
-		storeHostu32(prepend, static_cast<uint32_t> (payloadLength));
+		storeHostu32(prepend, payloadLength);
 
 		WsaMessageFrame frame;
 		frame.buffer = new char[fullLength];
@@ -102,7 +133,7 @@ namespace WsaNetworking
 		return state;
 	}
 
-	FORCEINLINE ConnectionState readMessage(SOCKET* pSocket, char* message, size_t messageLength)
+	FORCEINLINE ConnectionState readMessage(SOCKET* pSocket, char* message, uint32_t messageLength)
 	{
 		SOCKET& clientSocket = *pSocket;
 

@@ -61,33 +61,38 @@ namespace WsaNetworking
 
 	ConnectionState WsaServer::start()
 	{
-		ConnectionState state = initializeWSA();
-
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult == ConnectionState::WSACS_OK)
 		{
-			return state;
+			return m_initializeResult;
+		}
+
+		m_initializeResult = initializeWSA();
+
+		if (m_initializeResult != ConnectionState::WSACS_OK)
+		{
+			return m_initializeResult;
 		}
 		
-		state = createSocket(&m_serverSocket);
+		m_initializeResult = createSocket(&m_serverSocket);
 
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult != ConnectionState::WSACS_OK)
 		{
-			return state;
+			return m_initializeResult;
 		}
 		  
-		state = initializeServer();
+		m_initializeResult = initializeServer();
 
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult != ConnectionState::WSACS_OK)
 		{
 			stopServer();
-			return state;
+			return m_initializeResult;
 		}
 
 		m_connectedClientCount.store(0, std::memory_order_release);
 		m_nextClientIdx.store(0, std::memory_order_release);
 		m_maxClientIdx.store(0, std::memory_order_release);
 
-		return state;
+		return m_initializeResult;
 	}
 
 	void WsaServer::stopServer()

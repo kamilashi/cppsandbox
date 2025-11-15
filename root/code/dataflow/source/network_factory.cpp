@@ -5,7 +5,7 @@ namespace Dataflow
 {
 	namespace NetworkFactory
 	{
-		std::shared_ptr<WsaNetworking::WsaClient> getCLient()
+		std::shared_ptr<WsaNetworking::WsaClient> getClient()
 		{
 			static auto client = std::make_shared<WsaNetworking::WsaClient>();
 			return client;

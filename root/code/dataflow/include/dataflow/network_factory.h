@@ -12,7 +12,7 @@ namespace Dataflow
 	{
 		static constexpr uint32_t sMaxWsaPayloadLength = 1024;
 
-		std::shared_ptr<WsaNetworking::WsaClient> getCLient();
+		std::shared_ptr<WsaNetworking::WsaClient> getClient();
 
 		std::shared_ptr<WsaNetworking::WsaServer> getServer();
 	}

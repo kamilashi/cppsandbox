@@ -27,8 +27,6 @@ namespace Dataflow
 			SerDes::deserializeMessage(&desMessage, msg);
 
 			m_spBus->publish(desMessage);
-
-			//std::cout << "Message from server received! \n" << desMessage << std::endl;
 		}
 
 		bool consumeMessageQueuedFlag()
@@ -51,7 +49,7 @@ namespace Dataflow
 	{
 	public:
 		ClientBusRelay() : 
-			m_spClient(NetworkFactory::getCLient())
+			m_spClient(NetworkFactory::getClient())
 		{
 			m_spClient->start();
 			m_spClient->openServerRecvThread<NetworkHandler>(&m_recieveHandler);

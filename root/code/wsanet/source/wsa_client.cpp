@@ -30,28 +30,33 @@ namespace WsaNetworking
 
 	ConnectionState WsaClient::start()
 	{
-		ConnectionState state = initializeWSA();
-
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult == ConnectionState::WSACS_OK)
 		{
-			return state;
+			return m_initializeResult;
 		}
 
-		state = createSocket(&m_clientSocket);
+		m_initializeResult = initializeWSA();
 
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult != ConnectionState::WSACS_OK)
 		{
-			return state;
+			return m_initializeResult;
 		}
 
-		state = connectToServer();
+		m_initializeResult = createSocket(&m_clientSocket);
 
-		if (state != ConnectionState::WSACS_OK)
+		if (m_initializeResult != ConnectionState::WSACS_OK)
+		{
+			return m_initializeResult;
+		}
+
+		m_initializeResult = connectToServer();
+
+		if (m_initializeResult != ConnectionState::WSACS_OK)
 		{
 			stopClient();
 		}
 
-		return state;
+		return m_initializeResult;
 	}
 
 	void WsaClient::stopClient()

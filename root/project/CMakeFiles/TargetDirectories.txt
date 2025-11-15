@@ -5,8 +5,12 @@ C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/CMakeFiles/shared.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/dataflow/CMakeFiles/dataflow.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_consumer_producer.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_custom_matrix.dir
-C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_ipc.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_client.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_ipc_node_1.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_ipc_node_2.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_observer.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_serdes.dir
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_dataflow_server.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_design_patterns.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_product_except_self.dir
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/test_wsa_client.dir

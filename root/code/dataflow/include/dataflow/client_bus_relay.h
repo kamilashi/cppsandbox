@@ -8,37 +8,49 @@
 
 namespace Dataflow
 {
-	struct NetworkHandler
+	class NetworkHandler
 	{
-		bool isLastMessageFullyQueued;
-
+	public:
 		NetworkHandler() : 
-			isLastMessageFullyQueued (false)
+			m_isLastMessageFullyQueued (false),
+			m_spBus(std::make_shared<Bus>())
 		{ }
 
 		void onMessageQueued(const char*)
 		{
-			isLastMessageFullyQueued = true;
+			m_isLastMessageFullyQueued = true;
 		}
 
 		void onMessageReceived(const char* msg)
 		{
-			std::cout << "Message from server received! \n" << msg << std::endl;
+			Message desMessage;
+			SerDes::deserializeMessage(&desMessage, msg);
+
+			m_spBus->publish(desMessage);
+
+			//std::cout << "Message from server received! \n" << desMessage << std::endl;
 		}
 
 		bool consumeMessageQueuedFlag()
 		{
-			bool flag = isLastMessageFullyQueued;
-			isLastMessageFullyQueued = false;
+			bool flag = m_isLastMessageFullyQueued;
+			m_isLastMessageFullyQueued = false;
 			return flag;
 		}
+
+		std::shared_ptr<Bus>& getMessageBus()
+		{
+			return m_spBus;
+		}
+	private:
+		bool m_isLastMessageFullyQueued;
+		std::shared_ptr<Bus> m_spBus;
 	};
 
 	class ClientBusRelay
 	{
 	public:
 		ClientBusRelay() : 
-			m_spBus(std::make_shared<Bus>()), 
 			m_spClient(NetworkFactory::getCLient())
 		{
 			m_spClient->start();
@@ -47,32 +59,30 @@ namespace Dataflow
 
 		~ClientBusRelay() = default;
 
-		std::shared_ptr<Bus> getMessageBus() const
+		std::shared_ptr<Bus>& getMessageBus()
 		{
-			return m_spBus;
+			return m_recieveHandler.getMessageBus();
 		}
 
 		void relay(const Message& message)
 		{
-			char serializedMsg[NetworkFactory::sMaxWsaPayloadLength];
-			uint32_t messageSize;
+			std::jthread relayThread = std::jthread([this, &message ](std::stop_token st)
+				{	
+					char serializedMsg[NetworkFactory::sMaxWsaPayloadLength];
+					uint32_t messageSize;
 
-			SerDes::serializeMessage(serializedMsg, message, &messageSize);
+					SerDes::serializeMessage(serializedMsg, message, &messageSize);
 
-			NetworkHandler handler;
-			m_spClient->sendServerMessage<NetworkHandler>(serializedMsg, messageSize, &handler);
+					NetworkHandler handler;
+					m_spClient->sendServerMessage<NetworkHandler>(serializedMsg, messageSize, &handler);
 
-			std::jthread relayThread = std::jthread([&](std::stop_token st)
-				{
 					while (!st.stop_requested() && !handler.consumeMessageQueuedFlag())
-					{
-					};
+					{ };
 				}
 			);
 		}
 
 	private:
-		std::shared_ptr<Bus> m_spBus;
 		//#wip: generalize and pack into a NetworkAdapter!
 		std::shared_ptr<WsaNetworking::WsaClient> m_spClient; 
 		NetworkHandler m_recieveHandler;

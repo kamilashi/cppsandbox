@@ -34,12 +34,32 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc/cmake_install.cmake")
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_client/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc_node_1/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc_node_2/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
   include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_observer/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_serdes/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
+  include("C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_server/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)

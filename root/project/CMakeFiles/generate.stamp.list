@@ -4,7 +4,11 @@ C:/MINE/PROJECTS/cppsandbox/root/project/code/datastructs/CMakeFiles/generate.st
 C:/MINE/PROJECTS/cppsandbox/root/project/code/shared/CMakeFiles/generate.stamp
 C:/MINE/PROJECTS/cppsandbox/root/project/code/dataflow/CMakeFiles/generate.stamp
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/CMakeFiles/generate.stamp
-C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc/CMakeFiles/generate.stamp
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_client/CMakeFiles/generate.stamp
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc_node_1/CMakeFiles/generate.stamp
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_ipc_node_2/CMakeFiles/generate.stamp
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_observer/CMakeFiles/generate.stamp
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_serdes/CMakeFiles/generate.stamp
+C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_dataflow_server/CMakeFiles/generate.stamp
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_wsa_client/CMakeFiles/generate.stamp
 C:/MINE/PROJECTS/cppsandbox/root/project/code/tests/test_wsa_server/CMakeFiles/generate.stamp

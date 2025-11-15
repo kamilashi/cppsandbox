@@ -217,9 +217,8 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_client/include/*.h")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/include/build_config.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -227,7 +226,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_HEADERS at cmake/AddApp.cmake:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/include/*.hpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_client/include/*.hpp")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -236,7 +235,7 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/source/*.c")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_client/source/*.c")
 set(OLD_GLOB
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
@@ -245,9 +244,83 @@ if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
 endif()
 
 # APP_SOURCES at cmake/AddApp.cmake:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/source/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_client/source/*.cpp")
 set(OLD_GLOB
-  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc/source/main.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_client/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_1/include/*.h")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_1/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_1/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_1/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_1/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_2/include/*.h")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_2/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_2/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_2/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_ipc_node_2/source/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
@@ -286,6 +359,80 @@ endif()
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_observer/source/*.cpp")
 set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_observer/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_serdes/include/*.h")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_serdes/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_serdes/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_serdes/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_serdes/source/main.cpp"
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_server/include/*.h")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_HEADERS at cmake/AddApp.cmake:11 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_server/include/*.hpp")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_server/source/*.c")
+set(OLD_GLOB
+  )
+if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
+  message("-- GLOB mismatch!")
+  file(TOUCH_NOCREATE "C:/MINE/PROJECTS/cppsandbox/root/project/CMakeFiles/cmake.verify_globs")
+endif()
+
+# APP_SOURCES at cmake/AddApp.cmake:12 (file)
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_server/source/*.cpp")
+set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/tests/test_dataflow_server/source/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")

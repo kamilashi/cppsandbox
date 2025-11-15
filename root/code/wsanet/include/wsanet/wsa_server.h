@@ -46,7 +46,7 @@ namespace WsaNetworking
 		SOCKET m_serverSocket;
 		std::jthread m_acceptClientThread;
 
-		static constexpr size_t m_maxClientCount = 2; // #todo: make configurable; either use std::vector or allocate on the heap
+		static constexpr size_t m_maxClientCount = 10; // #todo: make configurable; either use std::vector or allocate on the heap
 		SOCKET m_clientSockets[m_maxClientCount];
 		std::atomic<size_t > m_connectedClientCount;
 		std::atomic<size_t > m_maxClientIdx;
@@ -114,29 +114,36 @@ namespace WsaNetworking
 	template<ConcreteHandler H>
 	void WsaServer::acceptNewClients(H* pHandler)
 	{
-		m_acceptClientThread = std::jthread([&](std::stop_token st)
+		m_acceptClientThread = std::jthread([this, pHandler](std::stop_token st)
 			{
-				while (!st.stop_requested() && !isClientLimitReached())
+				while (!st.stop_requested())
 				{
 					SOCKET acceptedSocket = accept(m_serverSocket, nullptr, nullptr);
 					if (acceptedSocket == INVALID_SOCKET)
 					{
 						std::cout << "accept failed:" << WSAGetLastError() << std::endl;
-						return -1;
+						return;
 					}
 
-					const size_t maxClientIdx = m_maxClientIdx.load(std::memory_order_acquire);
-					const size_t clientIdx = m_nextClientIdx.load(std::memory_order_acquire);
-					m_clientSockets[clientIdx] = acceptedSocket;
+					if (!isClientLimitReached())
+					{
+						const size_t maxClientIdx = m_maxClientIdx.load(std::memory_order_acquire);
+						const size_t clientIdx = m_nextClientIdx.load(std::memory_order_acquire);
+						m_clientSockets[clientIdx] = acceptedSocket;
 
-					const size_t newMaxIdx = max(maxClientIdx, clientIdx);
-					m_connectedClientCount.fetch_add(1, std::memory_order_acq_rel);
-					m_maxClientIdx.store(newMaxIdx, std::memory_order_release);
-					m_nextClientIdx.store(newMaxIdx + 1, std::memory_order_release);
+						const size_t newMaxIdx = max(maxClientIdx, clientIdx);
+						m_connectedClientCount.fetch_add(1, std::memory_order_acq_rel);
+						m_maxClientIdx.store(newMaxIdx, std::memory_order_release);
+						m_nextClientIdx.store(newMaxIdx + 1, std::memory_order_release);
 
-					std::cout << "client No. " << clientIdx << " accepted!" << std::endl;
+						std::cout << "client No. " << clientIdx << " accepted!" << std::endl;
 
-					openClientRecvThread<H>(clientIdx, pHandler);
+						openClientRecvThread<H>(clientIdx, pHandler);
+					}
+					else
+					{
+						std::cout << "accept failed: client limit reached" << std::endl;
+					}
 				}
 			});
 	}

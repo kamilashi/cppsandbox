@@ -190,13 +190,29 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{8AD6BB7D-7BB0-3F12-B7C7-DE229E53DBDB}</Project>
       <Name>test_custom_matrix</Name>
     </ProjectReference>
-    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_ipc.vcxproj">
-      <Project>{01023AD1-FAE6-3BC9-8D27-3046D3FF8632}</Project>
-      <Name>test_dataflow_ipc</Name>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_client.vcxproj">
+      <Project>{853BF5F6-365C-3AD8-B5F7-437461AF929D}</Project>
+      <Name>test_dataflow_client</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_ipc_node_1.vcxproj">
+      <Project>{DAE98674-3AD1-31C9-B325-BF2DD8AEB68A}</Project>
+      <Name>test_dataflow_ipc_node_1</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_ipc_node_2.vcxproj">
+      <Project>{09503D65-2DFA-3FA4-A3A4-EDD1353B01E5}</Project>
+      <Name>test_dataflow_ipc_node_2</Name>
     </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_observer.vcxproj">
       <Project>{0661D42E-5794-3027-9943-69B399EDB820}</Project>
       <Name>test_dataflow_observer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_serdes.vcxproj">
+      <Project>{A5E7AD4C-1505-30C2-9EAD-BADA011343A4}</Project>
+      <Name>test_dataflow_serdes</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_dataflow_server.vcxproj">
+      <Project>{D7A69475-FB3D-3A5E-93F0-FBC191437E75}</Project>
+      <Name>test_dataflow_server</Name>
     </ProjectReference>
     <ProjectReference Include="C:\MINE\PROJECTS\cppsandbox\root\project\code\tests\test_design_patterns.vcxproj">
       <Project>{FF57D17D-460B-3776-91DC-E8EBC3AF9755}</Project>

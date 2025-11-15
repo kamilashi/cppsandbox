@@ -7,17 +7,10 @@
 
 #include <mutex>  
 
+#include "wsa_handler.h"
+
 namespace WsaNetworking
 {
-	class Handler
-	{
-	public:
-		virtual ~Handler();
-
-		virtual void onMessageQueued();
-		virtual void onMessageReceived();
-	};
-
 	enum class ConnectionState
 	{
 		WSACS_OK,
@@ -56,6 +49,34 @@ namespace WsaNetworking
 		}
 
 		return true;
+	}
+
+	template<ConcreteHandler Handler>
+	void onMessageReceived(const char* message, WsaHandler<Handler>* pHandler = nullptr)
+	{
+		if (pHandler != nullptr)
+		{
+			pHandler->onMessageReceived(message);
+		}
+		else
+		{
+			static Handler handler;
+			handler.onMessageReceived(message);
+		}
+	}
+
+	template<ConcreteHandler Handler>
+	void onMessageSent(const char* message, WsaHandler<Handler>* pHandler = nullptr)
+	{
+		if (pHandler != nullptr)
+		{
+			pHandler->onMessageQueued(message);
+		}
+		else
+		{
+			static Handler handler;
+			handler.onMessageQueued(message);
+		}
 	}
 
 	FORCEINLINE void storeHostu32(char* out32, uint32_t in32)

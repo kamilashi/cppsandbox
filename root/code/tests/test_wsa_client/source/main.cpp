@@ -3,10 +3,24 @@
 //#define TRACKMALLOC
 //#include "malloc_tracker.h"
 
+struct ClientHandler
+{
+	void onMessageReceived(const char* message)
+	{
+		std::cout << "Message received from server: " << message << std::endl;
+	}
+
+	void onMessageQueued(const char* message)
+	{
+		std::cout << "Message queued to server: " << message << std::endl;
+	}
+};
+
 int main(int argc, char* argv[])
 {
 	WsaNetworking::WsaClient client;
 	client.start();
+	client.openServerRecvThread<ClientHandler>();
 
 	std::jthread broadcastThread = std::jthread([&](std::stop_token st)
 		{

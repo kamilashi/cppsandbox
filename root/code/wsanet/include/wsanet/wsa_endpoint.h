@@ -5,7 +5,6 @@
 #include <ws2tcpip.h>   
 #include <windows.h>  
 #include <iostream>
-#include <thread>
 #include <mutex>
 
 #include "stdafx.h"

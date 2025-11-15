@@ -37,9 +37,24 @@ namespace Dataflow
 		return 0;
 	}
 
+	int testClient()
+	{
+		ClientBusRelay clientRelay;
+		Message messageIn(TopicId::Topic_NumberGen, "test source", "3.125f");
+		messageIn.userData = 3.125f;
+		clientRelay.relay(messageIn);
+
+		while (getchar() != '\n')
+		{
+		}
+
+		return 0;
+	}
+
 	int runTest()
 	{
-		return testSerDes();
+		//return testSerDes();
+		return testClient();
 	}
 }
 

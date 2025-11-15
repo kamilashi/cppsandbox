@@ -449,6 +449,7 @@ set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/stdafx.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_client.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_endpoint.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_handler.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_helpers.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/wsanet/include/wsanet/wsa_server.h"
   )

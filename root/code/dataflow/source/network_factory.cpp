@@ -7,13 +7,13 @@ namespace Dataflow
 	{
 		std::shared_ptr<WsaNetworking::WsaClient> getCLient()
 		{
-			static std::shared_ptr<WsaNetworking::WsaClient> client;
+			static auto client = std::make_shared<WsaNetworking::WsaClient>();
 			return client;
 		}
 
 		std::shared_ptr<WsaNetworking::WsaServer> getServer()
 		{
-			static std::shared_ptr<WsaNetworking::WsaServer> server;
+			static auto server = std::make_shared<WsaNetworking::WsaServer>();
 			return server;
 		}
 	}

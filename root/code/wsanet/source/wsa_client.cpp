@@ -23,78 +23,25 @@ namespace WsaNetworking
 		return ConnectionState::WSACS_OK;
 	}
 
-	void WsaClient::onMessageReceived(const char* message)
-	{
-		std::cout << "Message received from server: " << message << std::endl;
-	}
-
-	void WsaClient::onMessageSent(const char* message)
-	{
-		std::cout << "message queued to server: " << message << std::endl;
-	}
-
-	void WsaClient::sendServerMessage(const char* message)
-	{
-		if (sendMessageFrame(&m_clientSocket, 
-						&m_mutex, 
-						message) == ConnectionState::WSACS_OK)
-		{
-			onMessageSent(message);
-		}
-		else
-		{
-			stopClient();
-		}
-	}
-
-	ConnectionState WsaClient::waitForServerMessage()
-	{
-		WsaMessageFrame inFrame = getMessageFrame(&m_clientSocket);
-
-		if (inFrame.state == ConnectionState::WSACS_OK)
-		{
-			onMessageReceived(inFrame.buffer);
-		}
-
-		return inFrame.state;
-	}
-
-	void WsaClient::openServerRecvThread()
-	{
-		m_serverConnectionThread = std::jthread([this](std::stop_token st)
-		{
-			while (!st.stop_requested())
-			{
-				ConnectionState state = waitForServerMessage();
-
-				if (state != ConnectionState::WSACS_OK)
-				{
-					stopClient();
-					break;
-				}
-			}
-		});
-	}
-
 	void WsaClient::closeServerRecvThread()
 	{
 		m_serverConnectionThread.request_stop();
 	}
 
-	void WsaClient::start()
+	ConnectionState WsaClient::start()
 	{
 		ConnectionState state = initializeWSA();
 
 		if (state != ConnectionState::WSACS_OK)
 		{
-			return;
+			return state;
 		}
 
 		state = createSocket(&m_clientSocket);
 
 		if (state != ConnectionState::WSACS_OK)
 		{
-			return;
+			return state;
 		}
 
 		state = connectToServer();
@@ -102,10 +49,9 @@ namespace WsaNetworking
 		if (state != ConnectionState::WSACS_OK)
 		{
 			stopClient();
-			return;
 		}
 
-		openServerRecvThread();
+		return state;
 	}
 
 	void WsaClient::stopClient()
@@ -129,7 +75,7 @@ namespace WsaNetworking
 	void WsaClient::sendDummyMessage()
 	{
 		const char buffer[50] = "Client sent this message!";
-		sendServerMessage(buffer);
+		sendServerMessage<DummyHandler>(buffer);
 	}
 
 	WsaClient::~WsaClient()

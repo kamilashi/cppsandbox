@@ -2,6 +2,7 @@
 #define WSANETWORKINGCLIENT_H
 
 #include "wsanet/wsa_endpoint.h"
+#include "wsanet/wsa_handler.h"
 
 namespace WsaNetworking
 {
@@ -16,20 +17,20 @@ namespace WsaNetworking
 
 		~WsaClient();
 
-		void start();
+		ConnectionState start();
+
 		void requestStop();
 
-		void sendServerMessage(const char*);
+		template<ConcreteHandler H>
+		void sendServerMessage(const char*, WsaHandler<H>* = nullptr);
+
+		template<ConcreteHandler H>
+		void openServerRecvThread(WsaHandler<H>* = nullptr);
 
 		void sendDummyMessage();
 	private:
 		ConnectionState connectToServer();
 
-		void onMessageReceived(const char*);
-		void onMessageSent(const char*);
-
-		ConnectionState waitForServerMessage();
-		void openServerRecvThread();
 		void closeServerRecvThread();
 
 		void stopClient();
@@ -41,6 +42,41 @@ namespace WsaNetworking
 		std::jthread m_serverConnectionThread;
 		std::mutex m_mutex;
 	};
+
+	template<ConcreteHandler H>
+	void WsaClient::sendServerMessage(const char* message, WsaHandler<H>* pHandler)
+	{
+		if (sendMessageFrame(&m_clientSocket,
+			&m_mutex,
+			message) == ConnectionState::WSACS_OK)
+		{
+			onMessageSent(message, pHandler);
+		}
+		else
+		{
+			stopClient();
+		}
+	}
+
+	template<ConcreteHandler H>
+	void WsaClient::openServerRecvThread(WsaHandler<H>* pHandler)
+	{
+		m_serverConnectionThread = std::jthread([this, pHandler](std::stop_token st)
+			{
+				while (!st.stop_requested())
+				{
+					WsaMessageFrame inFrame = getMessageFrame(&m_clientSocket);
+
+					if (inFrame.state != ConnectionState::WSACS_OK)
+					{
+						stopClient();
+						break;
+					}
+
+					onMessageReceived<H>(inFrame.buffer, pHandler);
+				}
+			});
+	}
 }
 
 #endif // WSANETWORKINGCLIENT_H

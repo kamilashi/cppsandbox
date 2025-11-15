@@ -3,6 +3,7 @@
 
 #include "wsanet/wsa_client.h"
 #include "wsanet/wsa_server.h"
+#include "wsanet/wsa_handler.h"
 #include <memory>
 
 namespace Dataflow

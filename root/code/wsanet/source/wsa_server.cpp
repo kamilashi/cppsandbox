@@ -29,87 +29,9 @@ namespace WsaNetworking
 		return ConnectionState::WSACS_OK;
 	}
 
-	void WsaServer::onMessageReceived(const char* message)
-	{
-		std::cout << "Message received from client: " << message << std::endl;
-	}
-
-	void WsaServer::onMessageSent(const char* message)
-	{
-		std::cout << "message queued to client: " << message << std::endl;
-	}
-
-	void WsaServer::sendClientMessage(const char* message, size_t clientConnection)
-	{
-		if (sendMessageFrame(&m_clientSockets[clientConnection],
-			&m_clientConnectionMutexes[clientConnection],
-			message) == ConnectionState::WSACS_OK)
-		{
-			onMessageSent(message);
-		}
-		else
-		{
-			stopClient(clientConnection);
-		}
-	}
-
-	ConnectionState WsaServer::waitForClientMessage(size_t clientConnection)
-	{
-		WsaMessageFrame frame = getMessageFrame(&m_clientSockets[clientConnection]);
-
-		if (frame.state == ConnectionState::WSACS_OK)
-		{
-			onMessageReceived(frame.buffer);
-		}
-
-		return frame.state;
-	}
-
-	void WsaServer::openClientRecvThread(size_t clientConnectionIdx)
-	{
-		m_clientConnectionThreads[clientConnectionIdx] = std::jthread([this, clientConnectionIdx] (std::stop_token st) 
-		{
-			while (!st.stop_requested())
-			{
-				ConnectionState state = waitForClientMessage(clientConnectionIdx);
-				
-				if (state != ConnectionState::WSACS_OK)
-				{
-					stopClient(clientConnectionIdx);
-					break;
-				}
-			}
-		});
-	}
-
 	void WsaServer::closeClientRecvThread(size_t clientConnectionIdx)
 	{
 		m_clientConnectionThreads[clientConnectionIdx].request_stop();
-	}
-
-	int WsaServer::acceptNewClient()
-	{
-		SOCKET acceptedSocket = accept(m_serverSocket, nullptr, nullptr);
-		if (acceptedSocket == INVALID_SOCKET)
-		{
-			std::cout << "accept failed:" << WSAGetLastError() << std::endl;
-			return -1;
-		}
-
-		const size_t maxClientIdx = m_maxClientIdx.load(std::memory_order_acquire);
-		const size_t clientIdx = m_nextClientIdx.load(std::memory_order_acquire);
-		m_clientSockets[clientIdx] = acceptedSocket;
-
-		const size_t newMaxIdx = max(maxClientIdx, clientIdx);
-		m_connectedClientCount.fetch_add(1, std::memory_order_acq_rel);
-		m_maxClientIdx.store(newMaxIdx, std::memory_order_release);
-		m_nextClientIdx.store(newMaxIdx + 1, std::memory_order_release);
-
-		std::cout << "client No. " << clientIdx << " accepted!" << std::endl;
-
-		openClientRecvThread(clientIdx);
-
-		return 0;
 	}
 
 	void WsaServer::stopClient(size_t connectionIdx)
@@ -137,20 +59,20 @@ namespace WsaNetworking
 		return m_connectedClientCount.load(std::memory_order_acquire) >= m_maxClientCount;
 	}
 
-	void WsaServer::start()
+	ConnectionState WsaServer::start()
 	{
 		ConnectionState state = initializeWSA();
 
 		if (state != ConnectionState::WSACS_OK)
 		{
-			return;
+			return state;
 		}
 		
 		state = createSocket(&m_serverSocket);
 
 		if (state != ConnectionState::WSACS_OK)
 		{
-			return;
+			return state;
 		}
 		  
 		state = initializeServer();
@@ -158,20 +80,14 @@ namespace WsaNetworking
 		if (state != ConnectionState::WSACS_OK)
 		{
 			stopServer();
-			return;
+			return state;
 		}
 
 		m_connectedClientCount.store(0, std::memory_order_release);
 		m_nextClientIdx.store(0, std::memory_order_release);
 		m_maxClientIdx.store(0, std::memory_order_release);
 
-		m_acceptClientThread = std::jthread([this](std::stop_token st)
-		{
-			while (!st.stop_requested() && !isClientLimitReached())
-			{
-				acceptNewClient();
-			}
-		});
+		return state;
 	}
 
 	void WsaServer::stopServer()
@@ -200,7 +116,7 @@ namespace WsaNetworking
 	void WsaServer::sendDummyMessage(size_t connectionIdx)
 	{
 		const char buffer[50] = "broadcasting this!";
-		sendClientMessage(buffer, connectionIdx);
+		sendClientMessage<DummyHandler>(buffer, 50, connectionIdx);
 	}
 
 	void WsaServer::broadcastDummyMessage() // #wip

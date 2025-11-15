@@ -25,7 +25,7 @@ uint32_t getSerializedSize(const WsaSerializedMessage& message)
 	return size;
 }
 
-void serializeMessageWSA(char* pOut, const Dataflow::Message& message)
+void serializeMessageWSA(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize = nullptr)
 {
 	WsaSerializedMessage serializedMessage;
 	constexpr uint32_t bitsPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
@@ -58,6 +58,11 @@ void serializeMessageWSA(char* pOut, const Dataflow::Message& message)
 
 	memcpy(pSerMsgHead, message.payload.data(), serializedMessage.payloadLength);
 	pSerMsgHead[serializedMsgSize - 1] = '\0';
+
+	if (pSerializedMessageSize != nullptr)
+	{
+		*pSerializedMessageSize = serializedMsgSize;
+	}
 }
 
 void deserializeMessageWSA(Dataflow::Message* pOut, const char* pMessage)
@@ -88,9 +93,9 @@ void deserializeMessageWSA(Dataflow::Message* pOut, const char* pMessage)
 	pOut->payload.assign(pSerMsgHead, pSerMsgHead + serializedMessage.payloadLength);
 }
 
-void Dataflow::SerDes::serializeMessage(char* pOut, const Dataflow::Message& message)
+void Dataflow::SerDes::serializeMessage(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize)
 {
-	serializeMessageWSA(pOut, message); // #wip: add support for different serializers
+	serializeMessageWSA(pOut, message, pSerializedMessageSize); // #wip: add support for different serializers
 }
 
 void Dataflow::SerDes::deserializeMessage(Dataflow::Message* pOut, const char* pMessage)

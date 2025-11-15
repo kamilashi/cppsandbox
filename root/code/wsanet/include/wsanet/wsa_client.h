@@ -22,10 +22,10 @@ namespace WsaNetworking
 		void requestStop();
 
 		template<ConcreteHandler H>
-		void sendServerMessage(const char*, WsaHandler<H>* = nullptr);
+		void sendServerMessage(const char*, uint32_t, H* = nullptr);
 
 		template<ConcreteHandler H>
-		void openServerRecvThread(WsaHandler<H>* = nullptr);
+		void openServerRecvThread(H* = nullptr);
 
 		void sendDummyMessage();
 	private:
@@ -44,11 +44,12 @@ namespace WsaNetworking
 	};
 
 	template<ConcreteHandler H>
-	void WsaClient::sendServerMessage(const char* message, WsaHandler<H>* pHandler)
+	void WsaClient::sendServerMessage(const char* message, uint32_t messageSize, H* pHandler)
 	{
 		if (sendMessageFrame(&m_clientSocket,
 			&m_mutex,
-			message) == ConnectionState::WSACS_OK)
+			message,
+			messageSize) == ConnectionState::WSACS_OK)
 		{
 			onMessageSent(message, pHandler);
 		}
@@ -59,7 +60,7 @@ namespace WsaNetworking
 	}
 
 	template<ConcreteHandler H>
-	void WsaClient::openServerRecvThread(WsaHandler<H>* pHandler)
+	void WsaClient::openServerRecvThread(H* pHandler)
 	{
 		m_serverConnectionThread = std::jthread([this, pHandler](std::stop_token st)
 			{

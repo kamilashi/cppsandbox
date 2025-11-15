@@ -16,5 +16,6 @@ namespace Dataflow
 			static auto server = std::make_shared<WsaNetworking::WsaServer>();
 			return server;
 		}
+
 	}
 }

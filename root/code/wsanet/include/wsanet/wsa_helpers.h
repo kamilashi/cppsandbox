@@ -51,8 +51,8 @@ namespace WsaNetworking
 		return true;
 	}
 
-	template<ConcreteHandler Handler>
-	void onMessageReceived(const char* message, WsaHandler<Handler>* pHandler = nullptr)
+	template<ConcreteHandler H>
+	void onMessageReceived(const char* message, H* pHandler = nullptr)
 	{
 		if (pHandler != nullptr)
 		{
@@ -60,13 +60,13 @@ namespace WsaNetworking
 		}
 		else
 		{
-			static Handler handler;
+			static H handler;
 			handler.onMessageReceived(message);
 		}
 	}
 
-	template<ConcreteHandler Handler>
-	void onMessageSent(const char* message, WsaHandler<Handler>* pHandler = nullptr)
+	template<ConcreteHandler H>
+	void onMessageSent(const char* message, H* pHandler = nullptr)
 	{
 		if (pHandler != nullptr)
 		{
@@ -74,7 +74,7 @@ namespace WsaNetworking
 		}
 		else
 		{
-			static Handler handler;
+			static H handler;
 			handler.onMessageQueued(message);
 		}
 	}
@@ -134,22 +134,23 @@ namespace WsaNetworking
 		return ConnectionState::WSACS_OK;
 	}
 
-	FORCEINLINE ConnectionState sendMessageFrame(SOCKET* pSocket, std::mutex* pMutex, const char* payload)
+	FORCEINLINE ConnectionState sendMessageFrame(SOCKET* pSocket, std::mutex* pMutex, const char* payload, uint32_t payloadLength)
 	{
-		const uint32_t payloadLength = strlen(payload) + 1;
-		const uint32_t fullLength = payloadLength + WsaMessageFrame::sPrependLength;
+		const uint32_t payloadSize = payloadLength + 1; 
+		const uint32_t fullSize = payloadSize + WsaMessageFrame::sPrependLength;
 
 		char prepend[WsaMessageFrame::sPrependLength];
 
-		storeHostu32(prepend, payloadLength);
+		storeHostu32(prepend, payloadSize);
 
 		WsaMessageFrame frame;
-		frame.buffer = new char[fullLength];
+		frame.buffer = new char[fullSize];
 
 		memcpy(frame.buffer, prepend, WsaMessageFrame::sPrependLength);
-		strcpy(frame.buffer + WsaMessageFrame::sPrependLength, payload); // end with null termination
+		memcpy(frame.buffer + WsaMessageFrame::sPrependLength, payload, payloadLength);
+		frame.buffer[fullSize - 1] = '\0';
 
-		ConnectionState state = sendMessage(pSocket, pMutex, frame.buffer, fullLength);
+		ConnectionState state = sendMessage(pSocket, pMutex, frame.buffer, fullSize);
 
 		return state;
 	}

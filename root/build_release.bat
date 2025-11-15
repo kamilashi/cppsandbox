@@ -1,2 +1,3 @@
 @echo off
-cmake --build ./builds --config Release
+rem Build everything in Release
+cmake --build "%~dp0build" --config Release

@@ -9,6 +9,7 @@ namespace WsaNetworking
 {
 	template <class T>
 	concept ConcreteHandler =
+		std::default_initializable<T> &&
 		requires (T h, const char* m)
 	{
 		h.onMessageQueued(m);
@@ -17,16 +18,16 @@ namespace WsaNetworking
 
 	struct DummyHandler
 	{
-		static void onMessageReceived(const char* message)
+		void onMessageReceived(const char* message)
 		{
 			std::cout << "Message received: " << message << std::endl;
 		}
 
-		static void onMessageQueued(const char* message)
+		void onMessageQueued(const char* message)
 		{
 			std::cout << "Message queued: " << message << std::endl;
 		}
 	};
 }
 
-#endif WSANETWORKINGHANDLER_H
+#endif

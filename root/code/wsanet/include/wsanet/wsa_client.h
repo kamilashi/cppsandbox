@@ -12,7 +12,8 @@ namespace WsaNetworking
 		WsaClient(uint16_t port = 55555, const char* ipAddress = "127.0.0.1") :
 			m_serverPort(port),
 			m_serverIP(ipAddress),
-			m_clientSocket(INVALID_SOCKET)
+			m_clientSocket(INVALID_SOCKET),
+			m_initializeResult(ConnectionState::WSACS_UNKNOWN)
 		{}
 
 		~WsaClient();
@@ -38,6 +39,8 @@ namespace WsaNetworking
 		int m_serverPort;
 		const char* m_serverIP;
 		SOCKET m_clientSocket;
+
+		ConnectionState m_initializeResult;
 
 		std::jthread m_serverConnectionThread;
 		std::mutex m_mutex;

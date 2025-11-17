@@ -121,7 +121,7 @@ namespace WsaNetworking
 	void WsaServer::sendDummyMessage(size_t connectionIdx)
 	{
 		const char buffer[50] = "broadcasting this!";
-		sendClientMessage<DummyHandler>(buffer, 50, connectionIdx);
+		sendClientMessage<DummyHandler>(buffer, strlen(buffer), connectionIdx);
 	}
 
 	void WsaServer::broadcastDummyMessage() // #wip
@@ -142,7 +142,8 @@ namespace WsaNetworking
 		m_serverIP(ipAddress),
 		m_serverSocket(INVALID_SOCKET),
 		m_connectedClientCount(0),
-		m_isStopRequested(false)
+		m_isStopRequested(false),
+		m_initializeResult(ConnectionState::WSACS_UNKNOWN)
 	{
 		for (auto& socket : m_clientSockets) 
 		{

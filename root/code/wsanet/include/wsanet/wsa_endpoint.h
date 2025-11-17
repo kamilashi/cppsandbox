@@ -14,9 +14,6 @@ namespace WsaNetworking
 {
 	class WsaEndpoint
 	{
-	public:
-		virtual ~WsaEndpoint() = default;
-
 	protected:
 		WsaEndpoint() :
 			m_initializeResult(ConnectionState::WSACS_UNKNOWN)
@@ -24,8 +21,6 @@ namespace WsaNetworking
 
 		ConnectionState initializeWSA();
 		ConnectionState createSocket(SOCKET* pSocket);
-
-		ConnectionState m_initializeResult;
 	};
 }
 

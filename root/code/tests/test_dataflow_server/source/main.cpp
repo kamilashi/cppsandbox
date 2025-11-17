@@ -28,7 +28,7 @@ namespace Dataflow
 		void onMessageQueued(const char* message)
 		{
 			Message desMessage;
-			SerDes::deserializeMessageWSA(&desMessage, message);
+			SerDes::deserializeMessageWsa(&desMessage, message);
 			//std::cout << "message broadcasted to clients: " << desMessage << std::endl;
 		}
 

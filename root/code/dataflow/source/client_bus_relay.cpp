@@ -3,19 +3,22 @@
 
 namespace Dataflow
 {
-	ClientBusRelay::ClientBusRelay(NetworkBackend networkBackend) :
-		m_networkPipe(networkBackend)
+	namespace Ipc
 	{
-		m_networkPipe.initializeClient();
-	}
+		ClientBusRelay::ClientBusRelay(NetworkBackend networkBackend) :
+			m_networkPipe(networkBackend)
+		{
+			m_networkPipe.initializeClient();
+		}
 
-	void ClientBusRelay::relay(const Message& message)
-	{
-		m_networkPipe.send(message);
-	}
+		void ClientBusRelay::relay(const Message & message)
+		{
+			m_networkPipe.send(message);
+		}
 
-	std::shared_ptr <Bus> ClientBusRelay::getMessageBus() const
-	{
-		return NetworkFactory::getMessageBusInstance();
+		std::shared_ptr <Bus> ClientBusRelay::getMessageBus() const
+		{
+			return NetworkFactory::getMessageBusInstance();
+		}
 	}
 }

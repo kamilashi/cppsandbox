@@ -8,7 +8,7 @@ namespace Dataflow
 	class NumberGenNodeIpc : public Node
 	{
 	public:
-		NumberGenNodeIpc(ClientBusRelay* pRelay) :
+		NumberGenNodeIpc(Ipc::ClientBusRelay* pRelay) :
 			Node(500),
 			m_nextNumber(0),
 			m_pRelay(pRelay)
@@ -35,12 +35,12 @@ namespace Dataflow
 		}
 
 		float m_nextNumber;
-		ClientBusRelay* m_pRelay;
+		Ipc::ClientBusRelay* m_pRelay;
 	};
 
 	int testClient()
 	{
-		ClientBusRelay clientRelay(NetworkBackend::NetworkBackend_WSA);
+		Ipc::ClientBusRelay clientRelay(Ipc::NetworkBackend::NetworkBackend_WSA);
 
 		NumberGenNodeIpc numGen(&clientRelay);
 

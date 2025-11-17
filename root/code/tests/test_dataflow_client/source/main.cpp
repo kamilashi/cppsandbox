@@ -6,7 +6,7 @@ namespace Dataflow
 {
 	int testClient()
 	{
-		ClientBusRelay clientRelay(NetworkBackend::NetworkBackend_WSA);
+		Ipc::ClientBusRelay clientRelay(Ipc::NetworkBackend::NetworkBackend_WSA);
 		Message messageIn(TopicId::Topic_NumberGen, "test source", "3.125f");
 		messageIn.userData = 3.125f;
 		clientRelay.relay(messageIn);

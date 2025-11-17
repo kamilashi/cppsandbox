@@ -7,20 +7,23 @@
 
 namespace Dataflow
 {
-	class ClientBusRelay
+	namespace Ipc
 	{
-	public:
-		ClientBusRelay(NetworkBackend networkBackend);
+		class ClientBusRelay
+		{
+		public:
+			ClientBusRelay(NetworkBackend networkBackend);
 
-		~ClientBusRelay() = default;
+			~ClientBusRelay() = default;
 
-		void relay(const Message&);
+			void relay(const Message&);
 
-		std::shared_ptr <Bus> getMessageBus() const;
+			std::shared_ptr <Bus> getMessageBus() const;
 
-	private:
-		NetworkPipe m_networkPipe;
-	};
+		private:
+			NetworkPipe m_networkPipe;
+		};
+	}
 }
 
 #endif // DATAFLOWCLIENTBUSRELAY_H

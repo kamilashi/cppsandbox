@@ -13,11 +13,11 @@ namespace Dataflow
 
 		char payload[maxSerializedMessgeSize];
 
-		SerDes::serializeMessage(payload, messageIn);
+		SerDes::serializeMessageWsa(payload, messageIn);
 
 		Message messageOut;
 
-		SerDes::deserializeMessage(&messageOut, payload);
+		SerDes::deserializeMessageWsa(&messageOut, payload);
 
 		if (messageOut != messageIn)
 		{

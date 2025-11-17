@@ -8,7 +8,7 @@ namespace Dataflow
 	class AddNodeIpc : public Node
 	{
 	public:
-		AddNodeIpc(ClientBusRelay* pRelay) :
+		AddNodeIpc(Ipc::ClientBusRelay* pRelay) :
 			Node(500),
 			m_pRelay(pRelay)
 		{
@@ -36,7 +36,7 @@ namespace Dataflow
 			m_pRelay->relay(sum);
 		}
 
-		ClientBusRelay* m_pRelay;
+		Ipc::ClientBusRelay* m_pRelay;
 	};
 
 	void printMessage(const Message& message)
@@ -46,7 +46,7 @@ namespace Dataflow
 
 	int testClient()
 	{
-		ClientBusRelay clientRelay(NetworkBackend::NetworkBackend_WSA);
+		Ipc::ClientBusRelay clientRelay(Ipc::NetworkBackend::NetworkBackend_WSA);
 
 		AddNodeIpc node(&clientRelay);
 

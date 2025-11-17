@@ -127,24 +127,88 @@ namespace Dataflow
 		std::cout << resultMessage.source << " : " << resultMessage.payload << "\n\n";
 	}
 
+	struct Diff
+	{
+		void fire(std::vector<Input>& ins, std::vector<Output>& outs)
+		{
+			Message op1 = ins[0].consume();
+			Message op2 = ins[0].consume();
+
+			Message sum = Message(
+				TopicId::Topic_Dif,
+				"add",
+				std::format(" {} - {} ", op1.userData, op2.userData));
+
+			sum.userData = op1.userData - op2.userData;
+
+			outs[0].produce(sum);
+		}
+	};
+
+	struct MultSumDiff
+	{
+		void fire(std::vector<Input>& ins, std::vector<Output>& outs)
+		{
+			Message op1 = ins[0].consume();
+			Message op2 = ins[1].consume();
+
+			Message sum = Message(
+				TopicId::Topic_MultSumDif,
+				"multiply sum and diff",
+				std::format("( {} ) * ( {} )", op1.payload, op2.payload));
+
+			sum.userData = op1.userData * op2.userData;
+
+			outs[0].produce(sum);
+		}
+	};
+
+	struct Result
+	{
+		void fire(std::vector<Input>& ins, std::vector<Output>& outs)
+		{
+			Message op1 = ins[0].consume();
+
+			Message res = Message(
+				TopicId::Topic_FinalRes,
+				"result",
+				std::format(" {} = {} ", op1.payload, op1.userData));
+
+			res.userData = op1.userData;
+
+			outs[0].produce(res);
+		}
+	};
+
 	void testNodes()
 	{
 		auto spMessageBus = std::make_shared<Bus>();
 		NumberGenNode numGen(spMessageBus);
 		AddNode add(spMessageBus);
-		//SubNode sub(spMessageBus);
-		MultSumsNode multSums(spMessageBus);
-		//MultSumDiffNode multSumDiff(spMessageBus);
-		ResultNode result(spMessageBus);
+		//MultSumsNode multSums(spMessageBus);
+		//ResultNode result(spMessageBus);
+
+		// template nodes
+		Node<Diff> multSumsNode(1000.0f,
+			{ {TopicId::Topic_Sum, 2} },
+			{ {TopicId::Topic_Dif} },
+			spMessageBus);
+
+		Node<MultSumDiff> multSumDiffNode(1000.0f,
+			{ {TopicId::Topic_Sum}, {TopicId::Topic_Dif} },
+			{ {TopicId::Topic_MultSumDif} }, 
+			spMessageBus);
+
+		Node<Result> resultNode(1000.0f,
+		{ {TopicId::Topic_MultSumDif} },
+		{ {TopicId::Topic_FinalRes} },
+			spMessageBus);
 
 		Subscriber numGenPrinter(TopicId::Topic_NumberGen);
 		Subscriber sumPrinter(TopicId::Topic_Sum);
 		Subscriber multPrinter(TopicId::Topic_MultSums);
 		Subscriber resultPrinter(TopicId::Topic_FinalRes);
 
-		//numGenPrinter.subscribe(spMessageBus, printNodeOperationResult);
-		//sumPrinter.subscribe(spMessageBus, printNodeOperationResult);
-		//multPrinter.subscribe(spMessageBus, printNodeOperationResult);
 		resultPrinter.subscribe(spMessageBus, printNodeOperationResult);
 
 		while ( getchar() != '\n')

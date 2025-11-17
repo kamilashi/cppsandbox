@@ -10,6 +10,7 @@ set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/message.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/message_bus.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/network_factory.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/network_node.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/network_pipe.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/node.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/node_examples.h"

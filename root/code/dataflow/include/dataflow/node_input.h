@@ -40,10 +40,33 @@ namespace Dataflow
 	class Input
 	{
 	public:
+		struct InitList
+		{
+			TopicId topic;
+			size_t consumeCount;
+
+			InitList() = delete;
+
+			InitList(TopicId topic) :
+				topic(topic), 
+				consumeCount(1)
+			{ }
+
+			InitList(TopicId topic, size_t consumeCount) : 
+				topic(topic),
+				consumeCount(consumeCount)
+			{ }
+		};
+
 		Input(TopicId topic, size_t consumeCount = 1) :
 			m_sub(topic),
 			m_consumeCount(consumeCount)
 		{}
+
+		Input(InitList list) :
+			m_sub(list.topic),
+			m_consumeCount(list.consumeCount)
+		{ }
 
 		Input(Input&& other) noexcept
 			: m_sub(std::move(other.m_sub)),

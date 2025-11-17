@@ -5,11 +5,11 @@
 
 namespace Dataflow
 {
-	class AddNodeIpc : public Node
+	class AddNodeIpc : public BaseNode
 	{
 	public:
 		AddNodeIpc(Ipc::ClientBusRelay* pRelay) :
-			Node(500),
+			BaseNode(500),
 			m_pRelay(pRelay)
 		{
 			m_inputs.reserve(1);
@@ -18,7 +18,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_Sum);
 
-			Node::connectAndStart(pRelay->getMessageBus());
+			BaseNode::connectAndStart(pRelay->getMessageBus());
 		}
 	private:
 		void fire() override

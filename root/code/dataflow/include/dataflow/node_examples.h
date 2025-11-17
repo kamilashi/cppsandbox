@@ -10,20 +10,20 @@
 
 namespace Dataflow
 {
-	class NumberGenNode : public Node
+	class NumberGenNode : public BaseNode
 	{
 	public:
 		NumberGenNode(std::weak_ptr<Bus> wpBus) :
-			Node(100),
+			BaseNode(100),
 			m_nextNumber(0)
 		{
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_NumberGen);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private:
-		void run() override
+		void fire() override
 		{
 			Message out = Message(
 				TopicId::Topic_NumberGen,
@@ -38,11 +38,11 @@ namespace Dataflow
 		float m_nextNumber;
 	};
 
-	class AddNode : public Node
+	class AddNode : public BaseNode
 	{
 	public:
 		AddNode(std::weak_ptr<Bus> wpBus) :
-			Node(500)
+			BaseNode(500)
 		{
 			m_inputs.reserve(1);
 			m_inputs.emplace_back(TopicId::Topic_NumberGen, 2);
@@ -50,7 +50,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_Sum);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private :
 		void fire() override 
@@ -69,11 +69,11 @@ namespace Dataflow
 		}
 	};
 
-	class SubNode : public Node
+	class SubNode : public BaseNode
 	{
 	public:
 		SubNode(std::weak_ptr<Bus> wpBus) :
-			Node(500)
+			BaseNode(500)
 		{
 			m_inputs.reserve(1);
 			m_inputs.emplace_back(TopicId::Topic_NumberGen, 2);
@@ -81,7 +81,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_Dif);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private:
 		void fire() override
@@ -100,11 +100,11 @@ namespace Dataflow
 		}
 	};
 
-	class MultSumsNode : public Node
+	class MultSumsNode : public BaseNode
 	{
 	public:
 		MultSumsNode(std::weak_ptr<Bus> wpBus) :
-			Node(1000)
+			BaseNode(1000)
 		{
 			m_inputs.reserve(1);
 			m_inputs.emplace_back(TopicId::Topic_Sum, 2);
@@ -112,7 +112,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_MultSums);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private:
 		void fire() override
@@ -131,11 +131,11 @@ namespace Dataflow
 		}
 	};
 
-	class MultSumDiffNode : public Node
+	class MultSumDiffNode : public BaseNode
 	{
 	public:
 		MultSumDiffNode(std::weak_ptr<Bus> wpBus) :
-			Node(500)
+			BaseNode(500)
 		{
 			m_inputs.reserve(2);
 			m_inputs.emplace_back(TopicId::Topic_Sum);
@@ -144,7 +144,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_MultSumDif);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private:
 		void fire() override
@@ -163,11 +163,11 @@ namespace Dataflow
 		}
 	};
 
-	class ResultNode : public Node
+	class ResultNode : public BaseNode
 	{
 	public:
 		ResultNode(std::weak_ptr<Bus> wpBus) :
-			Node(1000)
+			BaseNode(1000)
 		{
 			m_inputs.reserve(1);
 			m_inputs.emplace_back(TopicId::Topic_MultSums);
@@ -175,7 +175,7 @@ namespace Dataflow
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_FinalRes);
 
-			Node::connectAndStart(wpBus);
+			BaseNode::connectAndStart(wpBus);
 		}
 	private:
 		void fire() override

@@ -5,21 +5,21 @@
 
 namespace Dataflow
 {
-	class NumberGenNodeIpc : public Node
+	class NumberGenNodeIpc : public BaseNode
 	{
 	public:
 		NumberGenNodeIpc(Ipc::ClientBusRelay* pRelay) :
-			Node(500),
+			BaseNode(500),
 			m_nextNumber(0),
 			m_pRelay(pRelay)
 		{
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_NumberGen);
 
-			Node::connectAndStart(pRelay->getMessageBus());
+			BaseNode::connectAndStart(pRelay->getMessageBus());
 		}
 	private:
-		void run() override
+		void fire() override
 		{
 			Message out = Message(
 				TopicId::Topic_NumberGen,

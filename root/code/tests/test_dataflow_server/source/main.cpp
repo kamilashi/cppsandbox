@@ -1,4 +1,6 @@
-#include "dataflow/client_bus_relay.h"
+#include "wsanet/wsa_server.h"
+#include "dataflow/message.h"
+#include "dataflow/serdes.h"
 
 #include <iostream>
 #include <mutex>
@@ -26,7 +28,7 @@ namespace Dataflow
 		void onMessageQueued(const char* message)
 		{
 			Message desMessage;
-			SerDes::deserializeMessage(&desMessage, message);
+			SerDes::deserializeMessageWSA(&desMessage, message);
 			//std::cout << "message broadcasted to clients: " << desMessage << std::endl;
 		}
 

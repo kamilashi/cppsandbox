@@ -1,20 +1,19 @@
 #ifndef DATAFLOWNETWORKFACTORY_H
 #define DATAFLOWNETWORKFACTORY_H
 
-#include "wsanet/wsa_client.h"
-#include "wsanet/wsa_server.h"
-#include "wsanet/wsa_handler.h"
+#include "dataflow/network_pipe.h"
+#include "dataflow/message_bus.h"
 #include <memory>
 
 namespace Dataflow
 {
 	namespace NetworkFactory
 	{
-		static constexpr uint32_t sMaxWsaPayloadLength = 1024;
+		const std::shared_ptr<Bus>& getMessageBusInstance();
 
-		std::shared_ptr<WsaNetworking::WsaClient> getClient();
+		void initializeClient(NetworkBackend);
 
-		std::shared_ptr<WsaNetworking::WsaServer> getServer();
+		void sendFromClient(const Message&, NetworkBackend);
 	}
 }
 

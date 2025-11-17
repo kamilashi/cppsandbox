@@ -10,6 +10,7 @@ set(OLD_GLOB
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/message.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/message_bus.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/network_factory.h"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/network_pipe.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/node.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/node_examples.h"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/include/dataflow/node_input.h"
@@ -48,8 +49,10 @@ endif()
 # MOD_SOURCES at code/dataflow/CMakeLists.txt:8 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/*.cpp")
 set(OLD_GLOB
+  "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/client_bus_relay.cpp"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/message_bus.cpp"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/network_factory.cpp"
+  "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/network_pipe.cpp"
   "C:/MINE/PROJECTS/cppsandbox/root/code/dataflow/source/serdes.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

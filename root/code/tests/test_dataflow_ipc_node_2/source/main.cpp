@@ -46,7 +46,7 @@ namespace Dataflow
 
 	int testClient()
 	{
-		ClientBusRelay clientRelay;
+		ClientBusRelay clientRelay(NetworkBackend::NetworkBackend_WSA);
 
 		AddNodeIpc node(&clientRelay);
 

@@ -25,7 +25,7 @@ uint32_t getSerializedSize(const WsaSerializedMessage& message)
 	return size;
 }
 
-void serializeMessageWSA(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize = nullptr)
+void Dataflow::SerDes::serializeMessageWSA(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize)
 {
 	WsaSerializedMessage serializedMessage;
 	constexpr uint32_t bitsPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
@@ -65,7 +65,7 @@ void serializeMessageWSA(char* pOut, const Dataflow::Message& message, uint32_t*
 	}
 }
 
-void deserializeMessageWSA(Dataflow::Message* pOut, const char* pMessage)
+void Dataflow::SerDes::deserializeMessageWSA(Dataflow::Message* pOut, const char* pMessage)
 {
 	WsaSerializedMessage serializedMessage;
 	constexpr uint32_t bitsPerField = WsaNetworking::WsaMessageFrame::sPrependLength;

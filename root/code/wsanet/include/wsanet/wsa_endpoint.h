@@ -15,10 +15,6 @@ namespace WsaNetworking
 	class WsaEndpoint
 	{
 	protected:
-		WsaEndpoint() :
-			m_initializeResult(ConnectionState::WSACS_UNKNOWN)
-		{ }
-
 		ConnectionState initializeWSA();
 		ConnectionState createSocket(SOCKET* pSocket);
 	};

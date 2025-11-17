@@ -28,30 +28,30 @@ uint32_t getSerializedSize(const WsaSerializedMessage& message)
 void Dataflow::SerDes::serializeMessageWsa(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize)
 {
 	WsaSerializedMessage serializedMessage;
-	constexpr uint32_t bitsPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
+	constexpr uint32_t bytesPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
 
 	serializedMessage.topicId = static_cast<uint32_t>(message.topicId);
-	memcpy(&serializedMessage.userData, &message.userData, bitsPerField);
+	memcpy(&serializedMessage.userData, &message.userData, bytesPerField);
 	serializedMessage.sourceLength = static_cast<uint32_t>(message.source.size());
 	serializedMessage.payloadLength = static_cast<uint32_t>(message.payload.size());
 
 	uint32_t serializedMsgSize = getSerializedSize(serializedMessage) + 1;
 
-	assert(strlen(pOut) >= serializedMsgSize && "the char array must have enough space for the serialized message");
+	assert(pOut != nullptr && strlen(pOut) >= serializedMsgSize && "the char array must have enough space for the serialized message");
 
 	char* pSerMsgHead = pOut;
 
 	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.topicId);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.userData);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.sourceLength);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.payloadLength);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	memcpy(pSerMsgHead, message.source.data(), serializedMessage.sourceLength);
 	pSerMsgHead += serializedMessage.sourceLength;
@@ -68,24 +68,24 @@ void Dataflow::SerDes::serializeMessageWsa(char* pOut, const Dataflow::Message& 
 void Dataflow::SerDes::deserializeMessageWsa(Dataflow::Message* pOut, const char* pMessage)
 {
 	WsaSerializedMessage serializedMessage;
-	constexpr uint32_t bitsPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
+	constexpr uint32_t bytesPerField = WsaNetworking::WsaMessageFrame::sPrependLength;
 
 	const char* pSerMsgHead = pMessage;
 
 	serializedMessage.topicId = WsaNetworking::readHostu32(pSerMsgHead);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	serializedMessage.userData = WsaNetworking::readHostu32(pSerMsgHead);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	serializedMessage.sourceLength = WsaNetworking::readHostu32(pSerMsgHead);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	serializedMessage.payloadLength = WsaNetworking::readHostu32(pSerMsgHead);
-	pSerMsgHead += bitsPerField;
+	pSerMsgHead += bytesPerField;
 
 	pOut->topicId = static_cast<Dataflow::TopicId>(serializedMessage.topicId);
-	memcpy(&pOut->userData, &serializedMessage.userData, bitsPerField);
+	memcpy(&pOut->userData, &serializedMessage.userData, bytesPerField);
 
 	pOut->source.assign(pSerMsgHead, pSerMsgHead + serializedMessage.sourceLength);
 	pSerMsgHead += serializedMessage.sourceLength;

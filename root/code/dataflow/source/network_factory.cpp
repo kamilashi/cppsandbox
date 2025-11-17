@@ -6,6 +6,8 @@
 #include "wsanet/wsa_server.h"
 #include "wsanet/wsa_handler.h"
 
+#include <atomic>
+
 
 namespace Dataflow
 {
@@ -14,19 +16,19 @@ namespace Dataflow
 		namespace NetworkFactory
 		{
 			static constexpr uint32_t sMaxWsaPayloadLength = 1024;
+			static std::atomic<bool> isClientInitialized(false);
 
 			class WsaClientHandler
 			{
 			public:
 				WsaClientHandler() :
-					m_isLastMessageFullyQueued(false),
+					m_isLastMessageFullyQueued{ false },
 					m_spBus(nullptr)
-				{
-				}
+				{}
 
 				void onMessageQueued(const char*)
 				{
-					m_isLastMessageFullyQueued = true;
+					m_isLastMessageFullyQueued.store(true, std::memory_order_release);
 				}
 
 				void onMessageReceived(const char* msg)
@@ -42,9 +44,7 @@ namespace Dataflow
 
 				bool consumeMessageQueuedFlag()
 				{
-					bool flag = m_isLastMessageFullyQueued;
-					m_isLastMessageFullyQueued = false;
-					return flag;
+					return m_isLastMessageFullyQueued.exchange(false, std::memory_order_acq_rel);
 				}
 
 				void setMessageBus(std::shared_ptr<Bus> spBUs)
@@ -53,7 +53,7 @@ namespace Dataflow
 				}
 
 			private:
-				bool m_isLastMessageFullyQueued;
+				std::atomic<bool> m_isLastMessageFullyQueued;
 				std::shared_ptr<Bus> m_spBus;
 			};
 
@@ -77,9 +77,7 @@ namespace Dataflow
 
 			void initializeClient(std::shared_ptr<WsaNetworking::WsaClient>& wsaCLient)
 			{
-				static bool isInitialized = false;
-
-				if (isInitialized)
+				if (isClientInitialized.exchange(true, std::memory_order_acq_rel))
 				{
 					return;
 				}
@@ -90,27 +88,22 @@ namespace Dataflow
 
 				wsaCLient->start();
 				wsaCLient->openServerRecvThread<WsaClientHandler>(pNetworkHandler.get());
-
-				isInitialized = true;
 			}
 
 			void sendFromClient(const Message& message, std::shared_ptr<WsaNetworking::WsaClient>& wsaCLient)
 			{
-				std::jthread relayThread = std::jthread([&wsaCLient, &message](std::stop_token st)
-					{
-						char serializedMsg[NetworkFactory::sMaxWsaPayloadLength];
-						uint32_t messageSize;
+				char serializedMsg[NetworkFactory::sMaxWsaPayloadLength];
+				uint32_t messageSize;
 
-						SerDes::serializeMessageWsa(serializedMsg, message, &messageSize);
+				SerDes::serializeMessageWsa(serializedMsg, message, &messageSize);
 
-						WsaClientHandler handler;
-						wsaCLient->sendServerMessage<WsaClientHandler>(serializedMsg, messageSize, &handler);
+				WsaClientHandler handler;
+				wsaCLient->sendServerMessage<WsaClientHandler>(serializedMsg, messageSize, &handler);
 
-						while (!st.stop_requested() && !handler.consumeMessageQueuedFlag())
-						{
-						};
-					}
-				);
+				while (!handler.consumeMessageQueuedFlag())
+				{
+					std::this_thread::yield();
+				};
 			}
 
 			const std::shared_ptr<Bus>& getMessageBusInstance()

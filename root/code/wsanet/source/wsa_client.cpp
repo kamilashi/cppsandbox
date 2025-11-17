@@ -34,26 +34,27 @@ namespace WsaNetworking
 		{
 			return m_initializeResult;
 		}
+		
+		auto isSuccess = [this](ConnectionState result) -> bool
+			{
+				m_initializeResult = result;
+				return m_initializeResult == ConnectionState::WSACS_OK;
+			};
 
-		m_initializeResult = initializeWSA();
-
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(initializeWSA()))
 		{
 			return m_initializeResult;
 		}
 
-		m_initializeResult = createSocket(&m_clientSocket);
-
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(createSocket(&m_clientSocket)))
 		{
 			return m_initializeResult;
 		}
 
-		m_initializeResult = connectToServer();
-
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(connectToServer()))
 		{
 			stopClient();
+			return m_initializeResult;
 		}
 
 		return m_initializeResult;

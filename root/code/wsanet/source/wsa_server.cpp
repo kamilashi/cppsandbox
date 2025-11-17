@@ -66,23 +66,23 @@ namespace WsaNetworking
 			return m_initializeResult;
 		}
 
-		m_initializeResult = initializeWSA();
+		auto isSuccess = [this](ConnectionState result) -> bool
+			{
+				m_initializeResult = result;
+				return m_initializeResult == ConnectionState::WSACS_OK;
+			};
 
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(initializeWSA()))
 		{
 			return m_initializeResult;
 		}
-		
-		m_initializeResult = createSocket(&m_serverSocket);
 
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(createSocket(&m_serverSocket)))
 		{
 			return m_initializeResult;
 		}
-		  
-		m_initializeResult = initializeServer();
 
-		if (m_initializeResult != ConnectionState::WSACS_OK)
+		if (!isSuccess(initializeServer()))
 		{
 			stopServer();
 			return m_initializeResult;
@@ -101,7 +101,7 @@ namespace WsaNetworking
 
 		for (size_t clientIdx = 0; clientIdx < m_maxClientCount; clientIdx++)
 		{
-			stopClient(clientIdx); // should all client connections be stopped if the server is down?
+			stopClient(clientIdx);
 		}
 
 		if (m_serverSocket != INVALID_SOCKET)

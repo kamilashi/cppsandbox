@@ -62,11 +62,6 @@ namespace WsaNetworking
 	template<ConcreteHandler H>
 	void WsaServer::sendClientMessage(const char* message, uint32_t messageSize, size_t clientConnection, H* pHandler)
 	{
-		if (m_clientSockets[clientConnection] == INVALID_SOCKET)
-		{
-			return;
-		}
-
 		if (sendMessageFrame(&m_clientSockets[clientConnection],
 			&m_clientConnectionMutexes[clientConnection],
 			message,
@@ -98,6 +93,17 @@ namespace WsaNetworking
 			{
 				while (!st.stop_requested())
 				{
+					SOCKET socketCopy;
+					{
+						std::lock_guard<std::mutex> lock(m_clientConnectionMutexes[clientConnectionIdx]);
+						socketCopy = m_clientSockets[clientConnectionIdx];
+					}
+
+					if (socketCopy == INVALID_SOCKET)
+					{
+						break;
+					}
+
 					WsaMessageFrame inFrame = getMessageFrame(&m_clientSockets[clientConnectionIdx]);
 
 					if (inFrame.state != ConnectionState::WSACS_OK)
@@ -131,7 +137,11 @@ namespace WsaNetworking
 					{
 						const size_t maxClientIdx = m_maxClientIdx.load(std::memory_order_acquire);
 						const size_t clientIdx = m_nextClientIdx.load(std::memory_order_acquire);
-						m_clientSockets[clientIdx] = acceptedSocket;
+
+						{
+							std::lock_guard<std::mutex> lock(m_clientConnectionMutexes[clientIdx]);
+							m_clientSockets[clientIdx] = acceptedSocket;
+						}
 
 						const size_t newMaxIdx = max(maxClientIdx, clientIdx);
 						m_connectedClientCount.fetch_add(1, std::memory_order_acq_rel);

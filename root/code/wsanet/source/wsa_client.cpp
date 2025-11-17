@@ -63,10 +63,14 @@ namespace WsaNetworking
 	{
 		closeServerRecvThread();
 
-		if (m_clientSocket != INVALID_SOCKET)
 		{
-			closesocket(m_clientSocket);
-			m_clientSocket = INVALID_SOCKET;
+			std::lock_guard<std::mutex> lock(m_mutex);
+
+			if (m_clientSocket != INVALID_SOCKET)
+			{
+				closesocket(m_clientSocket);
+				m_clientSocket = INVALID_SOCKET;
+			}
 		}
 
 		WSACleanup();

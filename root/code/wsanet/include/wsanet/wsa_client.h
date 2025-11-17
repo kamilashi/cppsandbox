@@ -69,6 +69,17 @@ namespace WsaNetworking
 			{
 				while (!st.stop_requested())
 				{
+					SOCKET socketCopy;
+					{
+						std::lock_guard<std::mutex> lock(m_mutex);
+						socketCopy = m_clientSocket;
+					}
+
+					if (socketCopy == INVALID_SOCKET)
+					{
+						break;
+					}
+
 					WsaMessageFrame inFrame = getMessageFrame(&m_clientSocket);
 
 					if (inFrame.state != ConnectionState::WSACS_OK)

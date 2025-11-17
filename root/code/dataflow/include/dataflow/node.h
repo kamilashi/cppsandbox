@@ -107,8 +107,8 @@ namespace Dataflow
 	{
 	public:
 		Node(float intervalM, 
-			std::vector<Input::InitList>&& inputs, 
-			std::vector<Output::InitList>&& outputs,
+			std::initializer_list<Input::InitList> inputs,
+			std::initializer_list<Output::InitList> outputs,
 			std::weak_ptr<Bus> wpBus) 
 			:
 			m_intervalMs(intervalM),
@@ -118,14 +118,14 @@ namespace Dataflow
 
 			for (const Input::InitList& list : inputs)
 			{
-				m_inputs.emplace_back(list);
+				m_inputs.emplace_back( list );
 			}
 
 			m_outputs.reserve(outputs.size());
 
 			for (const Output::InitList& list : outputs)
 			{
-				m_outputs.emplace_back(list);
+				m_outputs.emplace_back( list );
 			}
 
 			connectAndStart(wpBus);
@@ -135,6 +135,16 @@ namespace Dataflow
 		{
 			stopRunThread();
 		};
+
+		P& getProcess() 
+		{ 
+			return m_process; 
+		}
+
+		const P& getProcess() const 
+		{ 
+			return m_process;
+		}
 
 	private:
 

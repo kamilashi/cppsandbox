@@ -116,7 +116,7 @@ namespace Dataflow
 			}
 
 			// #todo: add error handling
-			return Message{TopicId::Topic_Count, "none", "invalid"};
+			return Message{};
 		}
 
 		bool isReady() const

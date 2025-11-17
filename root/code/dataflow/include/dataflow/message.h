@@ -27,6 +27,14 @@ namespace Dataflow
 			source("Unknown"),
 			payload("None")
 		{};
+
+		void reset()
+		{
+			topicId = TopicId::Topic_Count;
+			userData = 0;
+			source = "Unknown";
+			payload = "Unknown";
+		}
 	};
 
 	inline bool operator==(const Message& lhs, const Message& rhs)

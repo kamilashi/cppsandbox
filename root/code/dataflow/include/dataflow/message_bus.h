@@ -24,17 +24,17 @@ namespace Dataflow
 
 		Bus();
 		~Bus() = default;
-		int								 subscribe(TopicId topicId, OnMessageCallback callback);
-		std::unordered_map<TopicId, int> subscribeAll(OnMessageCallback callback);
-		void							 unsubscribe(int linkId);
+		int								 subscribe(TopicId, OnMessageCallback);
+		std::unordered_map<TopicId, int> subscribeAll(OnMessageCallback);
+		void							 unsubscribe(int);
 		void							 publish(const Message&);
 		size_t							 getAllPublisherCount() const;
 		size_t							 getAllSubscriberCount() const;
-		size_t							 getSubscriberCount(TopicId topicId) const;
-		size_t							 getPublisherCount(TopicId topicId) const;
+		size_t							 getSubscriberCount(TopicId) const;
+		size_t							 getPublisherCount(TopicId) const;
 
-		void							 registerPublisher(TopicId topic);
-		void							 unregisterPublisher(TopicId topic);
+		void							 registerPublisher(TopicId);
+		void							 unregisterPublisher(TopicId);
 
 	private:
 		struct SubData
@@ -56,7 +56,7 @@ namespace Dataflow
 		std::unordered_map<int, SubData> m_allSubs;
 
 		// bookkeeping for telemetry
-		std::array<std::atomic<uint32_t>, Topic::getTopicCount()> m_pubCountByTopic{};     // number of Publisher handles
+		std::array<std::atomic<uint32_t>, Topic::getTopicCount()> m_pubCountByTopic{}; 
 		std::atomic<size_t> m_publishersCount;
 
 		mutable std::mutex m_mutex;

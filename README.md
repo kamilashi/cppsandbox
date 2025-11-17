@@ -8,12 +8,12 @@ All of the source code is located in the */code* folder.
   compiles into executables. Serves as tests and implementations of the libraries below.
 
 - code/shared :
-  static library with various unsorted classes and helpers that get included into *every* test. 
+  static library with various unsorted classes and helpers that get included into *every* test. Single-threaded.
 
 - code/dataflow :
   static library that provides functionality for building node based processing graphs on top of a message bus. It also supports IPC between said nodes, currently implementing a single Win-Sock (WSA) backend. Is included only in tests that use it. Multithreaded.
 
 - code/wsanet :
-  static library that provides a minimal client-server functionality using Window Sockets. Is included in the *dataflow* library and some tests that use it.
+  static library that provides a minimal client-server functionality using Window Sockets. Is included in the *dataflow* library and some tests that use it. Multithreaded.
 
 The entire repository is a work in progress.

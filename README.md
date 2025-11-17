@@ -5,7 +5,7 @@ All of the source code is located in the */code* folder.
 
 ## Repository Structure
 - code/tests :
-  compiles into executables. Serves as tests and implementations of the libraries below.
+  compiles into executables. Serves as tests and implementations of the libraries below. Some are just self-contained test environments. 
 
 - code/shared :
   static library with various unsorted classes and helpers that get included into *every* test. Single-threaded.

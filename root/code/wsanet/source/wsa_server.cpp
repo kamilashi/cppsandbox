@@ -124,16 +124,13 @@ namespace WsaNetworking
 		sendClientMessage<DummyHandler>(buffer, strlen(buffer), connectionIdx);
 	}
 
-	void WsaServer::broadcastDummyMessage() // #wip
+	void WsaServer::broadcastDummyMessage() 
 	{
 		const size_t activeClients = m_maxClientIdx.load(std::memory_order_acquire);
 
 		for (size_t i = 0; i <= activeClients; i++)
 		{
-			if (m_clientSockets[i] != INVALID_SOCKET)
-			{
-				sendDummyMessage(i);
-			}
+			sendDummyMessage(i);
 		}
 	}
 

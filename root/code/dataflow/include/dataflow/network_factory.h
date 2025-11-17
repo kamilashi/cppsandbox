@@ -7,13 +7,16 @@
 
 namespace Dataflow
 {
-	namespace NetworkFactory
+	namespace Ipc
 	{
-		const std::shared_ptr<Bus>& getMessageBusInstance();
+		namespace NetworkFactory
+		{
+			const std::shared_ptr<Bus>& getMessageBusInstance();
 
-		void initializeClient(NetworkBackend);
+			void initializeClient(NetworkBackend);
 
-		void sendFromClient(const Message&, NetworkBackend);
+			void sendFromClient(const Message&, NetworkBackend);
+		}
 	}
 }
 

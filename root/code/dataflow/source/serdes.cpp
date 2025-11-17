@@ -92,13 +92,3 @@ void Dataflow::SerDes::deserializeMessageWSA(Dataflow::Message* pOut, const char
 
 	pOut->payload.assign(pSerMsgHead, pSerMsgHead + serializedMessage.payloadLength);
 }
-
-void Dataflow::SerDes::serializeMessage(char* pOut, const Dataflow::Message& message, uint32_t* pSerializedMessageSize)
-{
-	serializeMessageWSA(pOut, message, pSerializedMessageSize); // #wip: add support for different serializers
-}
-
-void Dataflow::SerDes::deserializeMessage(Dataflow::Message* pOut, const char* pMessage)
-{
-	deserializeMessageWSA(pOut, pMessage);  // #wip: add support for different deserializers
-}

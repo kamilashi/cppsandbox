@@ -4,14 +4,14 @@
 namespace Dataflow
 {
 	ClientBusRelay::ClientBusRelay(NetworkBackend networkBackend) :
-		m_neworkPipe(networkBackend)
+		m_networkPipe(networkBackend)
 	{
-		m_neworkPipe.initializeClient();
+		m_networkPipe.initializeClient();
 	}
 
 	void ClientBusRelay::relay(const Message& message)
 	{
-		m_neworkPipe.send(message);
+		m_networkPipe.send(message);
 	}
 
 	std::shared_ptr <Bus> ClientBusRelay::getMessageBus() const

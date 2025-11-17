@@ -5,33 +5,36 @@
 
 namespace Dataflow
 {
-	enum class NetworkBackend
+	namespace Ipc
 	{
-		NetworkBackend_WSA
-	};
+		enum class NetworkBackend
+		{
+			NetworkBackend_WSA
+		};
 
-	enum class NetworkType
-	{
-		NetworkType_Client,
-		NetworkType_Server,
+		enum class NetworkType
+		{
+			NetworkType_Client,
+			NetworkType_Server,
 
-		NetworkType_Unknown
-	};
+			NetworkType_Unknown
+		};
 
-	class NetworkPipe
-	{
-	public:
-		NetworkPipe(NetworkBackend);
-		~NetworkPipe() {}
+		class NetworkPipe
+		{
+		public:
+			NetworkPipe(NetworkBackend);
+			~NetworkPipe() {}
 
-		void initializeClient();
-		void initializeServer();
-		void send(const Message& message);
+			void initializeClient();
+			void initializeServer();
+			void send(const Message& message);
 
-	private:
-		NetworkBackend m_netBackend;
-		NetworkType m_netType;
-	};
+		private:
+			NetworkBackend m_netBackend;
+			NetworkType m_netType;
+		};
+	}
 }
 
 #endif //DATAFLOWNETWORKPIPE_H

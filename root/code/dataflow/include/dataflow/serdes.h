@@ -7,13 +7,9 @@ namespace Dataflow
 {
 	namespace SerDes
 	{
-		void serializeMessage(char* pOut, const Message& message, uint32_t* pSerializedMessageSize = nullptr);
+		void serializeMessageWsa(char* pOut, const Message& message, uint32_t* pSerializedMessageSize = nullptr);
 
-		void deserializeMessage(Message* pOut, const char* pMessage);
-
-		void serializeMessageWSA(char* pOut, const Message& message, uint32_t* pSerializedMessageSize = nullptr);
-
-		void deserializeMessageWSA(Message* pOut, const char* pMessage);
+		void deserializeMessageWsa(Message* pOut, const char* pMessage);
 	}
 }
 

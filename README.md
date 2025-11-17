@@ -1,6 +1,6 @@
 # Cpp Sandbox
 
-A personal C++ playground where I partice architecture ideas, concurrency, design patterns, networking, and various low-level techniques. The project contains a variety of small, unrelated tests that serve as isolated environments for trying out new concepts.
+A personal C++ playground where I partice modern C++ concepts, design patterns, concurrency, networking, and various low-level techniques. The project contains a variety of small, unrelated tests that serve as isolated environments for trying out new concepts.
 All of the source code is located in the */code* folder.
 
 ## Repository Structure

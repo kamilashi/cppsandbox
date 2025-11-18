@@ -62,12 +62,12 @@ namespace WsaNetworking
 	template<ConcreteHandler H>
 	void WsaServer::sendClientMessage(const char* message, uint32_t messageSize, size_t clientConnection, H* pHandler)
 	{
-		if (sendMessageFrame(&m_clientSockets[clientConnection],
+		if (Common::sendMessageFrame(&m_clientSockets[clientConnection],
 			&m_clientConnectionMutexes[clientConnection],
 			message,
 			messageSize) == ConnectionState::WSACS_OK)
 		{
-			onMessageSent<H>(message, pHandler);
+			Common::onMessageSent<H>(message, pHandler);
 		}
 		else
 		{
@@ -104,7 +104,7 @@ namespace WsaNetworking
 						break;
 					}
 
-					WsaMessageFrame inFrame = getMessageFrame(&m_clientSockets[clientConnectionIdx]);
+					WsaMessageFrame inFrame = Common::getMessageFrame(&m_clientSockets[clientConnectionIdx]);
 
 					if (inFrame.state != ConnectionState::WSACS_OK)
 					{
@@ -113,7 +113,7 @@ namespace WsaNetworking
 					}
 
 					{
-						onMessageReceived<H>(inFrame.buffer, pHandler);
+						Common::onMessageReceived<H>(inFrame.buffer, pHandler);
 					}
 				}
 			});

@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include "dataflow/serdes.h"
-#include "wsanet/wsa_helpers.h"
+#include "wsanet/wsa_common.h"
 
 struct WsaSerializedMessage
 {
@@ -41,16 +41,16 @@ void Dataflow::SerDes::serializeMessageWsa(char* pOut, const Dataflow::Message& 
 
 	char* pSerMsgHead = pOut;
 
-	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.topicId);
+	WsaNetworking::Common::storeHostu32(pSerMsgHead, serializedMessage.topicId);
 	pSerMsgHead += bytesPerField;
 
-	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.userData);
+	WsaNetworking::Common::storeHostu32(pSerMsgHead, serializedMessage.userData);
 	pSerMsgHead += bytesPerField;
 
-	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.sourceLength);
+	WsaNetworking::Common::storeHostu32(pSerMsgHead, serializedMessage.sourceLength);
 	pSerMsgHead += bytesPerField;
 
-	WsaNetworking::storeHostu32(pSerMsgHead, serializedMessage.payloadLength);
+	WsaNetworking::Common::storeHostu32(pSerMsgHead, serializedMessage.payloadLength);
 	pSerMsgHead += bytesPerField;
 
 	memcpy(pSerMsgHead, message.source.data(), serializedMessage.sourceLength);
@@ -72,16 +72,16 @@ void Dataflow::SerDes::deserializeMessageWsa(Dataflow::Message* pOut, const char
 
 	const char* pSerMsgHead = pMessage;
 
-	serializedMessage.topicId = WsaNetworking::readHostu32(pSerMsgHead);
+	serializedMessage.topicId = WsaNetworking::Common::readHostu32(pSerMsgHead);
 	pSerMsgHead += bytesPerField;
 
-	serializedMessage.userData = WsaNetworking::readHostu32(pSerMsgHead);
+	serializedMessage.userData = WsaNetworking::Common::readHostu32(pSerMsgHead);
 	pSerMsgHead += bytesPerField;
 
-	serializedMessage.sourceLength = WsaNetworking::readHostu32(pSerMsgHead);
+	serializedMessage.sourceLength = WsaNetworking::Common::readHostu32(pSerMsgHead);
 	pSerMsgHead += bytesPerField;
 
-	serializedMessage.payloadLength = WsaNetworking::readHostu32(pSerMsgHead);
+	serializedMessage.payloadLength = WsaNetworking::Common::readHostu32(pSerMsgHead);
 	pSerMsgHead += bytesPerField;
 
 	pOut->topicId = static_cast<Dataflow::TopicId>(serializedMessage.topicId);

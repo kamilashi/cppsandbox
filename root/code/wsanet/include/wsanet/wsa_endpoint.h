@@ -8,7 +8,7 @@
 #include <mutex>
 
 #include "stdafx.h"
-#include "wsanet/wsa_helpers.h"
+#include "wsanet/wsa_common.h"
 
 namespace WsaNetworking
 {

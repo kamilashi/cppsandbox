@@ -24,7 +24,7 @@ namespace Dataflow
 		{
 		public:
 			NetworkPipe(NetworkBackend);
-			~NetworkPipe() {}
+			~NetworkPipe() = default;
 
 			void initializeClient();
 			void initializeServer();

@@ -13,11 +13,9 @@ namespace Dataflow
 		{
 		public:
 			ClientBusRelay(NetworkBackend networkBackend);
-
 			~ClientBusRelay() = default;
 
 			void relay(const Message&);
-
 			std::shared_ptr <Bus> getMessageBus() const;
 
 		private:

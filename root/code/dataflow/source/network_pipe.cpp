@@ -5,9 +5,10 @@ namespace Dataflow
 {
 	namespace Ipc
 	{
-		NetworkPipe::NetworkPipe(NetworkBackend backend) : m_netBackend(backend), m_netType(NetworkType::NetworkType_Unknown)
-		{
-		}
+		NetworkPipe::NetworkPipe(NetworkBackend backend) : 
+			m_netBackend(backend), 
+			m_netType(NetworkType::NetworkType_Unknown)
+		{}
 
 		void NetworkPipe::initializeClient()
 		{

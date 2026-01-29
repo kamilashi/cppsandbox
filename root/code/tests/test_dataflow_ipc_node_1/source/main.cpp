@@ -1,5 +1,5 @@
 #include "dataflow/client_bus_relay.h"
-#include "dataflow/node_legacy.h"
+#include "dataflow/legacy_node.h"
 
 #include <iostream>
 

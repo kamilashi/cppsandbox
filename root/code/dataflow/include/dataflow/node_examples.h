@@ -6,7 +6,7 @@
 #include <memory>
 #include <format>
 
-#include "dataflow/node_legacy.h"
+#include "dataflow/legacy_node.h"
 
 namespace Dataflow
 {

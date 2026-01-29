@@ -1,22 +1,22 @@
 #include "dataflow/client_bus_relay.h"
-#include "dataflow/node.h"
+#include "dataflow/node_legacy.h"
 
 #include <iostream>
 
 namespace Dataflow
 {
-	class NumberGenNodeIpc : public BaseNode
+	class NumberGenNodeIpc : public BaseNodeLegacy
 	{
 	public:
 		NumberGenNodeIpc(Ipc::ClientBusRelay* pRelay) :
-			BaseNode(500),
+			BaseNodeLegacy(500),
 			m_nextNumber(0),
 			m_pRelay(pRelay)
 		{
 			m_outputs.reserve(1);
 			m_outputs.emplace_back(TopicId::Topic_NumberGen);
 
-			BaseNode::connectAndStart(pRelay->getMessageBus());
+			BaseNodeLegacy::connectAndStart(pRelay->getMessageBus());
 		}
 	private:
 		void fire() override

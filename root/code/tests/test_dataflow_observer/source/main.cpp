@@ -4,6 +4,7 @@
 #include "dataflow/receiver_components.h"
 #include "dataflow/topic_inspector.h"
 #include "dataflow/node_examples.h"
+#include "dataflow/node.h"
 
 #include "malloc_tracker.h"
 #include "console_frame_printer.h"
@@ -127,7 +128,7 @@ namespace Dataflow
 		std::cout << resultMessage.source << " : " << resultMessage.payload << "\n\n";
 	}
 
-	struct Diff
+	struct DiffProcess
 	{
 		void fire(std::vector<Input>& ins, std::vector<Output>& outs)
 		{
@@ -136,7 +137,7 @@ namespace Dataflow
 
 			Message sum = Message(
 				TopicId::Topic_Dif,
-				"add",
+				"diff",
 				std::format(" {} - {} ", op1.userData, op2.userData));
 
 			sum.userData = op1.userData - op2.userData;
@@ -189,7 +190,8 @@ namespace Dataflow
 		//ResultNode result(spMessageBus);
 
 		// template nodes
-		Node<Diff> multSumsNode(1000.0f,
+
+		Node<DiffProcess> multSumsNode(1000.0f,
 			{ {TopicId::Topic_Sum, 2} },
 			{ {TopicId::Topic_Dif} },
 			spMessageBus);

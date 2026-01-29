@@ -26,11 +26,6 @@ namespace Dataflow
 					m_spBus(nullptr)
 				{}
 
-				void onMessageQueued(const char*)
-				{
-					m_isLastMessageFullyQueued.store(true, std::memory_order_release);
-				}
-
 				void onMessageReceived(const char* msg)
 				{
 					Message desMessage;
@@ -40,6 +35,12 @@ namespace Dataflow
 					{
 						m_spBus->publish(desMessage);
 					}
+				}
+
+				void onMessageQueued(const char*)
+				{
+					m_isLastMessageFullyQueued.store(true, 
+						std::memory_order_release);
 				}
 
 				bool consumeMessageQueuedFlag()

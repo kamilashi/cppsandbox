@@ -1,5 +1,5 @@
-#ifndef DATAFLOWNODE_H
-#define DATAFLOWNODE_H
+#ifndef DATAFLOWNODELEGACY_H
+#define DATAFLOWNODELEGACY_H
 
 #include <vector>
 #include <thread>
@@ -10,66 +10,20 @@
 
 namespace Dataflow
 {
-	template <class T>
-	concept Process =
-		std::default_initializable<T> &&
-		requires (T p, 
-		std::vector<Input>& inputs,
-		std::vector<Output>& outputs)
-	{
-		p.fire(inputs, outputs);
-	};
-
-	template<Process P>
-	class Node
+	class BaseNodeLegacy
 	{
 	public:
-		Node(float intervalM, 
-			std::initializer_list<Input::InitList> inputs,
-			std::initializer_list<Output::InitList> outputs,
-			std::weak_ptr<Bus> wpBus) 
-			:
-			m_intervalMs(intervalM),
-			m_process{}
-		{
-			m_inputs.reserve(inputs.size());
+		BaseNodeLegacy(float intervalM) : m_intervalMs(intervalM)
+		{}
 
-			for (const Input::InitList& list : inputs)
-			{
-				m_inputs.emplace_back( list );
-			}
-
-			m_outputs.reserve(outputs.size());
-
-			for (const Output::InitList& list : outputs)
-			{
-				m_outputs.emplace_back( list );
-			}
-
-			connectAndStart(wpBus);
-		}
-
-		~Node() 
-		{
-			stopRunThread();
-		};
-
-		P& getProcess() 
+		virtual ~BaseNodeLegacy() 
 		{ 
-			return m_process; 
+			stopRunThread(); 
 		}
 
-		const P& getProcess() const 
-		{ 
-			return m_process;
-		}
+	protected:
 
-	private:
-
-		void fire()
-		{
-			m_process.fire(m_inputs, m_outputs);
-		}
+		void virtual fire() {}
 
 		void run()
 		{
@@ -101,13 +55,14 @@ namespace Dataflow
 				return;
 			}
 
-			m_runThread = std::jthread([this](std::stop_token st) {
+			m_runThread = std::jthread([this](std::stop_token st) 
+			{
 				while (!st.stop_requested())
 				{
 					run();
 					std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(m_intervalMs));
 				}
-				});
+			});
 		}
 
 		void stopRunThread()
@@ -138,7 +93,6 @@ namespace Dataflow
 
 		float m_intervalMs;
 		std::jthread m_runThread;
-		P m_process;
 	};
 }
 

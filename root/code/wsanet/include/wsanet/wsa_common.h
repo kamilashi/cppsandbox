@@ -111,7 +111,7 @@ namespace WsaNetworking
 			return out32;
 		}
 
-		FORCEINLINE ConnectionState sendMessage(SOCKET * pSocket, std::mutex * pMutex, const char* message, size_t messageLength)
+		FORCEINLINE ConnectionState sendMessage(SOCKET* pSocket, std::mutex* pMutex, const char* message, size_t messageLength)
 		{
 			int justSentByteCount = 0;
 			int sentByteCount = 0;
@@ -136,7 +136,7 @@ namespace WsaNetworking
 			return ConnectionState::WSACS_OK;
 		}
 
-		FORCEINLINE ConnectionState sendMessageFrame(SOCKET * pSocket, std::mutex * pMutex, const char* payload, uint32_t payloadLength)
+		FORCEINLINE ConnectionState sendMessageFrame(SOCKET* pSocket, std::mutex* pMutex, const char* payload, uint32_t payloadLength)
 		{
 			const uint32_t payloadSize = payloadLength + 1;
 			const uint32_t fullSize = payloadSize + WsaMessageFrame::sPrependLength;

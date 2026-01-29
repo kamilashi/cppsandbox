@@ -32,7 +32,10 @@ namespace Dataflow
 	{
 		auto spClientRelay = std::make_shared<Ipc::ClientBusRelay>(Ipc::NetworkBackend::NetworkBackend_WSA);
 
-		Ipc::NetworkNode<AddProcess> node(500.0f, { { TopicId::Topic_NumberGen , 2 } }, { TopicId::Topic_Sum }, spClientRelay);
+		Ipc::NetworkNode<AddProcess> node(500.0f, 
+			{ { TopicId::Topic_NumberGen , 2 } }, 
+			{ TopicId::Topic_Sum }, 
+			spClientRelay);
 
 		Subscriber sumPrinter(TopicId::Topic_Sum);
 

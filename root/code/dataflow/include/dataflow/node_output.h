@@ -55,7 +55,7 @@ namespace Dataflow
 			m_pub.tryPublish(message);
 		}
 
-		void store(Message message)
+		void stage(Message message)
 		{
 			std::lock_guard<std::mutex> lock(m_mutex);
 			m_message = std::move(message); //#todo: optimize

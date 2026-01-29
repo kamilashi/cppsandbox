@@ -1,48 +1,48 @@
 #ifndef DATAFLOWNETWORKNODE_H
 #define DATAFLOWNETWORKNODE_H
 
-#include <vector>
-#include <thread>
-#include <memory>
-
-#include "dataflow/node.h"
+#include "dataflow/base_node.h"
+#include "dataflow/client_bus_relay.h"
 
 namespace Dataflow
 {
 	namespace Ipc
 	{
-		template <Process P>
-		class NetworkProcess
+		namespace
 		{
-		public:
-			NetworkProcess()
-				: m_process{}
-			{ }
-
-			void fire(std::vector<Input>& ins, std::vector<Output>& outs)
+			template <Dataflow::Process P>
+			class NetworkProcess
 			{
-				m_process.fire(ins, outs);
+			public:
+				NetworkProcess()
+					: m_process{}
+				{ }
 
-				for (auto& out : outs)
+				void fire(std::vector<Dataflow::Input>& ins, std::vector<Dataflow::Output>& outs)
 				{
-					Message msg = out.consume(); //#todo: add isPending check
+					m_process.fire(ins, outs);
 
-					m_relay->relay(msg);
+					for (auto& out : outs)
+					{
+						Dataflow::Message msg = out.consume(); //#todo: add isPending check
+
+						m_relay->relay(msg);
+					}
 				}
-			}
 
-			void setClientBusRelay(std::shared_ptr<ClientBusRelay> relay)
-			{
-				m_relay = std::move(relay);
-			}
+				void setClientBusRelay(std::shared_ptr<ClientBusRelay> relay)
+				{
+					m_relay = std::move(relay);
+				}
 
-		private:
-			P m_process;                               
-			std::shared_ptr<ClientBusRelay> m_relay;       
-		};
+			private:
+				P m_process;
+				std::shared_ptr<ClientBusRelay> m_relay;
+			};
+		}
 
 
-		template <Process P>
+		template <Dataflow::Process P>
 		class NetworkNode
 		{
 		public:
@@ -58,7 +58,7 @@ namespace Dataflow
 			}
 
 		private:
-			Node <NetworkProcess<P>> m_node;
+			Dataflow::BaseNode <NetworkProcess<P>> m_node;
 		};
 	}
 }

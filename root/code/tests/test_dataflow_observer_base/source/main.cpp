@@ -4,7 +4,7 @@
 #include "dataflow/receiver_components.h"
 #include "dataflow/topic_inspector.h"
 #include "dataflow/node_examples.h"
-#include "dataflow/node.h"
+#include "dataflow/base_node.h"
 
 #include "malloc_tracker.h"
 #include "console_frame_printer.h"
@@ -142,7 +142,7 @@ namespace Dataflow
 
 			sum.userData = op1.userData - op2.userData;
 
-			outs[0].stage(sum);
+			outs[0].produce(sum);
 		}
 	};
 
@@ -160,7 +160,7 @@ namespace Dataflow
 
 			sum.userData = op1.userData * op2.userData;
 
-			outs[0].stage(sum);
+			outs[0].produce(sum);
 		}
 	};
 
@@ -177,7 +177,7 @@ namespace Dataflow
 
 			res.userData = op1.userData;
 
-			outs[0].stage(res);
+			outs[0].produce(res);
 		}
 	};
 
@@ -191,17 +191,17 @@ namespace Dataflow
 
 		// template nodes
 
-		Node<DiffProcess> multSumsNode(1000.0f,
+		BaseNode<DiffProcess> multSumsNode(1000.0f,
 			{ {TopicId::Topic_Sum, 2} },
 			{ {TopicId::Topic_Dif} },
 			spMessageBus);
 
-		Node<MultSumDiff> multSumDiffNode(1000.0f,
+		BaseNode<MultSumDiff> multSumDiffNode(1000.0f,
 			{ {TopicId::Topic_Sum}, {TopicId::Topic_Dif} },
 			{ {TopicId::Topic_MultSumDif} }, 
 			spMessageBus);
 
-		Node<Result> resultNode(1000.0f,
+		BaseNode<Result> resultNode(1000.0f,
 		{ {TopicId::Topic_MultSumDif} },
 		{ {TopicId::Topic_FinalRes} },
 			spMessageBus);
@@ -223,6 +223,7 @@ namespace Dataflow
 		testNodes();
 	}
 }
+
 
 int main(int argc, char* argv[])
 {

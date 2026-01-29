@@ -19,7 +19,7 @@ namespace Dataflow
 
 			sum.userData = op1.userData + op2.userData;
 			
-			outputs[0].store(sum);
+			outputs[0].stage(sum);
 		}
 	};
 

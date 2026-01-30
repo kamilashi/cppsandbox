@@ -11,8 +11,18 @@ include(AddApp)
 
 cmake_minimum_required(VERSION 3.21)
 
+
+# stdexec configuration
+set(STDEXEC_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(STDEXEC_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
+set(STDEXEC_ENABLE_IO_URING_TESTS OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(code/external/stdexec EXCLUDE_FROM_ALL)
+
 add_subdirectory(code/wsanet)
 add_subdirectory(code/datastructs)
+add_subdirectory(code/stdexio)
 add_subdirectory(code/shared)
 add_subdirectory(code/dataflow)
 add_subdirectory(code/tests)   

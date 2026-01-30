@@ -107,7 +107,7 @@ namespace Dataflow
 
 			while (!sIsStopProgramRequested.load(std::memory_order_acquire))
 			{
-				// this will ruin the exact order of the messages received, but is okay for now.
+				// this will ruin the exact order of the messages received, so needs fixing
 				for (uint32_t n = sCamTriggers.exchange(0, std::memory_order_acq_rel); n > 0; --n)
 				{
 					perceptionNode.createFrameData();
@@ -219,8 +219,8 @@ namespace Dataflow
 
 	void runTest()
 	{
-		//testComponents();
-		testNodes();
+		testComponents();
+		//testNodes();
 	}
 }
 

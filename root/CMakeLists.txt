@@ -20,6 +20,9 @@ set(STDEXEC_ENABLE_IO_URING_TESTS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(code/external/stdexec EXCLUDE_FROM_ALL)
 
+get_property(_allTargets DIRECTORY code/external/stdexec PROPERTY BUILDSYSTEM_TARGETS)
+message(STATUS "stdexec targets: ${_allTargets}")
+
 add_subdirectory(code/wsanet)
 add_subdirectory(code/datastructs)
 add_subdirectory(code/stdexio)

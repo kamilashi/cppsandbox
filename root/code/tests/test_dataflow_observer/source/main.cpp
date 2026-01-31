@@ -219,8 +219,8 @@ namespace Dataflow
 
 	void runTest()
 	{
-		testComponents();
-		//testNodes();
+		//testComponents();
+		testNodes();
 	}
 }
 

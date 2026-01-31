@@ -17,7 +17,7 @@ target_include_directories(${MOD_NAME}
     $<BUILD_INTERFACE:${INC_DIR}>
     $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(${MOD_NAME} PRIVATE STDEXEC::stdexec)
+target_link_libraries(${MOD_NAME} PRIVATE stdexec)
 
 target_compile_features(${MOD_NAME} PUBLIC cxx_std_20)
 

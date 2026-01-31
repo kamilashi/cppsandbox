@@ -1,0 +1,8 @@
+#ifndef DATAFLOWOBSERVERCONFIG_H
+
+#ifdef _DEBUG
+	#define PROFILE
+	#define TRACKMALLOC
+#endif // _DEBUG
+
+#endif //DATAFLOWOBSERVERCONFIG_H

@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <thread>
+#include <functional>
 #include <memory>
 
 #include <stdexec/execution.hpp>
@@ -24,6 +25,11 @@ namespace Dataflow
 	{
 		pVisualizer->visualizeTable(pInspector->getHeader(), pInspector->getBody());
 	}
+
+	//void triggerFrameData(PerceptionNode node)
+	//{
+	//	node.createFrameData();
+	//}
 
 	void testComponents()
 	{
@@ -69,15 +75,14 @@ namespace Dataflow
 			eventLoop.addEventHandler('c', [&perceptionNode] {
 				perceptionNode.createFrameData();
 			});
+
 			eventLoop.addEventHandler('s', [&perceptionNode] {
 				perceptionNode.createSensorData();
 			});
-			eventLoop.addEventHandler('e', [&eventLoop] {
-				eventLoop.requestStop();
-			});
 
-			do {} 
-			while (eventLoop.isRunning());
+			eventLoop.registerStopKey('e');
+			
+			stdexio::blockUntilExited(eventLoop); // block until user requests io exit
 		}
 	}
 

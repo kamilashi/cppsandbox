@@ -101,7 +101,8 @@ namespace Dataflow
 	class TopicInspector : public Component
 	{
 	public:
-		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Component("Topic Inspector")
+		TopicInspector(std::weak_ptr<Bus> wpBus, float tickIntervalMs) : Component("Topic Inspector"),
+			m_initialized{ false }
 		{ 
 			Component::registerMessageBus(wpBus);
 			start(tickIntervalMs); 
@@ -119,6 +120,11 @@ namespace Dataflow
 
 		const char* getBody()
 		{
+			if (!m_initialized.load(std::memory_order_acquire))
+			{
+				return m_body;
+			}
+
 			size_t skipped = 0;
 			size_t offset = 0;
 			for (auto& kv : m_stats)
@@ -223,6 +229,8 @@ namespace Dataflow
 
 			memset(m_header, 0, m_headerSize);
 			memset(m_body, 0, m_bodySize);
+
+			m_initialized.store(true, std::memory_order_release);
 		}
 
 		void onMessagePublished(const Message& message)
@@ -298,6 +306,7 @@ namespace Dataflow
 		float										m_tickIntervalMs;
 		std::mutex									m_mutexes[Topic::getTopicCount()];
 		std::jthread								m_tickThread;
+		std::atomic<bool>							m_initialized;
 
 		std::unordered_map<TopicId, TopicStats>		m_stats;
 		size_t										m_rowLengths[Topic::getTopicCount()];

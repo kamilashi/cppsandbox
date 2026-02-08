@@ -72,7 +72,7 @@ namespace stdexio
 
 		bool isRunning() const
 		{
-			return m_stopSender.has_value();
+			return m_eventProcessThread.joinable(); //m_stopSender.has_value(); // #TODO: add a proper indicator!
 		}
 
 		const auto& getScheduler() const
@@ -80,15 +80,10 @@ namespace stdexio
 			return m_scheduler;
 		}
 
-		const auto onThreadFinished() const 
-		{
-			return m_stopSender.value();
-		}
-
 		void blockUntilExited() const
 		{
-			stdexec::sync_wait(onThreadFinished());
-			//stdexec::sync_wait(m_scope.on_empty());
+			stdexec::sync_wait(onThreadFinished()); 
+			stdexec::sync_wait(m_scope.on_empty());
 		}
 
 	private:
@@ -137,7 +132,6 @@ namespace stdexio
 				}
 
 				postEvent(m_stopSender.value());
-				m_stopSender.reset();
 			});
 		}
 
@@ -147,6 +141,11 @@ namespace stdexio
 			{
 				m_eventProcessThread.join();
 			}
+		}
+
+		const auto onThreadFinished() const
+		{
+			return m_stopSender.value();
 		}
 	};
 

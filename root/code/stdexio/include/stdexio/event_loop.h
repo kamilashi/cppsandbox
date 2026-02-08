@@ -72,7 +72,7 @@ namespace stdexio
 
 		bool isRunning() const
 		{
-			return m_eventProcessThread.joinable(); //m_stopSender.has_value(); // #TODO: add a proper indicator!
+			return m_eventProcessThread.joinable(); // #TODO: add a proper indicator!
 		}
 
 		const auto& getScheduler() const
@@ -80,13 +80,16 @@ namespace stdexio
 			return m_scheduler;
 		}
 
-		void blockUntilExited() const
+		void blockUntilExited()
 		{
 			stdexec::sync_wait(onThreadFinished()); 
 			stdexec::sync_wait(m_scope.on_empty());
+			cleanup();
 		}
 
 	private:
+		using SenderT = detail::SenderT<Scheduler>;
+		using StopSenderT = decltype(stdexec::just());
 
 		Scheduler m_scheduler;
 		exec::async_scope m_scope;
@@ -94,8 +97,7 @@ namespace stdexio
 		std::unordered_map<char, std::function<void()>>	  m_eventHandlerMap; 
 		std::unordered_set<char> m_stopEvents;
 
-		using SenderT = detail::SenderT<Scheduler>;
-		std::optional<SenderT> m_stopSender;
+		std::optional<StopSenderT> m_stopSender;
 
 		void postEvent(SenderT sender)
 		{
@@ -104,7 +106,7 @@ namespace stdexio
 
 		void start()
 		{
-			m_stopSender.emplace(detail::makeSender(m_scheduler, [this] { cleanup(); }));
+			m_stopSender.emplace(stdexec::just());
 
 			m_eventProcessThread = std::jthread([this](std::stop_token stopToken /*unused*/)
 			{
@@ -131,7 +133,7 @@ namespace stdexio
 					}
 				}
 
-				postEvent(m_stopSender.value());
+				m_scope.spawn(std::move(m_stopSender.value()));
 			});
 		}
 
@@ -150,15 +152,15 @@ namespace stdexio
 	};
 
 	template <class Scheduler>
-	void blockUntilExited(const EventLoop<Scheduler>& loop)
+	void blockUntilExited(EventLoop<Scheduler>* pLoop)
 	{
-		if (!loop.isRunning())
+		if (!pLoop->isRunning())
 		{
 			std::cout << "IO thread already finished, won't block.";
 			return;
 		}
 
-		loop.blockUntilExited();
+		pLoop->blockUntilExited();
 	}
 }
 

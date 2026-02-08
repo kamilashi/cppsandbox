@@ -53,7 +53,6 @@ namespace Dataflow
 			collisionTracker.registerMessageBus(spMessageBus);
 			display.registerMessageBus(spMessageBus);
 
-
 			std::cout << "Press:\n\n"
 				<< "c to publish a camera message \n"
 				<< "s to publish a sensor message \n"
@@ -61,15 +60,15 @@ namespace Dataflow
 				<< "e to exit \n\n";
 
 			std::jthread inspectorThread = std::jthread([&](std::stop_token st)
+			{
+				while (!st.stop_requested())
 				{
-					while (!st.stop_requested())
-					{
-						printTopicStats(&visualizer, &topicInspector);
-						std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); 
-					}
-				});
+					printTopicStats(&visualizer, &topicInspector);
+					std::this_thread::sleep_for(std::chrono::duration<float, std::milli>(500.0f)); 
+				}
+			});
 
-			exec::static_thread_pool eventPool{ 1 };
+			exec::static_thread_pool eventPool{ 5 };
 			stdexio::EventLoop eventLoop{ eventPool.get_scheduler() };
 
 			eventLoop.addEventHandler('c', [&perceptionNode] {
@@ -82,7 +81,7 @@ namespace Dataflow
 
 			eventLoop.registerStopKey('e');
 			
-			stdexio::blockUntilExited(eventLoop); // block until user requests io exit
+			stdexio::blockUntilExited(&eventLoop); // block until user requests io exit
 		}
 	}
 
